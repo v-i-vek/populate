@@ -32,3 +32,5 @@ onLogin(){
     data:this.data,
   })
 }
+
+}
