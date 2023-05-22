@@ -3,12 +3,14 @@
     <div class="container">
         <form [formGroup]="signUp" (ngSubmit)="signUp.value">
 
+            <div *ngIf="login">
 
-            <mat-form-field appearance="outline" class="input">
-                <mat-label>Full Name</mat-label>
-                <input matInput placeholder="vivek yadav" formControlName="name">
-                <mat-icon matSuffix>person_pin</mat-icon>
-            </mat-form-field>
+                <mat-form-field appearance="outline" class="input">
+                    <mat-label>Full Name</mat-label>
+                    <input matInput placeholder="vivek yadav" formControlName="name">
+                    <mat-icon matSuffix>person_pin</mat-icon>
+                </mat-form-field>
+            </div>
 
             <mat-form-field appearance="outline" class="input">
                 <mat-label>Email</mat-label>
@@ -22,23 +24,26 @@
                 <mat-icon matSuffix>lock_open</mat-icon>
             </mat-form-field>
 
-            <mat-form-field appearance="outline" class="input">
-                <mat-label>Confirm password</mat-label>
-                <input matInput placeholder="******" formControlName="confirmPassword" type="password">
-                <mat-icon matSuffix>lock</mat-icon>
-            </mat-form-field>
+            <div *ngIf="login">
+
+                <mat-form-field appearance="outline" class="input">
+                    <mat-label>Confirm password</mat-label>
+                    <input matInput placeholder="******" formControlName="confirmPassword" type="password">
+                    <mat-icon matSuffix>lock</mat-icon>
+                </mat-form-field>
+            </div>
 
 
-           <div>
-            <button mat-raised-button id="button-create" (click)="signUpForm(signUp.value)" >Create account</button>
-            <hr>
-            <button mat-raised-button id="google-button"> Continue with google</button>
+            <div>
+                <button mat-raised-button id="button-create" (click)="signUpForm(signUp.value)">{{loginSignBtn}}</button>
+                <hr>
+                <button mat-raised-button id="google-button"> Continue with google</button>
 
-            <p>Already have an account ? <span mat-button style="color:#ef4f5f">Log in</span></p>
-           
-           </div>
+                <p>Already have an account ? <span mat-button style="color:#ef4f5f">{{alreadyAccountBtn}}</span></p>
 
-           
+            </div>
+
+
 
 
 
