@@ -9,6 +9,7 @@ import { LoginComponent } from '../login-signup/login.component';
 })
 export class NavBarComponent {
 
+  data:number=1
   constructor(private dialog:MatDialog){}
 
 
@@ -24,5 +25,10 @@ this.dialog.open(LoginComponent,{
   width:'30%',
 })
 }
-
+// Login method
+onLogin(){
+  this.dialog.open(LoginComponent,{
+    width:'30%',
+    data:this.data,
+  })
 }
