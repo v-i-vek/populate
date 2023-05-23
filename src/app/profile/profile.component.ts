@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../service/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { commonSnackBarConfig } from '../service/snackbar-config.service';
 import { UserRoleService } from '../service/user-role.service';
+import { MatMenuTrigger } from '@angular/material/menu';
 
 @Component({
   selector: 'app-profile',
@@ -12,6 +13,10 @@ import { UserRoleService } from '../service/user-role.service';
 })
 export class ProfileComponent {
   name = localStorage.getItem('name') || 'User';
+  userRole: string;
+  public userid: any = localStorage.getItem('userId');
+  
+  @ViewChild('menuTrigger') menuTrigger!: MatMenuTrigger;
   constructor(
     private authService: AuthService,
     private snackBar: MatSnackBar,
@@ -38,5 +43,14 @@ export class ProfileComponent {
       }
     );
   }
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.userService.getUserRole(this.userid).subscribe(
+      (response) => {
+        this.userRole = response.userRole;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
 }

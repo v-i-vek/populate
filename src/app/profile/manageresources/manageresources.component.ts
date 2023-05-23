@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-manageresources',
@@ -9,6 +8,6 @@ import { Router } from '@angular/router';
 })
 export class ManageresourcesComponent {
   color = 'black';
-  constructor(private router: Router, public dialog: MatDialog) {}
+  constructor( ) {}
   ngOnInit(): void {}
 }
