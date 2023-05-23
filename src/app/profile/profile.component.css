@@ -1,0 +1,23 @@
+.button {
+  border: none;
+}
+
+.icon-display {
+  transform: scale(1.8);
+  padding: 2vh;
+}
+
+
+.one{
+      position: relative;
+      left:14vh;
+      top:10px;
+     
+  }
+
+  .name{
+    position: relative;
+    left:7vh;
+    top:5px;
+    
+  }

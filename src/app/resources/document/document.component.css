@@ -1,0 +1,23 @@
+.body{
+    background:  #ddcfee
+}
+.button:hover{
+    color: rgb(183, 223, 226);
+    background-color: rgb(52, 99, 153);
+}
+.documents:hover{
+    color: rgb(30, 59, 119);
+}
+.openDocument:hover{
+    color: rgb(30, 59, 119);
+    font-weight: 600;
+    cursor: pointer;
+}
+.pagination {
+    padding-top: 30vh;
+    justify-content: center;
+  }
+  
+  .ngx-pagination li {
+    border-radius: 8px;
+  }

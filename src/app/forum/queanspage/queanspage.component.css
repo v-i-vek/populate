@@ -1,0 +1,123 @@
+.example-card {
+    max-width: 65%;
+    height: fit-content;
+    margin: auto;
+    /* border-radius: 12px; */
+    /* box-shadow: 3px 3px 25px 0.8px rgb(177, 175, 173); */
+  }
+  .container{
+    padding: 0;
+  }
+  
+  .userinfo {
+    display: flex;
+    align-items:center;
+    padding-bottom: 8px;
+  
+  }
+  
+  .userinfo div {
+    align-content: center;
+  }
+  
+  .image {
+    margin-right: 10px;
+  }
+  
+  .img {
+    width: 30px;
+  }
+  
+  .user-date{
+    display: flex;
+    flex-direction: column;
+  }
+  .username{
+    font-size: 15px;
+    margin-right: 10px;
+    font-weight:500;
+  }
+  
+  .date{
+    display: flex;
+    flex-direction: row;
+  }
+  .createdAt{
+    margin-right: 10px;
+    font-size: 12px;
+  }
+  .updatedAt {
+  font-size: 12px;
+  }
+  
+  .icon{
+   margin-left: auto;
+   cursor: pointer;
+  }
+  
+  .tag {
+    font-size: small;
+    font-weight: bold;
+    height: 30px;
+  }
+  
+  .queContent{
+    height: fit-content;
+    padding: 8px 16px;
+  }
+  .ansContent{
+    height: fit-content;
+    padding: 8px 16px;
+  }
+
+  .head{
+    font-size: larger;
+    font-weight: 500;
+  }
+  
+  .ans-container{
+    padding: 8px 0;
+  }
+  
+  .ans-vote{
+    display: flex;
+    flex-direction: row;
+    
+  }
+  
+  .votes{
+    display: flex;
+    flex-direction: column;
+    margin-right: 16px;
+    padding-bottom: 16px;
+  }
+
+  .vote{
+    cursor: pointer;
+  }
+
+  .counter{
+    text-align: center;
+    font-size: 14px;
+    margin-top: -8px;
+  }
+
+  .answers{
+      /* background-color: rgb(243, 216, 180);
+      border-radius: 6px; */
+    /* padding: 4px; */
+  }
+
+  .postbtn{
+    padding-top: 10px;
+  }
+  
+  
+  /* .ans-divider{
+    border-width: 1px;
+      border-style: solid;
+  } */
+  
+  
+  
+  

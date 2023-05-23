@@ -1,0 +1,144 @@
+<mat-card class="example-card">
+  <mat-card-header>
+    <div class="container">
+      <div class="heading">
+        <h2>{{ quebyid.question }}</h2>
+      </div>
+      <div class="userinfo">
+        <div class="image">
+          <ngx-avatar name="quebyid.userId.firstName + ' ' + quebyid.userId.lastName" size="32" matSuffix></ngx-avatar>
+        </div>
+        <div class="user-date">
+          <div class="username">
+            {{ quebyid.userId.firstName | titlecase }}
+            {{ quebyid.userId.lastName | titlecase }}
+          </div>
+          <div class="date">
+            <div class="createdAt">
+              <span style="font-weight: 500">Created </span
+              >{{ quebyid.createdAt | date : "d MMM, yy" }}
+            </div>
+            <div class="updatedAt" *ngIf="quebyid.updatedAt">
+              <span style="font-weight: 500">Updated </span>
+              {{ quebyid.updatedAt | date : "d MMM, yy" }}
+            </div>
+          </div>
+        </div>
+
+        <div class="icon">
+          <mat-icon (click)="toggleBookmark(quebyid._id)">
+            {{ isBookmarked(quebyid._id) ? "bookmark" : "bookmark_border" }}
+          </mat-icon>
+        </div>
+      </div>
+    </div>
+  </mat-card-header>
+  <mat-divider></mat-divider>
+  <mat-card-content class="queContent">
+    <mat-chip-set class="tags">
+      <mat-chip class="tag" cdkDrag *ngFor="let tag of quebyid.tags">
+        {{ tag }}
+      </mat-chip>
+    </mat-chip-set>
+    <div [innerHTML]="quebyid.questionDescribe">
+      {{ quebyid.questionDescribe }}
+    </div>
+  </mat-card-content>
+  <mat-divider></mat-divider>
+  <mat-card-content class="ansContent">
+    <div class="head" *ngIf="ansbyid[0] ? answord : ''">{{ answord }}:</div>
+    <div class="ans-container" *ngFor="let ans of ansbyid">
+      <div class="userinfo">
+        <div class="image">
+          <ngx-avatars [name]="ans.userId?.firstName + ' ' + ans.userId?.lastName" size="32" matSuffix></ngx-avatars>
+        </div>
+        <div class="user-date">
+          <div class="username">
+            {{ ans.userId.firstName | titlecase }}
+            {{ ans.userId.lastName | titlecase }}
+          </div>
+          <div class="date">
+            <div class="createdAt">
+              <span style="font-weight: 500">Answered </span
+              >{{ ans.createdAt | date : "d MMM, yy" }}
+            </div>
+            <div class="updatedAt">
+              <span style="font-weight: 500">Updated </span
+              >{{ ans.updatedAt | date : "d MMM, yy" }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ans-vote">
+        <div class="votes">
+          <div
+            style="padding-bottom: 10px"
+            class="vote"
+            (click)="upvotesAnswer(ans._id)"
+          >
+            <mat-icon
+              [ngStyle]="{
+                color: answerVote[ans._id]?.upvotes?.includes(userId)
+                  ? 'black'
+                  : '#00000033',
+                opacity: answerVote[ans._id]?.downvotes?.includes(userId)
+                  ? '0.9'
+                  : '1'
+              }"
+              >thumb_up</mat-icon
+            >
+            <div class="counter">{{ ans.upvotes.length }}</div>
+          </div>
+          <div class="vote" (click)="downvotesAnswer(ans._id)">
+            <mat-icon
+              [ngStyle]="{
+                color: answerVote[ans._id]?.downvotes?.includes(userId)
+                  ? 'black'
+                  : '#00000033',
+                opacity: answerVote[ans._id]?.upvotes?.includes(userId)
+                  ? '0.9'
+                  : '1'
+              }"
+              >thumb_down</mat-icon
+            >
+            <div class="counter">{{ ans.downvotes.length }}</div>
+          </div>
+        </div>
+        <div class="answers" [innerHTML]="ans.answer">
+          <p>
+            {{ ans.answer }}
+          </p>
+        </div>
+      </div>
+      <mat-divider class="ans-divider"></mat-divider>
+    </div>
+  </mat-card-content>
+  <mat-card-content>
+    <h5><b>Post Answers :</b></h5>
+    <form [formGroup]="PostAnswer" (ngSubmit)="answerSubmit()">
+      <div class="postanswer">
+        <ckeditor
+          [config]="{ placeholder: 'Type answer here' }"
+          [editor]="Editor"
+          formControlName="answer"
+          required
+        ></ckeditor>
+        <!-- <mat-error class="require" *ngIf="valide.questionDescribe.errors">
+          <span *ngIf="valide.questionDescribe.errors['maxlength']">
+            You reached character limitation</span>
+        </mat-error> -->
+        <mat-error style="font-size: 12px;" *ngIf="submited && valide.answer.errors">
+          <span *ngIf="valide.answer.errors['required']">
+            please type answer
+          </span>
+          <span *ngIf="valide.answer.errors['maxlength']">
+            You reached character limitation</span
+          >
+        </mat-error>
+        <div class="postbtn">
+          <button mat-raised-button color="accent">Post</button>
+        </div>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

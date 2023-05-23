@@ -1,0 +1,84 @@
+.button:hover {
+  color: rgb(183, 223, 226);
+  background-color: rgb(52, 99, 153);
+}
+.userdetail {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  text-align: center;
+  align-items: baseline;
+}
+.userdetail div {
+  flex: 1 1 auto;
+}
+
+.username {
+  font-weight: bold;
+  margin-right: 6px;
+  text-align: center;
+}
+
+.date {
+  flex-basis: 83%;
+}
+.icon {
+  padding: 0;
+  position: absolute;
+  right: 2%;
+}
+
+.blog {
+  font-size: larger;
+  font-weight: bold;overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 1; /* number of lines to show */
+          line-clamp: 1; 
+  -webkit-box-orient: vertical;
+}
+.card-content {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* number of lines to show */
+          line-clamp: 3; 
+  -webkit-box-orient: vertical;
+}
+.blog-content {
+  padding-top: 5px;
+}
+
+.blogbox {
+  margin-right: 24px;
+  margin-bottom: 40px;
+  max-width: 300px;
+  flex-direction: column;
+  max-height: 60%;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 3px 3px 25px 0.8px rgb(177, 175, 173);
+  background: #e4f2f3;
+}
+.container{
+  align-self: center;
+}
+.blogbox:hover {
+  max-width: 300px;
+  flex-direction: column;
+  max-height: 60%;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 3px 3px 25px 0.8px rgb(33, 108, 158);
+  background: #d1e8eb;
+}
+.readmore {
+  color: rgb(5, 5, 5);
+  padding-top: 2px;
+  padding-left: 5px;
+}
+.readmore:hover {
+  color: rgb(183, 223, 226);
+  background-color: rgb(52, 99, 153);
+}
+.pagination {
+  justify-content: center;
+}

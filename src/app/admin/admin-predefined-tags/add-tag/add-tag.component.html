@@ -1,0 +1,12 @@
+<mat-dialog-content>
+    <form [formGroup]="addTagForm" (ngSubmit)="addTag()" >
+        <mat-label style="font-weight: bold;">Add Tag</mat-label><br />
+        <mat-form-field appearance="fill" style="margin-top: 10px;">
+            <mat-label>Tag</mat-label>
+            <input matInput type="string" formControlName="name" required>
+        </mat-form-field><br />
+        <button mat-raised-button color="primary">Submit</button>
+        <button mat-raised-button color="primary" class="btn btn-secondary" (click)="dialogRef.close()"
+            style="margin-left: 8px;">Cancel</button>
+    </form>
+</mat-dialog-content>

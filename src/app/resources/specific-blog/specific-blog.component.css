@@ -1,0 +1,130 @@
+.title {
+  color: rgb(33, 30, 77);
+  font-family: 'ubuntu';
+  text-shadow: 0.04em 0.04em 0 rgb(61, 110, 122);
+  font-size: 10vh;
+  text-align: left;
+  padding-left: 2vh;
+  padding-right: 2vh;
+}
+.title-container{
+  display: flex;
+  align-items: baseline;
+  font-size: 3vh;
+}
+/* .avatar{
+
+} */
+
+
+.content {
+  text-align: justify;
+  text-justify: inter-word;
+  font-size: 4vh;
+  line-height: 1.1;
+  font-weight: 500;
+  text-rendering: optimizeLegibility;
+  padding: 18vh;
+  padding-top: 2%;
+  justify-content: center;
+  font-family: "ubuntu";
+  color: rgb(60, 76, 126);
+}
+
+@media only screen and (max-width: 700px) {
+  .title {
+    color: rgb(33, 30, 77);
+    font-family: 'ubuntu';
+    text-shadow: 0.04em 0.04em 0 rgb(61, 110, 122);
+    font-size: 7vh;
+    text-align: left;
+    padding-left: none;
+  }
+  .name {
+    color: rgb(14, 76, 107);
+    font-weight: 400;
+    line-height: 0.2vh;
+    font-family: "Righteous", serif;
+    text-shadow: 0.03em 0.03em 0 rgb(112, 174, 190);
+    font-size: 2vh;
+    padding-left: 1vh;
+    text-align: left;
+  }
+  .date{
+    color: rgb(14, 76, 107);
+    font-weight: 200;
+    font-family: "Righteous", serif;
+    text-shadow: none;
+    line-height: 4vh;
+    font-size: 1.5vh;
+    padding-left: 1vh;
+    text-align: left;
+  }
+  
+  .content {
+    text-align: justify;
+    text-justify: inter-word;
+    font-size: 2vh;
+    line-height: 1.1;
+    font-weight: 500;
+    text-rendering: optimizeLegibility;
+    padding: 10vh;
+    padding-top: 2%;
+    justify-content: center;
+    font-family: "ubuntu";
+    color: rgb(60, 76, 126);
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .title {
+    color: rgb(33, 30, 77);
+    font-family: 'ubuntu';
+    text-shadow: 0.04em 0.04em 0 rgb(61, 110, 122);
+    font-size: 3vh;
+    text-align: left;
+    padding-left: none;
+  }
+  .name {
+    color: rgb(14, 76, 107);
+    font-weight: 400;
+    line-height: 0.2vh;
+    font-family: "Righteous", serif;
+    text-shadow: 0.03em 0.03em 0 rgb(112, 174, 190);
+    font-size: 1.5vh;
+    padding-left: none;
+    text-align: left;
+  }
+  .date{
+    color: rgb(14, 76, 107);
+    font-weight: 200;
+    font-family: "Righteous", serif;
+    text-shadow: none;
+    line-height: 3vh;
+    font-size: 1.5vh;
+    padding-left: 1vh;
+    text-align: left;
+  }
+  
+  .content {
+    text-align: justify;
+    text-justify: inter-word;
+    font-size: 2vh;
+    line-height: 1.1;
+    font-weight: 500;
+    text-rendering: optimizeLegibility;
+    padding: 5vh;
+    padding-top: 2%;
+    justify-content: center;
+    font-family: "ubuntu";
+    color: rgb(60, 76, 126);
+  }
+}
+
+.back-button{
+  cursor: pointer;
+  border-radius: 28px;
+}
+.back{
+  padding: 8px;
+}

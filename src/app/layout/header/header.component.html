@@ -1,0 +1,46 @@
+<mat-toolbar class="nav" *ngIf="userRole !== 'admin'">
+    <button mat-icon-button (click)="onToggleSidenav()" *ngIf="isMobile">
+        <mat-icon>menu</mat-icon>
+    </button>
+    <span style="font-size: large;"><b>TechForum</b></span>
+    <button mat-button *ngIf="!isMobile" routerLink="/" routerLinkActive="active"
+        style="margin-left: 4px;">Dashboard</button>
+    <button mat-button *ngIf="!isMobile" routerLink="resources" routerLinkActive="active">Resources</button>
+    <span class="spacer"></span>
+    <div class="search" [class.active]='isSearchActive' style="margin-right: 8px;" *ngIf="!isMobile" >
+        <input style="height: 35px;" type="text" placeholder="Search..." [(ngModel)]="question"
+            (input)="searchQuestion()">
+            <button class="search-icon" mat-icon-button matSuffix
+            (click)="isSearchActive = !isSearchActive"><mat-icon>search</mat-icon></button>
+        <div *ngIf="searchQue != null && searchQue.length > 0" class="dropdown">
+            <a class="searchlist" *ngFor="let result of searchQue" (click)="selectResult(result._id, result)">{{ result.question }}</a>
+        </div>
+    </div>
+
+    <button mat-raised-button (click)="openSignInDialog()" style="color: #00b8d4" *ngIf="!isUserAuthenticated">Sign
+        In</button>
+    <div class="profile" *ngIf="isUserAuthenticated">
+        <app-profile></app-profile>
+    </div>
+</mat-toolbar>
+
+<mat-toolbar color="primary" *ngIf="userRole === 'admin'">
+    <button mat-icon-button (click)="onAToggleSidenav()" *ngIf="isMobile">
+        <mat-icon>menu</mat-icon>
+    </button>
+    <span style="font-size: large;"><b>TechForum</b></span>
+    <button mat-button *ngIf="!isMobile" routerLink="admin/manageusers" routerLinkActive="active"
+        style="margin-left: 4px;">Manage Users</button>
+    <button mat-button *ngIf="!isMobile" routerLink="admin/manageforums" routerLinkActive="active"
+        style="margin-left: 4px;">Manage Forums</button>
+    <button mat-button *ngIf="!isMobile" routerLink="admin/manageresourcs" routerLinkActive="active"
+        style="margin-left: 4px;">Manage Resources</button>
+
+    <button mat-button *ngIf="!isMobile" routerLink="admin/tags" routerLinkActive="active"
+        style="margin-left: 4px;">Predefined Tags</button>
+    <span class="spacer"></span>
+
+    <div class="profile" *ngIf="isUserAuthenticated">
+        <app-profile></app-profile>
+    </div>
+</mat-toolbar>

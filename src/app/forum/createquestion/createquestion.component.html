@@ -1,0 +1,64 @@
+<div class="example-container">
+  <h3 style="margin-bottom: 16px;">Ask a Public Question</h3>
+  <form [formGroup]="CreateQuestionForm" (ngSubmit)="questionSubmit()" style="background-color: white;">
+    <div class="inputQuestion">
+      <mat-form-field appearance="outline" class="queTitle">
+        <mat-label>Question Title</mat-label>
+
+        <input maxlength="120" matInput [class.is-invalid]="question?.invalid" placeholder="Type question title here"
+          formControlName="question" required />
+        <mat-error class="require" *ngIf="CreateQuestionForm.controls['question'].hasError('required')">
+          Question title is required
+        </mat-error>
+        <mat-error class="require" *ngIf="CreateQuestionForm.controls['question'].hasError('maxlength')">
+          Not more than 120 characters
+        </mat-error>
+      </mat-form-field>
+
+      <div class="queDescribe">
+        <ckeditor [config]="{ placeholder: 'Type the content here'}" [editor]="Editor"
+          formControlName="questionDescribe">
+        </ckeditor>
+
+        <mat-error class="require" *ngIf="valide.questionDescribe.errors">
+          <span *ngIf="valide.questionDescribe.errors['maxlength']">
+            You reached character limitation</span>
+        </mat-error>
+      </div>
+      <mat-form-field class="example-chip-list" appearance="outline">
+        <mat-label>Question Tag</mat-label>
+
+        <input maxlength="12" matInput [disabled]="inputTags.length === 5" placeholder="Add tags here" #tagInput
+          [matChipInputFor]="chipGrid" [matAutocomplete]="auto" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          (matChipInputTokenEnd)="add($event)" formControlName="tags" />
+        <mat-error class="require" *ngIf="CreateQuestionForm.controls['tags'].hasError('maxlength')">
+          Not more than 12 characters
+        </mat-error>
+
+
+        <mat-chip-grid #chipGrid aria-label="Fruit selection">
+          <mat-chip-row *ngFor="let tag of inputTags" (removed)="remove(tag)">
+            {{tag}}
+            <button matChipRemove [attr.aria-label]="'remove ' + tag">
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </mat-chip-row>
+        </mat-chip-grid>
+        <!-- <span class="require" *ngIf="inputTags.length > 4">
+          Not more than 5 tags
+        </span> -->
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+          <mat-option *ngFor="let tag of filteredFruits | async" [value]="tag">
+            {{tag}}
+          </mat-option>
+        </mat-autocomplete>
+
+      </mat-form-field>
+      <div class="example-button-row">
+        <button [disabled]="submited" mat-raised-button color="primary">
+          Post Question
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

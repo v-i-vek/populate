@@ -1,0 +1,69 @@
+<div class="back">
+  <button
+    mat-raised-button
+    class="back-button"
+    routerLink="/manageresources"
+    routerLinkActive="active"
+    color="primary"
+  >
+    <mat-icon style="font-size: 20px; align-items: center">arrow_back</mat-icon>
+  </button>
+</div>
+<div class="example-container">
+  <h3 style="margin-bottom: 16px">Update your Blog</h3>
+  <form [formGroup]="UpdateBlogForm" style="background-color: white">
+    <div class="inputQuestion">
+      <mat-form-field appearance="outline" class="queTitle">
+        <mat-label>Blog Title</mat-label>
+
+        <input
+          maxlength="120"
+          matInput
+          [class.is-invalid]="title?.invalid"
+          placeholder="Type blog title here"
+          class="form-control"
+          formControlName="title"
+          [(ngModel)]="blog.title"
+          name="title"
+          required
+        />
+        <mat-error
+          class="require"
+          *ngIf="UpdateBlogForm.controls['title'].hasError('required')"
+        >
+          Blog title is required
+        </mat-error>
+        <mat-error
+          class="require"
+          *ngIf="UpdateBlogForm.controls['title'].hasError('maxlength')"
+        >
+          Not more than 120 characters
+        </mat-error>
+      </mat-form-field>
+
+      <div class="queDescribe">
+        <ckeditor
+          [config]="{ placeholder: 'Type the content here' }"
+          [editor]="Editor"
+          class="form-control"
+          formControlName="content"
+          [(ngModel)]="blog.content"
+          name="content"
+        >
+        </ckeditor>
+
+        <mat-error class="require" *ngIf="valide.content.errors">
+          <span *ngIf="valide.content.errors['maxlength']">
+            You reached character limitation</span
+          >
+        </mat-error>
+      </div>
+
+      <div class="example-button-row">
+        <button mat-raised-button color="primary" (click)="updateBlog()">
+          Update
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

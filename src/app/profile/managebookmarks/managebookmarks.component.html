@@ -1,0 +1,43 @@
+<mat-card
+  class="questionbox"
+  *ngFor="let profile of question"
+>
+<div *ngIf="question.length > 0">
+  <mat-card-header class="userinfo">
+    <ngx-avatars
+    [name]="profile.questionId?.userId?.firstName + ' ' + profile.questionId?.userId?.lastName"
+    size="32"
+    matSuffix
+  ></ngx-avatars>
+    <div class="username">
+      {{ profile.questionId?.userId?.firstName }}
+      {{ profile.questionId?.userId?.lastName }}
+    </div>
+    <div class="createdAt">
+      {{ profile.questionId?.createdAt | date : "d MMM, yy" }}
+    </div>
+  
+    <mat-icon class="icon" (click)="toggleBookmark(profile.questionId?._id)">
+      {{ isBookmarked(profile.questionId?._id) ? "bookmark" : "bookmark_border" }}
+    </mat-icon>
+  </mat-card-header>
+  <mat-card-content class="forum">
+    
+    <div (click)="queClick(profile.questionId?._id)">
+      <mat-card-title class="question">{{ profile.questionId?.question }}</mat-card-title>
+    </div>
+    <mat-chip-set class="tags">
+      <mat-chip class="tag" cdkDrag *ngFor="let tag of profile.tags">
+        {{ tag }}
+      </mat-chip>
+    </mat-chip-set>
+  </mat-card-content>
+</div>
+</mat-card>
+
+<div class="noBookmark" *ngIf="question.length === 0">
+  <div ><p>You have not Bookmark any forums!!<br>Bookmark your Forums!!</p>
+  <button routerLink="/dashboard" mat-raised-button color="primary">
+   Bookmark Forums
+  </button></div>
+  </div>

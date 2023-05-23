@@ -1,0 +1,48 @@
+<link
+  rel="stylesheet"
+  href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+  integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+  crossorigin="anonymous"
+/>
+<mat-card-actions align="end">
+  <button
+    class="button"
+    mat-raised-button
+    (click)="openDocumentDialog()"
+    color="primary"
+  ><mat-icon>note_add</mat-icon>
+    Add Document
+  </button>
+</mat-card-actions>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Document Name</th>
+      <th scope="col">Owner</th>
+      <th scope="col">Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let docs of files ">
+      <td
+        class="openDocument"
+        [routerLink]="['/document', docs._id]"
+        style="vertical-align: middle"
+      >
+        <span>{{ docs.fileName }}</span>
+      </td>
+      <td class="documents">
+        {{ docs.user.firstName | titlecase }}
+        {{ docs.user.lastName | titlecase }}
+      </td>
+      <td class="documents">{{ docs.createdDate | date : "MMM d, y" }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="pagination">
+  <button mat-raised-button (click)="previousPage()" [disabled]="pageNumber === 1" color="primary" style="margin-right: 6px;">	<mat-icon>fast_rewind</mat-icon></button>
+    <button mat-raised-button (click)="isCurrentPage()" color="primary" style="margin-right: 6px;">{{pageNumber}}</button>
+  <button mat-raised-button (click)="nextPage()" color="primary" [disabled]="totalPages<5"><mat-icon>fast_forward</mat-icon></button>
+  </div>

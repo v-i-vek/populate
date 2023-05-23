@@ -1,0 +1,23 @@
+* {
+  background-color: #c7f7f9c8;
+  color: #3d424a;
+}
+mat-sidenav-container,
+mat-sidenav-content,
+mat-sidenav {
+  height: 100%;
+}
+
+mat-sidenav {
+  width: 250px;
+}
+
+main {
+  padding: 0px;
+  overflow: hidden;
+}
+app-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}

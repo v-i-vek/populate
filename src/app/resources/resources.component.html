@@ -1,0 +1,25 @@
+<div class="body"> 
+<mat-tab-group  [style.color]="color">
+  
+    <mat-tab>
+    <ng-template mat-tab-label>
+        <mat-icon>message</mat-icon>
+        Blogs
+    </ng-template>
+    <ng-template matTabContent>
+  <app-blog></app-blog>
+    </ng-template>
+    </mat-tab>
+  
+    <mat-tab>
+        <ng-template mat-tab-label>
+            <mat-icon><span class="material-icons">document_scanner</span>
+                </mat-icon>Documents
+        </ng-template>
+        <ng-template matTabContent>
+        <app-document></app-document>
+        </ng-template>
+    </mat-tab>
+  </mat-tab-group>
+</div>
+  

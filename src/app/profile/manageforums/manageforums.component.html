@@ -1,0 +1,67 @@
+<div class="back">
+  <button
+    mat-raised-button
+    class="back-button"
+    routerLink="/dashboard"
+    routerLinkActive="active"
+    color="primary"
+  >
+    <mat-icon style="font-size: 20px; align-items: center">arrow_back</mat-icon>
+  </button>
+</div>
+<div *ngIf="question.length > 0">
+  <mat-card
+    class="questionbox"
+    *ngFor="let profile of question| paginate:{
+  itemsPerPage:8,
+  currentPage:pagination,
+}"
+  >
+    <mat-card-header class="userinfo">
+      <div class="image">
+        <ngx-avatars
+          [name]="profile.userId?.firstName + ' ' + profile.userId?.lastName"
+          size="32"
+          matSuffix
+        ></ngx-avatars>
+      </div>
+      <div class="createdAt">{{ profile.createdAt | date : "d MMM, yy" }}</div>
+      <!-- <div class="updatedAt">{{ profile.updatedAt | date : "d MMM, yy" }}</div> -->
+      <div class="icon">
+        <mat-icon (click)="toggleBookmark(quebyid._id)">
+          {{ isBookmarked(quebyid._id) ? "bookmark" : "bookmark_border" }}
+        </mat-icon>
+      </div>
+    </mat-card-header>
+    <mat-card-content class="forum">
+      <mat-card-title class="question">{{ profile.question }}</mat-card-title>
+      <div class="answer">
+        <p [innerHTML]="profile.answer?.answer">{{ profile.answer?.answer }}</p>
+      </div>
+
+      <div class="UpdateDeleteBlog">
+        <mat-icon
+          style="cursor: pointer; padding-right: 10px"
+          matTooltip="Update Forum"
+          [routerLink]="['/update-forum', profile._id]"
+          >edit</mat-icon
+        >
+        <mat-icon
+          style="cursor: pointer"
+          (click)="deleteForumDialog(profile._id)"
+          matTooltip="Delete Forum"
+          >delete</mat-icon
+        >
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<div class="noForums" *ngIf="question.length === 0">
+  <div>
+    <p>You have not added any forums!!<br />Add New Forums!!</p>
+    <button routerLink="/createquestion" mat-raised-button color="primary">
+      Ask Question
+    </button>
+  </div>
+</div>

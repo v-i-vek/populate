@@ -1,0 +1,95 @@
+<div class="content" *ngIf="!isMobile">
+  <div class="left" style="padding: 100px">
+    <h1>
+      A community for techies,<br />
+      by techies
+    </h1>
+    <button style="padding: 25px 30px; font-size: 20px; border-radius: 26px" routerLink="/createquestion"
+      mat-raised-button color="accent">
+      Ask Question
+    </button>
+  </div>
+  <div class="continuous-flow" #continuousFlow></div>
+</div>
+<div class="askquebtn" *ngIf="isMobile">
+  <button routerLink="/createquestion" mat-raised-button color="accent">
+    Ask Question
+  </button>
+  <hr />
+</div>
+<div class="flex">
+  <div class="blogs" *ngIf="isUserAuthenticated">
+    <h5>Explore Blogs</h5>
+    <mat-card class="blogcard" *ngFor="let blog of allBlogs">
+      <mat-card-title (click)="getBlog(blog._id)" class="blogtitle">
+        {{ blog.title }}
+      </mat-card-title>
+      <mat-divider style="margin: 8px 0px"></mat-divider>
+    </mat-card>
+  </div>
+  <div class="blogs" *ngIf="!isUserAuthenticated">
+    <h5>Expore Blogs</h5>
+    <mat-card class="blogcard" *ngFor="let blogt of allBlogst">
+      <mat-card-title routerLink="/blog/:id" class="blogtitle">
+        {{ blogt.title }}
+      </mat-card-title>
+      <mat-divider style="margin: 8px 0px"></mat-divider>
+    </mat-card>
+  </div>
+  <div class="hr"></div>
+  <div class="matcard">
+    <mat-card class="questionbox" *ngFor="let que of filteredQuestions || allQuestions">
+      <mat-card-header class="userinfo">
+        <div class="image">
+          <ngx-avatars [name]="que.userId?.firstName + ' ' + que.userId?.lastName" size="32" matSuffix></ngx-avatars>
+        </div>
+        <div class="username">
+          {{ que.userId?.firstName | titlecase }}
+          {{ que.userId?.lastName | titlecase }}
+        </div>
+        <div class="createdAt">{{ que.createdAt | date : "d MMM, yy" }}</div>
+        <mat-icon class="icon" (click)="toggleBookmark(que._id)">
+          {{ isBookmarked(que._id) ? "bookmark" : "bookmark_border" }}
+        </mat-icon>
+      </mat-card-header>
+      <mat-card-content class="forum">
+        <div (click)="queClick($event, que._id)">
+          <mat-card-title class="question">{{ que.question }}</mat-card-title>
+          <div class="answer" [innerHTML]="que.answer?.answer">
+            {{ que.answer?.answer }}
+          </div>
+        </div>
+        <mat-chip-set class="tags">
+          <mat-chip class="tag" cdkDrag *ngFor="let tag of que.tags">
+            {{ tag }}
+          </mat-chip>
+        </mat-chip-set>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <aside>
+    <div class="tagfilter">
+      <h5>Discover Question from popular tags</h5>
+      <div class="taglist">
+        <mat-chip-listbox aria-label="Fish selection">
+          <mat-chip-option (click)="clearFilter()">Clear Filter</mat-chip-option>
+          <mat-chip-option (click)="filterQuestion(populartag)" *ngFor="let populartag of popularTags">{{ populartag
+            }}</mat-chip-option>
+        </mat-chip-listbox>
+      </div>
+    </div>
+  </aside>
+</div>
+<nav>
+  <ul class="pagination">
+    <li class="page-item" [class.disabled]="currentPage === 1">
+      <a class="page-link" (click)="onPrevPage()">Previous</a>
+    </li>
+    <li class="page-item" *ngFor="let page of totalPageArray" [class.active]="isCurrentPage(page)">
+      <a class="page-link" (click)="onSetPage(page)">{{ page }}</a>
+    </li>
+    <li class="page-item" [class.disabled]="currentPage === totalPages">
+      <a class="page-link" (click)="onNextPage()">Next</a>
+    </li>
+  </ul>
+</nav>

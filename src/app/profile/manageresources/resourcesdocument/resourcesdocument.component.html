@@ -1,0 +1,56 @@
+<div *ngIf="files.length > 0">
+  <link
+    rel="stylesheet"
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+    crossorigin="anonymous"
+  />
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Document Name</th>
+        <th scope="col">Owner</th>
+        <th scope="col">Date</th>
+        <th scope="col">Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let document of files">
+        <td
+          class="openDocument"
+          [routerLink]="['/document', document._id]"
+          style="vertical-align: middle"
+        >
+          <span>{{ document.fileName }}</span
+          ><mat-icon>open_in_new</mat-icon>
+        </td>
+        <td class="documents">
+          {{ document.userId.firstName }} {{ document.userId.lastName }}
+        </td>
+        <td class="documents">
+          {{ document.createdDate | date : "MMM d, y" }}
+        </td>
+        <td>
+          <mat-icon style="cursor: pointer" (click)="deleteFile(document._id)"
+            >delete</mat-icon
+          >
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="noDocs" *ngIf="files.length === 0">
+  <div>
+    <p>You have not added any Document!!<br />Add New Document!!</p>
+    <button
+      class="button"
+      mat-raised-button
+      (click)="openDocumentDialog()"
+      color="primary"
+    >
+      Add Document
+    </button>
+  </div>
+</div>

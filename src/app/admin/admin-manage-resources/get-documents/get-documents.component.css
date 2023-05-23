@@ -1,0 +1,9 @@
+.pagination {
+  padding-top: 30vh;
+  justify-content: center;
+}
+.file:hover {
+  color: rgb(30, 59, 119);
+  font-weight: 600;
+  cursor: pointer;
+}

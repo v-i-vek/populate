@@ -1,0 +1,21 @@
+<div class="button" align="end">
+    <button mat-raised-button (click)="openAddTagDialog()" routerLinkActive="active" color="primary" >
+        Add Tag
+    </button>
+</div>
+
+<table class="table">
+
+    <thead>
+        <tr>
+            <th scope="col">Predefined Tags</th>
+            <th scope="col">Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let tag of tags">
+            <td>{{tag.tag}}</td>
+            <td><mat-icon style="cursor: pointer" (click)="deleteTagDialog(tag.id)">delete</mat-icon></td>
+        </tr>
+    </tbody>
+</table>

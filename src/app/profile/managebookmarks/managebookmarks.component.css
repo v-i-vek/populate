@@ -1,0 +1,89 @@
+
+.expandable-content {
+  overflow: hidden;
+}
+
+.questionbox {
+  margin-top: 10px;
+  border-radius: 12px;
+  box-shadow: 3px 3px 25px 0.8px rgb(177, 175, 173);
+  width: 50%;
+  margin: 50px auto auto auto;
+}
+  .userinfo {
+    align-items: center;
+    padding-bottom: 10px;
+  
+  }
+  
+  .userinfo div {
+    align-content: center;
+  }
+  
+  .image {
+    margin-right: 10px;
+  }
+  
+  .img {
+    width: 28px;
+  }
+  
+  .username{
+  margin-right: 15px;
+  font-weight: bold;
+  font-size:small;
+  }
+  .createdAt{
+    padding-right: 8px;
+  }
+  .icon {
+  margin-left: auto;
+  }
+  
+  .material-icons{
+    vertical-align: middle;
+    margin-right: 0;
+    cursor: pointer;
+  }
+  
+  .forum {
+    padding-top: 5px;
+  }
+  .question {
+    font-size:16px;
+    font-weight: bold;
+    cursor: pointer;
+ 
+  }
+  .answer {
+    padding-top: 5px;
+
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      width: 100%;
+  }
+  .tags {
+    font-size: small;
+    font-weight: bold;
+    padding-top: 5px;
+  }
+  
+  .addtitle{
+    padding-left: 1vh;
+    margin-top:1vh;
+  
+}
+ .panel{
+  box-shadow: none;
+}
+  
+.noBookmarks{
+  text-align: center;
+  padding: 15%;
+}
+
+.noBookmark{
+  text-align: center;
+  padding: 15%;
+}

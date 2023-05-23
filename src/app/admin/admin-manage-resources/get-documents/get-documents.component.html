@@ -1,0 +1,70 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Document Id</th>
+      <th scope="col">Document Title</th>
+      <th scope="col">User Name</th>
+      <th scope="col">Approve</th>
+      <th scope="col">Delete</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let docs of files">
+      <td
+        class="file"
+        [routerLink]="['/document', docs._id]"
+        style="cursor: pointer"
+      >
+        {{ docs._id }}
+      </td>
+      <td>{{ docs.fileName }}</td>
+      <td>
+        {{ docs.user.firstName | titlecase }}
+        {{ docs.user.lastName | titlecase }}
+      </td>
+      <td>
+        <button
+          color="primary"
+          style="cursor: pointer; border-radius: 20px"
+          type="button"
+          *ngIf="!docs.isApproved"
+          (click)="approvefiles(docs._id)"
+        >
+          Approve</button
+        >{{ docs.isApproved ? "isApproved" : "" }}
+      </td>
+      <td>
+        <mat-icon style="cursor: pointer" (click)="deleteFileDialog(docs._id)"
+          >delete</mat-icon
+        >
+      </td>
+    </tr>
+  </tbody>
+</table>
+<div class="pagination">
+  <button
+    mat-raised-button
+    (click)="previousPage()"
+    [disabled]="pageNumber === 1"
+    color="primary"
+    style="margin-right: 6px"
+  >
+    <mat-icon>fast_rewind</mat-icon>
+  </button>
+  <button
+    mat-raised-button
+    (click)="isCurrentPage()"
+    color="primary"
+    style="margin-right: 6px"
+  >
+    {{ pageNumber }}
+  </button>
+  <button
+    mat-raised-button
+    (click)="nextPage()"
+    color="primary"
+    [disabled]="totalPages < 5"
+  >
+    <mat-icon>fast_forward</mat-icon>
+  </button>
+</div>

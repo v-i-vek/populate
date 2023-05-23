@@ -1,0 +1,22 @@
+<mat-nav-list  *ngIf="userRole !== 'admin'">
+    <a mat-list-item routerLink="/" (click)="onSidenavClose()">
+        <span class="nav-caption">Dashboard</span>
+    </a>
+    <a mat-list-item routerLink="resources" (click)="onSidenavClose()">
+        <span class="nav-caption">Resources</span>
+    </a>
+</mat-nav-list>
+<mat-nav-list *ngIf="userRole === 'admin'">
+    <a mat-list-item routerLink="admin/manageusers" (click)="onASidenavClose()">
+        <span class="nav-caption">Manage Users</span>
+    </a>
+    <a mat-list-item routerLink="admin/manageforums" (click)="onASidenavClose()">
+        <span class="nav-caption">Manage Forums</span>
+    </a>
+    <a mat-list-item routerLink="admin/manageresourcs" (click)="onASidenavClose()">
+        <span class="nav-caption">Manage Resources</span>
+    </a>
+    <a mat-list-item routerLink="admin/tags" (click)="onASidenavClose()">
+        <span class="nav-caption">Predefined Tags</span>
+    </a>
+</mat-nav-list>

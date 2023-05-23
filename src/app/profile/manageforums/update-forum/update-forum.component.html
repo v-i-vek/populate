@@ -1,0 +1,65 @@
+<div class="back">
+  <button
+    mat-raised-button
+    class="back-button"
+    routerLink="/manageforums"
+    routerLinkActive="active"
+    color="primary"
+  >
+    <mat-icon style="font-size: 20px; align-items: center">arrow_back</mat-icon>
+  </button>
+</div>
+<div class="example-container">
+  <h3 style="margin-bottom: 16px">Update the Question</h3>
+  <form [formGroup]="UpdateForumForm" style="background-color: white">
+    <div class="inputQuestion">
+      <mat-form-field appearance="outline" class="queTitle">
+        <mat-label>Question Title</mat-label>
+
+        <input
+          maxlength="120"
+          matInput
+          [class.is-invalid]="question?.invalid"
+          placeholder="Type question title here"
+          formControlName="question"
+          required
+          [(ngModel)]="quebyid.question"
+        />
+        <mat-error
+          class="require"
+          *ngIf="UpdateForumForm.controls['question'].hasError('required')"
+        >
+          Question title is required
+        </mat-error>
+        <mat-error
+          class="require"
+          *ngIf="UpdateForumForm.controls['question'].hasError('maxlength')"
+        >
+          Not more than 120 characters
+        </mat-error>
+      </mat-form-field>
+
+      <div class="queDescribe">
+        <ckeditor
+          [config]="{ placeholder: 'Type the content here' }"
+          [editor]="Editor"
+          formControlName="questionDescribe"
+          [(ngModel)]="quebyid.questionDescribe"
+        >
+        </ckeditor>
+
+        <mat-error class="require" *ngIf="valide.questionDescribe.errors">
+          <span *ngIf="valide.questionDescribe.errors['maxlength']">
+            You reached character limitation</span
+          >
+        </mat-error>
+      </div>
+
+      <div class="example-button-row">
+        <button mat-raised-button color="primary" (click)="updateForum()">
+          Update
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

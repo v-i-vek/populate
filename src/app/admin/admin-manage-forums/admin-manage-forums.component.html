@@ -1,0 +1,118 @@
+<div class="body">
+  <mat-tab-group>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        Questions
+      </ng-template>
+      <ng-template matTabContent>
+        <table class="table" style="width: 100%">
+          <thead>
+            <tr>
+              <th scope="col" style="width: 20%">questionId</th>
+              <th scope="col" style="width: 40%">Question</th>
+              <th scope="col" style="width: 25%">Name</th>
+              <th scope="col">Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let question of allQuestions">
+              <td>{{ question._id }}</td>
+              <td
+                style="
+                  white-space: nowrap;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                  max-width: 20ch;
+                "
+              >
+                {{ question.question }}
+              </td>
+              <td>
+                {{ question.userId.firstName | titlecase }}
+                {{ question.userId.lastName | titlecase }}
+              </td>
+              <td>
+                <mat-icon
+                  style="cursor: pointer"
+                  (click)="deleteQuestion(question._id)"
+                  >delete</mat-icon
+                >
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </ng-template>
+    </mat-tab>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        Answers
+      </ng-template>
+      <ng-template matTabContent>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col" style="width: 20%">QuestionId</th>
+              <th scope="col" style="width: 20%">AnswerId</th>
+              <th scope="col">Answer</th>
+              <th scope="col">Name</th>
+              <th scope="col">Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let qa of allQuestions">
+              <td>{{ qa._id }}</td>
+              <td>
+                <ul class="space">
+                  <li
+                    style="list-style-type: none; margin-bottom: 8px;"
+                    *ngFor="let answer of qa.answer"
+                  >
+                    {{ answer._id }}
+                  </li>
+                </ul>
+              </td>
+              <td>
+                <ul class="space">
+                  <li
+                    style="
+                      white-space: nowrap;
+                      overflow: hidden;
+                      text-overflow: ellipsis;
+                      max-width: 20ch;
+                      margin-bottom: 8px;
+                    "
+                    *ngFor="let answer of qa.answer"
+                  >
+                    {{ answer.answer }}
+                  </li>
+                </ul>
+              </td>
+              <td>
+                <ul class="space">
+                  <li
+                    style="list-style-type: none; margin-bottom: 8px;"
+                    *ngFor="let answer of qa.answer"
+                  >
+                    {{ answer.userId.firstName }} {{ answer.userId.lastName }}
+                  </li>
+                </ul>
+              </td>
+              <td>
+                <ul class="space">
+                  <li style="list-style-type: none" *ngFor="let answer of qa.answer"> 
+                    <mat-icon
+                      style="cursor: pointer"
+                      (click)="deleteAnswer(answer._id)"
+                      >delete</mat-icon
+                    >
+                  </li>
+                </ul>
+              </td>
+            </tr>
+              
+          </tbody>
+        </table>
+      </ng-template>
+    </mat-tab>
+  </mat-tab-group>
+</div>

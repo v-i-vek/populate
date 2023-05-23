@@ -1,0 +1,52 @@
+.example-container mat-form-field+mat-form-field {
+    margin-left: 8px;
+}
+
+.example-button-row {
+    display: table-cell;
+    max-width: 600px;
+}
+
+.example-button-row .mat-mdc-button-base {
+    margin: 8px 8px 8px 0;
+}
+
+.example-container {
+    padding-top: 50px;
+    margin: auto;
+    width: 60%;
+}
+
+.inputQuestion {
+    padding: 15px;
+    border-radius: 4px;
+    box-shadow: 0px 0px 24px 24px rgba(124, 124, 128, 0.2);
+}
+
+.queTitle {
+    width: 100%;
+}
+
+.require {
+    font-size: 12px;
+}
+
+.queDescribe {
+    margin-top: 0px;
+}
+
+.ck-editor__editable_inline {
+    min-height: 500px !important;
+}
+
+.ck-content p {
+    margin: 0;
+    padding: 0;
+}
+.back-button{
+    cursor: pointer;
+    border-radius: 28px;
+}
+.back{
+    padding: 8px;
+}

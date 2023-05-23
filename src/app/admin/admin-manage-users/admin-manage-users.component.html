@@ -1,0 +1,18 @@
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">UserID</th>
+            <th scope="col">EmailId</th>
+            <th scope="col">Name</th>
+            <th scope="col">Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let user of users">
+            <td>{{user.userId}}</td>
+            <td>{{user.emailId}}</td>
+            <td>{{user.firstName | titlecase}} {{user.lastName | titlecase}}</td>
+            <td><mat-icon style="cursor: pointer" (click)="deleteUserDialog(user.userId)">delete</mat-icon></td>
+        </tr>
+    </tbody>
+</table>
