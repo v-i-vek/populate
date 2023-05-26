@@ -15,6 +15,11 @@ import {MatInputModule} from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { HomePageComponent } from './home-page/home-page.component';
+import { DeliveryComponent } from './delivery/delivery.component';
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatChipsModule} from '@angular/material/chips';
+
+
 
 
 
@@ -27,7 +32,8 @@ import { HomePageComponent } from './home-page/home-page.component';
     AppComponent,
     NavBarComponent,
     LoginComponent,
-    HomePageComponent
+    HomePageComponent,
+    DeliveryComponent
   
    
   ],
@@ -43,7 +49,9 @@ import { HomePageComponent } from './home-page/home-page.component';
     MatFormFieldModule,
     MatInputModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    MatTabsModule,
+    MatChipsModule
     
 
   ],
