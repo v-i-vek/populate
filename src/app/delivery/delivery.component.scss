@@ -1,42 +1,66 @@
 .mat-tab-group {
-    margin-bottom: 48px;
+  margin-bottom: 48px;
+}
+
+.main {
+  margin-left: 20%;
+  margin-right: 20%;
+}
+
+.chips {
+  margin-top: 20px;
+}
+
+.inspiration {
+
+  margin-top: 20px;
+
+  h2 {
+    margin-top: 30px;
+    margin-left: 15px;
+    margin-bottom: 35px;
   }
 
-  .main{
-    margin-left:20% ;
-    margin-right: 20%;
+  img {
+    height: 150px;
+    width: 150px;
+    border-radius: 300px;
+    margin-left: 15px;
   }
-  .chips{
-    margin-top: 20px;
-  }
-  .inspiration{
-  
-    margin-top: 20px;
-    h2{
-        margin-top: 30px;
-        margin-left: 15px;
-        margin-bottom: 35px;
-    }
-    img{
-        height: 150px;
-        width: 150px;
-        border-radius: 300px;
-        margin-left: 15px;
-    }
+}
+
+.inspirationImg {
+  display: inline-block;
+  text-align: center;
+
+  img {
+    height: 150px;
+    width: 150px;
+    border-radius: 300px;
+    margin-left: 20px;
+    margin-bottom: 5px;
   }
 
-  .inspirationImg{
-    display: inline-block;
-    text-align: center;
-    img{
-        height: 150px;
-        width: 150px;
-        border-radius: 300px;
-        margin-left: 20px;
-        margin-bottom: 5px;
-    }
-    p{
+  p {}
 
-    }
-    
+}
+.bestFood{
+ 
+
+ .foodcard{
+  display: inline-block;
+  img{
+    display: inline-block !important;
+    border-radius: 25px;
+    height: 248px;
+    width: 248px;
+  }
+  p{
+    margin-left: 10%;
+    margin-bottom: 15%;
+  }
+ }
+ 
+
+
 }
