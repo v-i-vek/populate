@@ -18,6 +18,7 @@ import { HomePageComponent } from './home-page/home-page.component';
 import { DeliveryComponent } from './delivery/delivery.component';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatChipsModule} from '@angular/material/chips';
+import { VerificationComponent } from './verification/verification.component';
 
 
 
@@ -33,7 +34,8 @@ import {MatChipsModule} from '@angular/material/chips';
     NavBarComponent,
     LoginComponent,
     HomePageComponent,
-    DeliveryComponent
+    DeliveryComponent,
+    VerificationComponent
   
    
   ],
@@ -55,7 +57,7 @@ import {MatChipsModule} from '@angular/material/chips';
     
 
   ],
-  providers: [],
+  providers: [NavBarComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
