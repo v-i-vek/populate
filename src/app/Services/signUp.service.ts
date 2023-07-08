@@ -11,5 +11,13 @@ url="http://localhost:3000/"
   createUser( value :any){
     return this.http.post(`${this.url}addUser`,value)
   }
+
+  loginUser(value:any){
+    return this.http.post(`${this.url}userLogin`,value)
+  }
+
+  otpAuth(value:any){
+    return this.http.post(`${this.url}getOtp`,value)
+  }
   
 }

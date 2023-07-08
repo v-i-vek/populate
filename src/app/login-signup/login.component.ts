@@ -64,7 +64,9 @@ export class LoginComponent implements OnInit {
 
   //sending the value from form to
   signUpForm(value: any) {
+    if(!this.editData){
     console.log(value);
+
     this.http.createUser(value).subscribe({
       next: (res) => {
         alert('Your Registration was successful');
@@ -76,5 +78,20 @@ export class LoginComponent implements OnInit {
         alert('something went wrong');
       },
     });
+  }
+  else{
+    console.log(value)
+    this.LoginForm(value)
+  }
+  }
+  LoginForm(value:any){
+    this.http.loginUser(value).subscribe({
+      next:(res)=>{
+        alert("user login successfully")
+      },
+      error:(e)=>{
+        alert("something went wrong login failed")
+      }
+    })
   }
 }

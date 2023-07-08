@@ -1,18 +1,22 @@
 <div class="container">
 
 
-
+<form [formGroup]="otpAuth"   (ngSubmit)="(otpAuth.value)">
     <div >
         <mat-form-field appearance="outline" class="input centerBox">
           <mat-label>Enter your Otp </mat-label>
           <input
             matInput
             placeholder="OTP"
-            
+            formControlName="otp"
             type="number"
             
           />
           <mat-icon matSuffix>lock</mat-icon>
         </mat-form-field>
       </div>
+      <button mat-raised-button id="google-button" (click)="otpVerify(otpAuth.value)">
+       Submit
+      </button>
+    </form>
 </div>
