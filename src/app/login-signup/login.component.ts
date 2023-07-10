@@ -80,7 +80,7 @@ export class LoginComponent implements OnInit {
     });
   }
   else{
-    console.log(value)
+    console.log(value,"the value of the login form")
     this.LoginForm(value)
   }
   }
