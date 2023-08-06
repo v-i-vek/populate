@@ -83,9 +83,70 @@ exports.blog = async (req, res) => {
 
 // post a new blog
 exports.createBlog = async (req, res) => {
-    const { title, content } = req.body;
+
+    if (Object.keys(req.body).length === 0) {
+        return res
+            .status(406)
+            .json({
+                status: 406,
+                message: "Data not Found, Payload Not Acceptable",
+            });
+    }
+    let { title, content } = req.body;
     const createdDate = Date.now();
-    const { userId } = req;
+    let { userId } = req.body;
+    if(userId === undefined){
+        return res
+        .status(406)
+        .json({
+            status: 406,
+            message: "userId is not defined",
+        });
+    }
+    userId = userId.trim()
+    if(userId.length === 0){
+        return res
+        .status(406)
+        .json({
+            status: 406,
+            message: "please enter valid user Id",
+        });
+    }
+    if(title === undefined){
+        return res
+            .status(406)
+            .json({
+                status: 406,
+                message: "please enter the title of the blog",
+            }); 
+    }
+    title = title.trim();
+    if(title.length === 0){
+        return res
+        .status(406)
+        .json({
+            status: 406,
+            message: "Title can't be empty ",
+        });
+    }
+    if(content === undefined){
+        return res
+        .status(406)
+        .json({
+            status: 406,
+            message: "Please enter the content of the blog",
+        });
+    }
+    content = content.trim();
+    if(content.length === 0){
+        return res
+        .status(406)
+        .json({
+            status: 406,
+            message: "content can't be empty",
+        });
+    }
+    
     const blog = new Blog({
         userId,
         title,

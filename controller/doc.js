@@ -63,7 +63,7 @@ exports.postDocument = async (req, res) => {
         });
     }
     try {
-        const userId = req.session.user;
+        const userId = req.body.user;
         const fileName = req.file.originalname;
         const fileType = req.file.mimetype;
         const docData = req.file.buffer;

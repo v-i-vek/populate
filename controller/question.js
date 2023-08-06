@@ -1,15 +1,60 @@
 const Question = require("../model/question");
 const Bookmark = require("../model/bookmark");
 const Answer = require("../model/answer");
+const user = require("../model/user");
 
 // post a question
 exports.createQuestion = async (req, res) => {
     try {
-        const { userId } = req.body;
-        const { question } = req.body;
-        const { questionDescribe } = req.body;
-        const { tags } = req.body;
+        if (Object.keys(req.body).length === 0) {
+            return res
+                .status(406)
+                .json({
+                    status: 406,
+                    message: "Data not Found, Payload Not Acceptable",
+                });
+        }
+        let { userId } = req.body;
+        let  { question } = req.body;
+        let { questionDescribe } = req.body;
+        let { tags } = req.body;
         const createdAt = Date.now();
+
+        if(userId === undefined){
+            return res
+            .status(406)
+            .json({
+                status: 406,
+                message: "please enter the userId",
+            });
+        }
+        userId = userId.trim()
+        if(userId.length ===0){
+            return res
+            .status(406)
+            .json({
+                status: 406,
+                message: "userId can't be empty",
+            });
+        }
+        if(question  === undefined){
+            return res
+            .status(406)
+            .json({
+                status: 406,
+                message: "please enter the question ",
+            });
+        }
+        question = question.trim()
+        if(question.length ===0){
+            return res
+            .status(406)
+            .json({
+                status: 406,
+                message: "question can't be empty",
+            });
+        }
+
         const questionCreated = new Question({
             userId,
             question,
