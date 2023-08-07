@@ -83,6 +83,7 @@ exports.blog = async (req, res) => {
 
 // post a new blog
 exports.createBlog = async (req, res) => {
+    console.log("this is callled")
     if (Object.keys(req.body).length === 0) {
         return res
             .status(406)

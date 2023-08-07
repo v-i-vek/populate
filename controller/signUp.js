@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const */
 /* eslint-disable import/no-extraneous-dependencies */
 const crypto = require("crypto");
 const User = require("../model/user");

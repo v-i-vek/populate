@@ -2,10 +2,19 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 exports.auth = async (req, res, next) => {
-    // const check = req.headers.cookie;
+    let check = req.headers.cookie;
+    if (check === undefined) {
+        return res.status(401).json({
+            status: 401,
+            message: "Need to Sign In",
+        });
+    }
     // console.log(typeof check);
-    // const token = check.slice(4, check.length);
-    const token = req.headers.cookie;
+    console.log(check, "this is check");
+    check = check.slice(4, check.length);
+
+    const token = check;
+    console.log(token, "this is the token");
     if (!token) {
         return res.status(401).json({
             status: 401,
