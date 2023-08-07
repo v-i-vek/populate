@@ -112,7 +112,6 @@ module.exports = {
 
                 const cookieString = `jwt=${token}; HttpOnly; Expires=${expirationTime.toUTCString()};`;
                 res.setHeader("Set-Cookie", cookieString);
-                console.log(cookieString, "=================");
                 return res.status(200).json({
                     statusCode: 200,
                     headers: {
