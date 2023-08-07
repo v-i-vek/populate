@@ -83,7 +83,6 @@ exports.blog = async (req, res) => {
 
 // post a new blog
 exports.createBlog = async (req, res) => {
-
     if (Object.keys(req.body).length === 0) {
         return res
             .status(406)
@@ -95,58 +94,58 @@ exports.createBlog = async (req, res) => {
     let { title, content } = req.body;
     const createdDate = Date.now();
     let { userId } = req.body;
-    if(userId === undefined){
+    if (userId === undefined) {
         return res
-        .status(406)
-        .json({
-            status: 406,
-            message: "userId is not defined",
-        });
+            .status(406)
+            .json({
+                status: 406,
+                message: "userId is not defined",
+            });
     }
-    userId = userId.trim()
-    if(userId.length === 0){
+    userId = userId.trim();
+    if (userId.length === 0) {
         return res
-        .status(406)
-        .json({
-            status: 406,
-            message: "please enter valid user Id",
-        });
+            .status(406)
+            .json({
+                status: 406,
+                message: "please enter valid user Id",
+            });
     }
-    if(title === undefined){
+    if (title === undefined) {
         return res
             .status(406)
             .json({
                 status: 406,
                 message: "please enter the title of the blog",
-            }); 
+            });
     }
     title = title.trim();
-    if(title.length === 0){
+    if (title.length === 0) {
         return res
-        .status(406)
-        .json({
-            status: 406,
-            message: "Title can't be empty ",
-        });
+            .status(406)
+            .json({
+                status: 406,
+                message: "Title can't be empty ",
+            });
     }
-    if(content === undefined){
+    if (content === undefined) {
         return res
-        .status(406)
-        .json({
-            status: 406,
-            message: "Please enter the content of the blog",
-        });
+            .status(406)
+            .json({
+                status: 406,
+                message: "Please enter the content of the blog",
+            });
     }
     content = content.trim();
-    if(content.length === 0){
+    if (content.length === 0) {
         return res
-        .status(406)
-        .json({
-            status: 406,
-            message: "content can't be empty",
-        });
+            .status(406)
+            .json({
+                status: 406,
+                message: "content can't be empty",
+            });
     }
-    
+
     const blog = new Blog({
         userId,
         title,

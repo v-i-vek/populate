@@ -15,44 +15,44 @@ exports.createQuestion = async (req, res) => {
                 });
         }
         let { userId } = req.body;
-        let  { question } = req.body;
-        let { questionDescribe } = req.body;
-        let { tags } = req.body;
+        let { question } = req.body;
+        const { questionDescribe } = req.body;
+        const { tags } = req.body;
         const createdAt = Date.now();
 
-        if(userId === undefined){
+        if (userId === undefined) {
             return res
-            .status(406)
-            .json({
-                status: 406,
-                message: "please enter the userId",
-            });
+                .status(406)
+                .json({
+                    status: 406,
+                    message: "please enter the userId",
+                });
         }
-        userId = userId.trim()
-        if(userId.length ===0){
+        userId = userId.trim();
+        if (userId.length === 0) {
             return res
-            .status(406)
-            .json({
-                status: 406,
-                message: "userId can't be empty",
-            });
+                .status(406)
+                .json({
+                    status: 406,
+                    message: "userId can't be empty",
+                });
         }
-        if(question  === undefined){
+        if (question === undefined) {
             return res
-            .status(406)
-            .json({
-                status: 406,
-                message: "please enter the question ",
-            });
+                .status(406)
+                .json({
+                    status: 406,
+                    message: "please enter the question ",
+                });
         }
-        question = question.trim()
-        if(question.length ===0){
+        question = question.trim();
+        if (question.length === 0) {
             return res
-            .status(406)
-            .json({
-                status: 406,
-                message: "question can't be empty",
-            });
+                .status(406)
+                .json({
+                    status: 406,
+                    message: "question can't be empty",
+                });
         }
 
         const questionCreated = new Question({
@@ -204,18 +204,36 @@ exports.readByIdUser = async (req, res) => {
 // update perticular question
 exports.updateQuestion = async (req, res) => {
     try {
+        if (Object.keys(req.body).length === 0) {
+            return res
+                .status(406)
+                .json({
+                    status: 406,
+                    message: "Data not Found, Payload Not Acceptable",
+                });
+        }
+
+        if (req.params === undefined) {
+            return res.status(402).json({
+                status: 402,
+                message: "Please enter the id of question ",
+            });
+        }
+
         const { id } = req.params;
         const update = req.body;
         const updatedAt = Date.now();
         const updateQuestion = await Question.findByIdAndUpdate(id, { ...update, updatedAt }, {
             new: true,
         });
+
         if (!updateQuestion) {
             return res.status(404).json({
                 status: 404,
                 message: "Data Not Found",
             });
         }
+
         return res.status(200).json({
             status: 200,
             message: "Question Updated Successfully",
@@ -232,6 +250,12 @@ exports.updateQuestion = async (req, res) => {
 // delete perticular question
 exports.deleteQuestion = async (req, res) => {
     try {
+        if (req.params === undefined) {
+            return res.status(402).json({
+                status: 402,
+                message: "Please enter the id of question ",
+            });
+        }
         const { id } = req.params;
         await Question.findByIdAndDelete(id);
         await Bookmark.deleteMany({ questionId: id });

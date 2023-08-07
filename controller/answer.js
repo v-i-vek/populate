@@ -2,7 +2,6 @@ const Answer = require("../model/answer");
 
 // creates an answer to that question
 exports.addAnswer = async (req, res) => {
-    
     if (Object.keys(req.body).length === 0) {
         return res
             .status(406)
@@ -12,56 +11,56 @@ exports.addAnswer = async (req, res) => {
             });
     }
     let { answer, userId, questionId } = req.body;
-    if(answer === undefined){
+    if (answer === undefined) {
         return res
             .status(406)
             .json({
                 status: 406,
-                message: "please enter the answer"
-            });  
+                message: "please enter the answer",
+            });
     }
-    answer = answer.trim()
-    if(answer.length===0){
+    answer = answer.trim();
+    if (answer.length === 0) {
         return res
-        .status(406)
-        .json({
-            status: 406,
-            message: "answer can't be empty",
-        });
+            .status(406)
+            .json({
+                status: 406,
+                message: "answer can't be empty",
+            });
     }
-    if(userId === undefined){
+    if (userId === undefined) {
         return res
-        .status(406)
-        .json({
-            status: 406,
-            message: "please enter the user Id",
-        });
+            .status(406)
+            .json({
+                status: 406,
+                message: "please enter the user Id",
+            });
     }
-    userId = userId.trim()
-    if(userId.length === 0){
+    userId = userId.trim();
+    if (userId.length === 0) {
         return res
-        .status(406)
-        .json({
-            status: 406,
-            message: "userId can't be empty",
-        });
+            .status(406)
+            .json({
+                status: 406,
+                message: "userId can't be empty",
+            });
     }
-    if(questionId === undefined){
+    if (questionId === undefined) {
         return res
-        .status(406)
-        .json({
-            status: 406,
-            message: "please enter the Quesiton Id",
-        });
+            .status(406)
+            .json({
+                status: 406,
+                message: "please enter the Quesiton Id",
+            });
     }
-    questionId  = questionId.trim()
-    if(questionId.length === 0){
+    questionId = questionId.trim();
+    if (questionId.length === 0) {
         return res
-        .status(406)
-        .json({
-            status: 406,
-            message: "QuestionId can't be empty",
-        });
+            .status(406)
+            .json({
+                status: 406,
+                message: "QuestionId can't be empty",
+            });
     }
     const addanswer = new Answer({
         userId,
