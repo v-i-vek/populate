@@ -8,7 +8,25 @@ module.exports = {
     // eslint-disable-next-line consistent-return
     forgotPassword: async (req, res) => {
         try {
-            const { emailId } = req.body;
+            let { emailId } = req.body;
+            if(emailId === undefined){
+                return res
+                .status(406)
+                .json({
+                    status: 406,
+                    message: "emailId is undefined",
+                });
+            }
+            emailId = emailId.trim();
+            if(emailId.length === 0){
+                return res
+                .status(406)
+                .json({
+                    status: 406,
+                    message: "EmailId can't be empty",
+                });
+            }
+
             console.log(typeof req.body);
             console.log(typeof emailId);
             const { url } = process.env;
