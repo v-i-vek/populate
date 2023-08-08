@@ -1,8 +1,6 @@
 const Question = require("../model/question");
 const Bookmark = require("../model/bookmark");
 const Answer = require("../model/answer");
-const user = require("../model/user");
-const tag = require("../model/tag");
 
 // post a question
 exports.createQuestion = async (req, res) => {

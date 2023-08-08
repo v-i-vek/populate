@@ -57,6 +57,12 @@ exports.blogs = async (req, res) => {
 exports.blog = async (req, res) => {
     try {
         const { id } = req.params;
+        if (id.length !== 24) {
+            return res.status(401).json({
+                status: 401,
+                message: "Invalid Id in Params",
+            });
+        }
         const blog = await Blog.findById(id).populate([
             {
                 path: "userId",
@@ -177,7 +183,7 @@ exports.getBlog = async (req, res) => {
         if (userId.length !== 24) {
             return res.status(400).json({
                 status: 400,
-                message: "Invalid id",
+                message: "Invalid Id in params",
             });
         }
         const blog = await Blog.find({ userId }).populate([
@@ -253,6 +259,15 @@ exports.deleteBlog = async (req, res) => {
 // update an existing blog
 exports.updateBlog = async (req, res) => {
     try {
+        if (Object.keys(req.body).length === 0) {
+            return res
+                .status(406)
+                .json({
+                    status: 406,
+                    message: "Data not Found, Payload Not Acceptable",
+                });
+        }
+
         let { id } = req.params;
         id = id.trim();
         if (id.length !== 24) {

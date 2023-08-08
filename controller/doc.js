@@ -26,6 +26,13 @@ exports.getDocument = async (req, res) => {
 exports.getDocuments = async (req, res) => {
     try {
         const { id } = req.params;
+        if (id.length !== 24) {
+            return res.status(400).json({
+                status: 400,
+                message: "Invalid id in Params",
+
+            });
+        }
         console.log(id, "this is the document id");
         const doc = await Document.findById(id).populate([
             {
