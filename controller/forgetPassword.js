@@ -9,22 +9,22 @@ module.exports = {
     forgotPassword: async (req, res) => {
         try {
             let { emailId } = req.body;
-            if(emailId === undefined){
+            if (emailId === undefined) {
                 return res
-                .status(406)
-                .json({
-                    status: 406,
-                    message: "emailId is undefined",
-                });
+                    .status(406)
+                    .json({
+                        status: 406,
+                        message: "emailId is undefined",
+                    });
             }
             emailId = emailId.trim();
-            if(emailId.length === 0){
+            if (emailId.length === 0) {
                 return res
-                .status(406)
-                .json({
-                    status: 406,
-                    message: "EmailId can't be empty",
-                });
+                    .status(406)
+                    .json({
+                        status: 406,
+                        message: "EmailId can't be empty",
+                    });
             }
 
             console.log(typeof req.body);

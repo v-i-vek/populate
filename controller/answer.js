@@ -187,24 +187,23 @@ exports.Upvote = async (req, res) => {
 exports.Downvote = async (req, res) => {
     const answerId = req.params.id;
     let userId = req.body.downvotes;
-    if(userId === undefined){
+    if (userId === undefined) {
         return res
-        .status(406)
-        .json({
-            status: 406,
-            message: "userId is not defined",
-        });
+            .status(406)
+            .json({
+                status: 406,
+                message: "userId is not defined",
+            });
     }
     userId = userId.trim();
-    if(userId.length === 0){
+    if (userId.length === 0) {
         return res
-        .status(406)
-        .json({
-            status: 406,
-            message: "userId can't be empty",
-        });
+            .status(406)
+            .json({
+                status: 406,
+                message: "userId can't be empty",
+            });
     }
-
 
     const vote = await Answer.findOne({ _id: answerId });
     if (vote.downvotes.includes(userId)) {

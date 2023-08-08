@@ -5,23 +5,24 @@ module.exports = {
     addTag: async (req, res) => {
         try {
             let tag = req.body.name;
-            if(tag === undefined){
+            if (tag === undefined) {
                 return res
-                .status(406)
-                .json({
-                    status: 406,
-                    message: "Tag is undefined",
-                });
+                    .status(406)
+                    .json({
+                        status: 406,
+                        message: "Tag is undefined",
+                    });
             }
-            tag = tag.trim()
-            if(tag.length === 0){
+            tag = tag.trim();
+            if (tag.length === 0) {
                 return res
-                .status(406)
-                .json({
-                    status: 406,
-                    message: "tag Can't be empty",
-                });
+                    .status(406)
+                    .json({
+                        status: 406,
+                        message: "tag Can't be empty",
+                    });
             }
+
             const newTag = new Tag({ name: tag });
             await newTag.save();
             return res.status(201).json({
