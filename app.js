@@ -84,8 +84,6 @@ app.use(
 );
 
 app.use("/admin", manageUsersRoutes, tagsRoutes, manageResourcesRoutes);
+app.listen(8080, () => { console.log("connected to port"); });
 
-
-// app.listen(8080, () => { console.log("connected to port"); });
-
-exports.techForumAPIs = app;
+// exports.techForumAPIs = app;

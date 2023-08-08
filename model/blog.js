@@ -33,4 +33,4 @@ const blogSchema = new mongoose.Schema({
     },
 });
 
-module.exports = new mongoose.model("blog", blogSchema);
+module.exports = mongoose.model("blog", blogSchema);

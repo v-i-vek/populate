@@ -62,7 +62,7 @@ module.exports = {
             const pipeline = [
                 {
                     $sort: {
-                        isApproved: 1,
+                        createdDate: -1,
                     },
                 },
                 {

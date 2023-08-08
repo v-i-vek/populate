@@ -171,7 +171,15 @@ exports.createBlog = async (req, res) => {
 // blog get using userId
 exports.getBlog = async (req, res) => {
     try {
-        const { userId } = req.params;
+        let { userId } = req.params;
+
+        userId = userId.trim();
+        if (userId.length !== 24) {
+            return res.status(400).json({
+                status: 400,
+                message: "Invalid id",
+            });
+        }
         const blog = await Blog.find({ userId }).populate([
             {
                 path: "userId",
@@ -215,7 +223,14 @@ exports.getBlogTitle = async (req, res) => {
 // delete an existing blog
 exports.deleteBlog = async (req, res) => {
     try {
-        const { id } = req.params;
+        let { id } = req.params;
+        id = id.trim();
+        if (id.length !== 24) {
+            return res.status(400).json({
+                status: 400,
+                message: "Invalid id",
+            });
+        }
         const deleteblog = await Blog.findByIdAndDelete(id);
         if (!deleteblog) {
             return res.status(404).json({
@@ -238,7 +253,14 @@ exports.deleteBlog = async (req, res) => {
 // update an existing blog
 exports.updateBlog = async (req, res) => {
     try {
-        const { id } = req.params;
+        let { id } = req.params;
+        id = id.trim();
+        if (id.length !== 24) {
+            return res.status(400).json({
+                status: 400,
+                message: "Invalid id",
+            });
+        }
         const update = req.body;
         const updatedDate = Date.now();
         const updateblog = await Blog.findByIdAndUpdate(

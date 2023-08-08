@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 const Answer = require("../model/answer");
 
 // creates an answer to that question
@@ -85,6 +86,14 @@ exports.addAnswer = async (req, res) => {
 // get answer to that question
 exports.getAnswerByquestionId = async (req, res) => {
     try {
+        let { questionId } = req.params;
+        questionId = questionId.trim();
+        if (questionId.length !== 24) {
+            return res.status(400).json({
+                status: 400,
+                message: "Invalid question id",
+            });
+        }
         const getanswer = await Answer.find({
             questionId: req.params.questionId,
         }).populate([
@@ -110,7 +119,14 @@ exports.getAnswerByquestionId = async (req, res) => {
 // edits the given specific answer
 exports.editAnswer = async (req, res) => {
     try {
-        const { id } = req.params;
+        let { id } = req.params;
+        id = id.trim();
+        if (id.length !== 24) {
+            return res.status(400).json({
+                status: 400,
+                message: "Invalid  id",
+            });
+        }
         const editanswer = await Answer.findByIdAndUpdate(id, req.body, {
             new: true,
         });
@@ -136,7 +152,14 @@ exports.editAnswer = async (req, res) => {
 exports.deleteAnswer = async (req, res) => {
     try {
         // eslint-disable-next-line no-underscore-dangle
-        const _id = req.params.id;
+        let _id = req.params.id;
+        _id = _id.trim();
+        if (_id.length !== 24) {
+            return res.status(400).json({
+                status: 400,
+                message: "Invalid  id",
+            });
+        }
         const deleteanswer = await Answer.findByIdAndDelete(_id);
         if (!deleteanswer) {
             return res.status(404).json({
@@ -159,7 +182,16 @@ exports.deleteAnswer = async (req, res) => {
 // post upvotes
 
 exports.Upvote = async (req, res) => {
-    const answerId = req.params.id;
+    let answerId = req.params.id;
+
+    answerId = answerId.trim();
+    if (answerId.length !== 24) {
+        return res.status(400).json({
+            status: 400,
+            message: "Invalid answer id",
+        });
+    }
+
     const userId = req.body.upvotes;
 
     const vote = await Answer.findOne({ _id: answerId });
@@ -185,7 +217,14 @@ exports.Upvote = async (req, res) => {
 // post downvotes
 
 exports.Downvote = async (req, res) => {
-    const answerId = req.params.id;
+    let answerId = req.params.id;
+    answerId = answerId.trim();
+    if (answerId.length !== 24) {
+        return res.status(400).json({
+            status: 400,
+            message: "Invalid answer id",
+        });
+    }
     let userId = req.body.downvotes;
     if (userId === undefined) {
         return res
@@ -228,7 +267,15 @@ exports.Downvote = async (req, res) => {
 // total upvotes
 exports.checkup = async (req, res) => {
     try {
-        const vote = await Answer.find({ _id: req.params.id });
+        let { id } = req.params;
+        id = id.trim();
+        if (id.length !== 24) {
+            return res.status(400).json({
+                status: 400,
+                message: "Invalid id",
+            });
+        }
+        const vote = await Answer.find({ _id: id });
         const totalupvote = vote.upvotesLength;
         if (!vote) {
             return res.status(404).send();
@@ -248,7 +295,15 @@ exports.checkup = async (req, res) => {
 // total downvotes
 exports.checkdown = async (req, res) => {
     try {
-        const vote = await Answer.findById(req.params.id);
+        let { id } = req.params;
+        id = id.trim();
+        if (id.length !== 24) {
+            return res.status(400).json({
+                status: 400,
+                message: "Invalid id",
+            });
+        }
+        const vote = await Answer.findById(id);
         const totaldownvote = vote.downvotesLength;
         if (!vote) {
             return res.status(404).send();

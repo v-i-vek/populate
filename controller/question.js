@@ -2,6 +2,7 @@ const Question = require("../model/question");
 const Bookmark = require("../model/bookmark");
 const Answer = require("../model/answer");
 const user = require("../model/user");
+const tag = require("../model/tag");
 
 // post a question
 exports.createQuestion = async (req, res) => {
@@ -16,7 +17,7 @@ exports.createQuestion = async (req, res) => {
         }
         let { userId } = req.body;
         let { question } = req.body;
-        const { questionDescribe } = req.body;
+        let { questionDescribe } = req.body;
         const { tags } = req.body;
         const createdAt = Date.now();
 
@@ -29,14 +30,15 @@ exports.createQuestion = async (req, res) => {
                 });
         }
         userId = userId.trim();
-        if (userId.length === 0) {
+        if (userId.length === 0 || userId.length !== 24) {
             return res
                 .status(406)
                 .json({
                     status: 406,
-                    message: "userId can't be empty",
+                    message: "Invalid user Id",
                 });
         }
+
         if (question === undefined) {
             return res
                 .status(406)
@@ -54,7 +56,51 @@ exports.createQuestion = async (req, res) => {
                     message: "question can't be empty",
                 });
         }
+        if (questionDescribe !== undefined) {
+            questionDescribe = questionDescribe.trim();
+            if (questionDescribe.length === 0) {
+                return res
+                    .status(406)
+                    .json({
+                        status: 406,
+                        message: "please describe the question",
+                    });
+            }
+        }
+        if (tags !== undefined) {
+            if (tags.length === 0) {
+                return res
+                    .status(406)
+                    .json({
+                        status: 406,
+                        message: "tags can't be empty",
+                    });
+            }
+            if (!Array.isArray(tags)) {
+                return res
+                    .status(406)
+                    .json({
+                        status: 406,
+                        message: "tags must be in Array with element in string",
+                    });
+            }
+            if (tags.reduce((acc, val) => acc || val.trim() === "", false)) {
+                return res
+                    .status(406)
+                    .json({
+                        status: 406,
+                        message: "there should not be empty string in array",
+                    });
+            }
+        }
+        const questionData = await Question.findOne({ question });
 
+        if (questionData.question === question) {
+            return res.status(400).json({
+                status: 400,
+                message: "Question already exist",
+            });
+        }
         const questionCreated = new Question({
             userId,
             question,
@@ -93,6 +139,13 @@ exports.questionPagination = async (req, res) => {
                 },
             ]);
         const count = await Question.countDocuments();
+        const check = page * limit;
+        if (check > count) {
+            return res.status(404).json({
+                status: 404,
+                message: "please decrease the limit or page",
+            });
+        }
         const totalPages = Math.ceil(count / limit);
         const hasMore = page < totalPages;
 
@@ -147,7 +200,14 @@ exports.readQuestions = async (req, res) => {
 // get a speific question by question id
 exports.readByIdQuestion = async (req, res) => {
     try {
-        const { id } = req.params;
+        let { id } = req.params;
+        id = id.trim();
+        if (id.length !== 24) {
+            return res.status(400).json({
+                status: 400,
+                message: "Invalid id from params",
+            });
+        }
         const questionData = await Question.findById({ _id: id }).populate([
             {
                 path: "userId",
@@ -176,7 +236,15 @@ exports.readByIdQuestion = async (req, res) => {
 // get a speific question by user id
 exports.readByIdUser = async (req, res) => {
     try {
-        const { userId } = req.params;
+        let { userId } = req.params;
+        userId = userId.trim();
+        if (userId.length !== 24) {
+            return res.status(400).json({
+                status: 400,
+                message: "invalid user id",
+            });
+        }
+
         const questionData = await Question.find({ userId }).populate([
             {
                 path: "userId",
@@ -213,16 +281,17 @@ exports.updateQuestion = async (req, res) => {
                 });
         }
 
-        if (req.params === undefined) {
-            return res.status(402).json({
-                status: 402,
-                message: "Please enter the id of question ",
-            });
-        }
-
-        const { id } = req.params;
+        let { id } = req.params;
         const update = req.body;
         const updatedAt = Date.now();
+
+        id = id.trim();
+        if (id.length !== 24) {
+            return res.status(402).json({
+                status: 402,
+                message: "please enter a valid id",
+            });
+        }
         const updateQuestion = await Question.findByIdAndUpdate(id, { ...update, updatedAt }, {
             new: true,
         });
@@ -250,13 +319,14 @@ exports.updateQuestion = async (req, res) => {
 // delete perticular question
 exports.deleteQuestion = async (req, res) => {
     try {
-        if (req.params === undefined) {
-            return res.status(402).json({
-                status: 402,
-                message: "Please enter the id of question ",
+        let { id } = req.params;
+        id = id.trim();
+        if (id.length !== 24) {
+            return res.status(401).json({
+                status: 401,
+                message: "invalid user Id",
             });
         }
-        const { id } = req.params;
         await Question.findByIdAndDelete(id);
         await Bookmark.deleteMany({ questionId: id });
         await Answer.deleteMany({ questionId: id });
