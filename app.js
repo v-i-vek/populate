@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 require("dotenv").config();
+const cors = require("cors");
 
 const app = express();
 const signinRoutes = require("./route/signIn");
@@ -17,6 +18,31 @@ const manageUsersRoutes = require("./route/manageuser");
 const tagsRoutes = require("./route/Managetag");
 const manageResourcesRoutes = require("./route/manageResource");
 
+
+
+
+
+const corsOptions = {
+    origin: "http://localhost:4200",
+    methods: ["GET", "PATCH", "POST", "DELETE"],
+    withCredentials: true,
+    credentials: true,
+    optionSuccessStatus: 200,
+    allowedHeaders: ["Content-Type", "Authorization"],
+};
+
+const allowCrossDomain = (req, res, next) => {
+    res.header(
+        "Access-Control-Allow-Origin",
+        "http://localhost:4200",
+    );
+    res.header("Access-Control-Allow-Methods", "GET,PATCH,POST,DELETE");
+    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    res.header("Access-Control-Allow-Credentials", true);
+    next();
+};
+app.use(allowCrossDomain);
+app.use(cors({ origin: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -32,6 +58,14 @@ const connectToDatabase = async () => {
     }
 };
 connectToDatabase();
+app.use(cors(corsOptions));
+app.options(
+    "*",
+    cors({
+        origin: "http://localhost:4200",
+        credentials: true,
+    }),
+);
 app.use("/", signupRoutes);
 
 app.use("/forgotpassword", forgotpasswordRoutes);
