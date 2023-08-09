@@ -6,12 +6,35 @@ const compression = require('compression')
 const { getCurrentInvoke } = require('@vendia/serverless-express')
 const ejs = require('ejs').__express
 const app = express()
+const temp = require("dotenv").config();
 const router = express.Router()
+const mongoose = require('mongoose')
+
+const cookieparser = require('cookie-parser')
+
+
+const signinRoutes = require("./route/signIn");
+const bookmarkRoutes = require("./route/bookmark");
+const signupRoutes = require("./route/signUp");
+const signoutRoutes = require("./route/signOut");
+const forgotpasswordRoutes = require("./route/forgetPassword");
+const serchRoutes = require("./route/search");
+const questionRoutes = require("./route/question");
+const blogRoutes = require("./route/blog");
+const documentRoutes = require("./route/doc");
+const answerRoutes = require("./route/answer");
+const manageUsersRoutes = require("./route/manageuser");
+const tagsRoutes = require("./route/Managetag");
+const manageResourcesRoutes = require("./route/manageResource");
+
 
 app.set('view engine', 'ejs')
 app.engine('.ejs', ejs)
 
+
 router.use(compression())
+app.use(express.json());
+
 
 router.use(cors())
 router.use(bodyParser.json())
@@ -104,6 +127,39 @@ let userIdCounter = users.length
 // Domain Socket for you, so you can remove the usual call to app.listen.
 // app.listen(3000)
 app.use('/', router)
+console.log("========================================> NOW COnnecting to DataZbase")
+const connectToDatabase = async () => {
+  try {
+
+    
+      await mongoose.connect('mongodb+srv://techforum:techforum@techforum.bguthxq.mongodb.net/techforum?retryWrites=true&w=majority', {
+          useNewUrlParser: true,
+          useUnifiedTopology: true,
+      });
+      console.log("Connected to database");
+  } catch (err) {
+      console.log(`Error connecting to database${err}`);
+  }
+};
+connectToDatabase();
+app.use("/", signupRoutes);
+
+app.use("/forgotpassword", forgotpasswordRoutes);
+
+app.use(
+    "/users",
+    signoutRoutes,
+    signinRoutes,
+    bookmarkRoutes,
+    questionRoutes,
+    serchRoutes,
+    blogRoutes,
+    documentRoutes,
+    answerRoutes,
+    tagsRoutes,
+);
+
+app.use("/admin", manageUsersRoutes, tagsRoutes, manageResourcesRoutes);
 
 // Export your express server so you can import it in the lambda function.
 module.exports = app
