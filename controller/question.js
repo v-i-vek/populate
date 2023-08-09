@@ -1,3 +1,4 @@
+const { query, matchedData, validationResult } = require("express-validator");
 const Question = require("../model/question");
 const Bookmark = require("../model/bookmark");
 const Answer = require("../model/answer");
@@ -5,28 +6,26 @@ const Answer = require("../model/answer");
 // post a question
 exports.createQuestion = async (req, res) => {
     try {
-        if (Object.keys(req.body).length === 0) {
-            return res
-                .status(406)
-                .json({
-                    status: 406,
-                    message: "Data not Found, Payload Not Acceptable",
-                });
+        const result = validationResult(req);
+        if (!result.isEmpty()) {
+            console.log("this is called");
+            return res.send({ errors: result.array() });
         }
+
         let { userId } = req.body;
         let { question } = req.body;
         let { questionDescribe } = req.body;
         const { tags } = req.body;
         const createdAt = Date.now();
-
-        if (userId === undefined) {
-            return res
-                .status(406)
-                .json({
-                    status: 406,
-                    message: "please enter the userId",
-                });
-        }
+        console.log("============================================", result);
+        // if (result.userId.isEmpty()) {
+        //     return res
+        //         .status(406)
+        //         .json({
+        //             status: 406,
+        //             message: "please enter the userId",
+        //         });
+        // }
         userId = userId.trim();
         if (userId.length === 0 || userId.length !== 24) {
             return res

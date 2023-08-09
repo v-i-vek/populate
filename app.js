@@ -18,10 +18,6 @@ const manageUsersRoutes = require("./route/manageuser");
 const tagsRoutes = require("./route/Managetag");
 const manageResourcesRoutes = require("./route/manageResource");
 
-
-
-
-
 const corsOptions = {
     origin: "http://localhost:4200",
     methods: ["GET", "PATCH", "POST", "DELETE"],
