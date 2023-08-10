@@ -9,42 +9,12 @@ const UserRole = require("../model/userRole");
 require("dotenv").config();
 const validator = require("email-validator");
 
+
 module.exports = {
     signIn: async (req, res) => {
         try {
             let { emailId, password } = req.body;
             const salt = process.env.SALT;
-
-            if (Object.keys(req.body).length === 0) {
-                return res.status(406).json({ status: 406, message: "Data not Found, Payload Not Acceptable" });
-            }
-
-            if (emailId === undefined) {
-                return res.status(401).json({
-                    status: 401,
-                    errors: [{
-                        value: `${emailId}`,
-                        msg: `${emailId} value, emailId is Undefined`,
-                        params: "emailId",
-
-                    }],
-                });
-            }
-
-            emailId = emailId.trim();
-
-            if (emailId.length === 0) {
-                return res.status(401).json({
-                    status: 401,
-                    errors: [{
-                        value: `${emailId}`,
-                        msg: `${emailId} ,emailId can't be empty`,
-                        params: "emailId",
-
-                    }],
-                });
-            }
-
             const validate = validator.validate(emailId);
             if (!validate) {
                 return res.status(401).json({
@@ -71,29 +41,29 @@ module.exports = {
             //     });
             // }
 
-            if (password === undefined) {
-                return res.status(401).json({
-                    status: 401,
-                    errors: [{
-                        value: `${password}`,
-                        msg: `${password} , password not defined`,
-                        params: "password",
+            // if (password === undefined) {
+            //     return res.status(401).json({
+            //         status: 401,
+            //         errors: [{
+            //             value: `${password}`,
+            //             msg: `${password} , password not defined`,
+            //             params: "password",
 
-                    }],
-                });
-            }
+            //         }],
+            //     });
+            // }
 
-            if (password.length === 0) {
-                return res.status(401).json({
-                    status: 401,
-                    errors: [{
-                        value: `${password}`,
-                        msg: `${password} can't be empty`,
-                        params: "password",
+            // if (password.length === 0) {
+            //     return res.status(401).json({
+            //         status: 401,
+            //         errors: [{
+            //             value: `${password}`,
+            //             msg: `${password} can't be empty`,
+            //             params: "password",
 
-                    }],
-                });
-            }
+            //         }],
+            //     });
+            // }
 
             const user = await User.findOne({ emailId });
             if (!user) {

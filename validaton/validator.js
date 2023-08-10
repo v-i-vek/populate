@@ -1,35 +1,32 @@
-const {body , validatorResult, validationResult}=require('express-validator')
+const { body, validationResult } = require("express-validator");
 
+const userValidationRules = () => [
+    body("firstName").notEmpty().trim(),
+    body("lastName").notEmpty().trim(),
+    body("emailId").notEmpty().trim().isEmail()
+        .withMessage("enter your valid email"),
+    body("password").notEmpty().isLength({ min: 6 }).withMessage("min length of password with 6 character"),
+];
 
-const signUpValidation=()=>{
-    return [
-        //user must not be empty
-        body(firstName).notEmpty().trim(),
-        body(lastName).notEmpty().trim(),
-        body(emailId).notEmpty().trim().isEmail(),
-        body(password).notEmpty().isLength({min:6}).withMessage('password must be atleaast 6 character long'),body('confirmPassword').custom((value,req)=>{
-            if(value !==req.body.password){
-                throw new Error('Passwords do not match');
-            }
-        
-        })
-       
-    ]
-}
+const signInValidation = () => [
+    body("email").isEmail().withMessage("enter valid email address"),
+    body("password").isLength({ min: 6 }).withMessage("password must be atleast 6 character long"),
+];
 
-const validate = (req,res, next)=>{
-    const errors = validationResult(req)
-    if(errors.isEmpty()){
-        return next()
+const validate = (req, res, next) => {
+    const errors = validationResult(req);
+    if (errors.isEmpty()) {
+        return next();
     }
-    const extractedError =[]
-    errors.array.map(err => extractedError.push({[err.param]:err.msg }))
+    const extractedErrors = [];
+    errors.array().map((err) => extractedErrors.push({ [err.path]: err.msg }));
     return res.status(422).json({
-        errors:extractedError,
-    })
-}
+        errors: extractedErrors,
+    });
+};
 
-module.exports={
-    signUpValidation,
-    validate
-}
+module.exports = {
+    userValidationRules,
+    validate,
+    signInValidation,
+};
