@@ -1,31 +1,23 @@
-const { query, matchedData, validationResult } = require("express-validator");
 const Question = require("../model/question");
 const Bookmark = require("../model/bookmark");
 const Answer = require("../model/answer");
 
+/**
+ *
+ *@param {object} req - provided by the client side
+ * @param {object} res - provided by the erver side
+ * @returns {json}  - return by the server side
+ */
+
 // post a question
 exports.createQuestion = async (req, res) => {
     try {
-        const result = validationResult(req);
-        if (!result.isEmpty()) {
-            console.log("this is called");
-            return res.send({ errors: result.array() });
-        }
-
         let { userId } = req.body;
         let { question } = req.body;
         let { questionDescribe } = req.body;
         const { tags } = req.body;
         const createdAt = Date.now();
-        console.log("============================================", result);
-        // if (result.userId.isEmpty()) {
-        //     return res
-        //         .status(406)
-        //         .json({
-        //             status: 406,
-        //             message: "please enter the userId",
-        //         });
-        // }
+
         userId = userId.trim();
         if (userId.length === 0 || userId.length !== 24) {
             return res
@@ -119,7 +111,12 @@ exports.createQuestion = async (req, res) => {
         });
     }
 };
-
+/**
+ *
+ * @param {} req
+ * @param {*} res
+ * @returns
+ */
 // question pagination
 exports.questionPagination = async (req, res) => {
     try {
@@ -233,14 +230,7 @@ exports.readByIdQuestion = async (req, res) => {
 // get a speific question by user id
 exports.readByIdUser = async (req, res) => {
     try {
-        let { userId } = req.params;
-        userId = userId.trim();
-        if (userId.length !== 24) {
-            return res.status(400).json({
-                status: 400,
-                message: "invalid user id",
-            });
-        }
+        const { userId } = req.params;
 
         const questionData = await Question.find({ userId }).populate([
             {

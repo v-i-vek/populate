@@ -3,19 +3,20 @@ const express = require("express");
 const questionRouter = new express.Router();
 const questionController = require("../controller/question");
 const auth = require("../middleware/auth");
+const validate = require("../middleware/validator");
 
-questionRouter.post("/question", auth.auth, questionController.createQuestion);
+questionRouter.post("/question", validate.questionValidate(), validate.validate, auth.auth, questionController.createQuestion);
 
 questionRouter.get("/question", questionController.readQuestions);
 
 questionRouter.get("/quepagination", questionController.questionPagination);
 
-questionRouter.get("/question/:id", questionController.readByIdQuestion);
+questionRouter.get("/question/:id", validate.answerValidateGetById().validate.validate, questionController.readByIdQuestion);
 
-questionRouter.get("/questionbyuser/:userId", auth.auth, questionController.readByIdUser);
+questionRouter.get("/questionbyuser/:userId", validate.blogIdValidate.validate.validate, auth.auth, questionController.readByIdUser);
 
-questionRouter.patch("/question/:id", auth.auth, questionController.updateQuestion);
+questionRouter.patch("/question/:id", validate.answerValidateGetById().validate.validate, auth.auth, questionController.updateQuestion);
 
-questionRouter.delete("/question/:id", auth.auth, questionController.deleteQuestion);
+questionRouter.delete("/question/:id", validate.answerValidateGetById, validate.validate, auth.auth, questionController.deleteQuestion);
 
 module.exports = questionRouter;

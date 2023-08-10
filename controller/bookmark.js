@@ -1,5 +1,9 @@
 const Bookmark = require("../model/bookmark");
 
+/**
+ *
+ */
+
 module.exports = {
     addBookmark: async (req, res) => {
         try {

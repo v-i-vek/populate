@@ -1,5 +1,12 @@
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
+/**
+ *
+ * @param {object} req - provided by the client side
+ * @param {object} res - provided by the erver side
+ * @param {Function} next -it is function, will execute to the next from current function
+ * @returns {json}  - return by the server side
+ */
 
 exports.auth = async (req, res, next) => {
     let check = req.headers.cookie;

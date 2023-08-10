@@ -9,6 +9,11 @@ const UserRole = require("../model/userRole");
 require("dotenv").config();
 const validator = require("email-validator");
 
+/**
+ * @param {object} req - provided by the client side
+ * @param {object} res - provided by the erver side
+ * @returns {json}  - return by the server side
+ */
 
 module.exports = {
     signIn: async (req, res) => {

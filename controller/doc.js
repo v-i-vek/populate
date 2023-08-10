@@ -1,5 +1,12 @@
 const Document = require("../model/doc");
 
+/**
+ *
+ *@param {object} req - provided by the client side
+ * @param {object} res - provided by the erver side
+ * @returns {json}  - return by the server side
+ */
+
 // get all posted documents
 exports.getDocument = async (req, res) => {
     try {

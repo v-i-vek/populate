@@ -3,6 +3,12 @@ const multer = require("multer");
 const multerStorage = multer.memoryStorage();
 
 // Multer Filter
+/**
+ *
+ * @param {object} req - from client side
+ * @param {BinaryData} file -from client side
+ * @param {Function} cb -it is callback function
+ */
 const multerFilter = (req, file, cb) => {
     if (file.mimetype.split("/")[1] === "pdf") {
         cb(null, true);
