@@ -1,4 +1,5 @@
 const Bookmark = require("../model/bookmark");
+const logger = require("../logger/productionLogger");
 
 /**
  *
@@ -69,6 +70,7 @@ module.exports = {
                 data: bookmark,
             });
         } catch (err) {
+            logger.log("error", err);
             return res.status(500).json({
                 status: 500,
                 message: "Server Error",
@@ -94,6 +96,7 @@ module.exports = {
                 data: bookmarks,
             });
         } catch (err) {
+            logger.log("error", err);
             return res.status(500).json({
                 status: 500,
                 message: "Server Error",
@@ -111,6 +114,7 @@ module.exports = {
                 data: bookmarks,
             });
         } catch (err) {
+            logger.log("error", err);
             return res.status(500).json({
                 status: 500,
                 message: "Server Error",

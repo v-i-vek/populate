@@ -8,6 +8,7 @@ const User = require("../model/user");
 const UserRole = require("../model/userRole");
 require("dotenv").config();
 const validator = require("email-validator");
+const logger = require("../logger/productionLogger");
 
 /**
  * @param {object} req - provided by the client side
@@ -111,7 +112,7 @@ module.exports = {
                 message: "Incorrect Email or password",
             });
         } catch (err) {
-            console.log(err);
+            logger.log("error", err);
             return res.status(500).json({
                 status: 500,
                 message: "Server Error",
@@ -131,6 +132,7 @@ module.exports = {
                 userRole: userRole.roleName,
             });
         } catch (err) {
+            logger.log("error", err);
             if (err.name === "CastError" && err.kind === "ObjectId") {
                 return res.status(400).json({
                     status: 400,

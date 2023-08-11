@@ -1,4 +1,5 @@
 const Blog = require("../model/blog");
+const logger = require("../logger/productionLogger");
 
 /**
  *
@@ -56,6 +57,7 @@ exports.blogs = async (req, res) => {
         const blogs = await Blog.aggregate(pipeline);
         res.json(blogs);
     } catch (error) {
+        logger.log("error", error);
         res.status(500).json({ error: "Server error" });
     }
 };
@@ -87,6 +89,7 @@ exports.blog = async (req, res) => {
             data: blog,
         });
     } catch (err) {
+        logger.log("error", err);
         return res.status(500).json({
             status: 500,
             message: "Server Error",
@@ -116,6 +119,7 @@ exports.createBlog = async (req, res) => {
             data: blog,
         });
     } catch (err) {
+        logger.log("error", err);
         return res.status(500).json({
             status: 500,
             message: "Server Error",
@@ -145,6 +149,7 @@ exports.getBlog = async (req, res) => {
             data: blog,
         });
     } catch (err) {
+        logger.log("error", err);
         return res.status(500).json({
             status: 500,
             message: "Server Error",
@@ -161,6 +166,7 @@ exports.getBlogTitle = async (req, res) => {
         }));
         return res.status(201).json({ blogs: blogsData });
     } catch (err) {
+        logger.log("error", err);
         return res.status(500).json({
             status: 500,
             message: "Server Error",
@@ -191,6 +197,7 @@ exports.deleteBlog = async (req, res) => {
             message: "Succesfully deleted a blog",
         });
     } catch (err) {
+        logger.log("error", err);
         return res.status(500).json({
             status: 500,
             message: "Server Error",
@@ -226,6 +233,7 @@ exports.updateBlog = async (req, res) => {
             data: updateblog,
         });
     } catch (err) {
+        logger.log("error", err);
         return res.status(500).json({
             status: 500,
             message: "Server Error",

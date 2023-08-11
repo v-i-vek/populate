@@ -3,6 +3,7 @@ const crypto = require("crypto");
 const nodemailer = require("nodemailer");
 const User = require("../model/user");
 require("dotenv").config();
+const logger = require("../logger/productionLogger");
 
 module.exports = {
     // eslint-disable-next-line consistent-return
@@ -112,6 +113,7 @@ module.exports = {
                     });
             });
         } catch (err) {
+            logger.log("error", err);
             return res.status(500).json({
                 status: 500,
                 message: "Server Error",
@@ -161,6 +163,7 @@ module.exports = {
                 message: "Password updated successfully",
             });
         } catch (err) {
+            logger.log("error", err);
             return res.status(500).json({
                 status: 500,
                 message: "Server Error",

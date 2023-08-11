@@ -3,6 +3,8 @@ const mongoose = require("mongoose");
 require("dotenv").config();
 const cors = require("cors");
 
+const logger = require("./logger/productionLogger");
+
 const app = express();
 const signinRoutes = require("./route/signIn");
 const bookmarkRoutes = require("./route/bookmark");
@@ -48,9 +50,9 @@ const connectToDatabase = async () => {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         });
-        console.log("Connected to database");
+        logger.log("info", "Connected to database");
     } catch (err) {
-        console.log(`Error connecting to database${err}`);
+        logger.log("error", err);
     }
 };
 connectToDatabase();
@@ -80,6 +82,6 @@ app.use(
 );
 
 app.use("/admin", manageUsersRoutes, tagsRoutes, manageResourcesRoutes);
-app.listen(8080, () => { console.log("connected to port"); });
+app.listen(8080, () => { logger.log("info", "connected to port"); });
 
 // exports.techForumAPIs = app;

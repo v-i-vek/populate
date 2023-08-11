@@ -1,4 +1,5 @@
 /* eslint-disable consistent-return */
+const logger = require("../logger/productionLogger");
 const Answer = require("../model/answer");
 
 // creates an answer to that question
@@ -26,6 +27,7 @@ exports.addAnswer = async (req, res) => {
                 data: addanswer,
             });
         } catch (err) {
+            logger.log("error", err);
             return res.status(500).json({
                 satus: 500,
                 error: "Server Error",
@@ -52,6 +54,7 @@ exports.getAnswerByquestionId = async (req, res) => {
             data: getanswer,
         });
     } catch (err) {
+        logger.log("error", err);
         return res.status(500).json({
             status: 500,
             message: "Server Error",
@@ -78,6 +81,7 @@ exports.editAnswer = async (req, res) => {
             message: "Answer Updated successfully",
         });
     } catch (err) {
+        logger.log("error", err);
         return res.status(500).json({
             status: 500,
             message: "Server Error",
@@ -104,6 +108,7 @@ exports.deleteAnswer = async (req, res) => {
             message: "Answer deleted successfully",
         });
     } catch (err) {
+        logger.log("error", err);
         return res.status(500).json({
             satus: 500,
             message: "Server Error",
@@ -197,6 +202,7 @@ exports.checkup = async (req, res) => {
             data: totalupvote,
         });
     } catch (err) {
+        logger.log("error", err);
         return res.status(500).json({
             satus: 500,
             message: "Server Error",
@@ -225,6 +231,7 @@ exports.checkdown = async (req, res) => {
             data: totaldownvote,
         });
     } catch (err) {
+        logger.log("error", err);
         return res.status(500).json({
             satus: 500,
             message: "Server Error",

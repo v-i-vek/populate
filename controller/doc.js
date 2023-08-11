@@ -1,5 +1,5 @@
 const Document = require("../model/doc");
-
+const logger = require("../logger/productionLogger");
 /**
  *
  *@param {object} req - provided by the client side
@@ -22,6 +22,7 @@ exports.getDocument = async (req, res) => {
             data: docsdata,
         });
     } catch (error) {
+        logger.log("error", error);
         return res.status(500).json({
             status: 500,
             message: "Server Error",
@@ -60,6 +61,7 @@ exports.getDocuments = async (req, res) => {
             data: doc,
         });
     } catch (err) {
+        logger.log("error", err);
         return res.status(500).json({
             status: 500,
             message: "Server Error",
@@ -93,6 +95,7 @@ exports.postDocument = async (req, res) => {
             data: document,
         });
     } catch (error) {
+        logger.log("error", error);
         console.error(error);
         return res.status(500).json({
             status: 500,
@@ -118,6 +121,7 @@ exports.deleteDocument = async (req, res) => {
             message: "Succesfully deleted Document",
         });
     } catch (err) {
+        logger.log("error", err);
         return res.status(500).json({
             status: 500,
             message: "Server Error",
