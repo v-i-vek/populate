@@ -86,7 +86,7 @@ module.exports = {
                 const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET_KEY);
                 const expirationTime = new Date(Date.now() + 12 * 60 * 60 * 1000);
 
-                const cookieString = `jwt=${token}; HttpOnly; Expires=${expirationTime.toUTCString()};`;
+                const cookieString = `jwt=${token}; HttpOnly; Expires=${expirationTime.toUTCString()}; Path=/users`;
                 res.setHeader("Set-Cookie", cookieString);
                 return res.status(200).json({
                     statusCode: 200,
