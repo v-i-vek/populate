@@ -1,10 +1,17 @@
 const {
-    body, validationResult, check, query,
+    body, validationResult, check, query, param,
 } = require("express-validator");
 
 const userValidationRules = () => [
-    body("firstName").notEmpty().trim(),
-    body("lastName").notEmpty().trim(),
+    body().custom((value, { req }) => Object.keys(req.body).length !== 0).withMessage("Data Not found"),
+    check("firstName").exists().withMessage("firstname is required"),
+    check("lastName").exists().withMessage("lastName is required"),
+    check("emailId").exists().withMessage("emailId is required"),
+    check("password").exists().withMessage("password is required"),
+    check("confirmPassword").exists().withMessage("confirmPassword is required"),
+
+    body("firstName").notEmpty().trim().withMessage("firstname can't be empty"),
+    body("lastName").notEmpty().trim().withMessage("lastName can't be empty"),
     body("emailId").notEmpty().trim().isEmail()
         .withMessage("enter your valid email")
         .custom((value) => {
@@ -20,6 +27,9 @@ const userValidationRules = () => [
 ];
 
 const signInValidation = () => [
+    body().custom((value, { req }) => Object.keys(req.body).length !== 0).withMessage("Data Not found"),
+    check("emailId").exists().withMessage("emailId is required"),
+    check("password").exists().withMessage("password is required"),
     body("emailId").notEmpty().trim().isEmail()
         .withMessage("enter valid email address"),
     body("password").notEmpty().isLength({ min: 6 }).withMessage("password must be atleast 6 character long"),
@@ -30,26 +40,38 @@ const searchValidation = () => [
 ];
 
 const questionValidate = () => [
-    body("userId").notEmpty().isLength(24).withMessage("userId must have length of 24"),
-    body("question").notEmpty().trim(),
-    // body("questionDescribe"),
-    body("tags").trim(),
+    body().custom((value, { req }) => Object.keys(req.body).length !== 0).withMessage("Data Not found"),
+    check("userId").exists().withMessage("userId is requried"),
+    body("userId").notEmpty().trim().isLength({ min: 24 })
+        .withMessage("user id userid have the length of 24")
+        .isLength({ max: 24 })
+        .withMessage("userid must be equal to 24"),
+    check("question").exists().withMessage("question is required"),
+    body("question").notEmpty().trim().withMessage("question can't be empty"),
+
 ];
 const anwerValidatePost = () => [
+    body().custom((value, { req }) => Object.keys(req.body).length !== 0).withMessage("Data Not found"),
+    check("userId").exists().withMessage("userId is required"),
     body("userId").notEmpty().trim().isLength(24)
         .withMessage("userId must have 24 character"),
+    check("questionId").exists().withMessage("questionId is required"),
     body("questionId").notEmpty().trim().isLength(24)
         .withMessage("questionId must have 24 character"),
+    check("answer").exists().withMessage(" answer is required"),
     body("answer").notEmpty().trim().withMessage("enter answer of the question"),
 ];
 
 const answerValidateGetById = () => [
-    query("questionId").notEmpty().trim().isLength(24)
-        .withMessage("question id can't be empyt and must have 24 character"),
+    param("id").notEmpty().withMessage("enter answerId in params").trim()
+        .isLength({ min: 24 })
+        .withMessage("Id must have length 24")
+        .isLength({ max: 24 })
+        .withMessage("Id must have length 24"),
 ];
 const answerValidatePatch = () => [
     query("Id").notEmpty().trim().isLength(24)
-        .withMessage("question id can't be empyt and must have 24 character"),
+        .withMessage("question id can't be empty and must have 24 character"),
 ];
 const blogIdValidate = () => [
     query("userId").notEmpty().trim().isLength(24)
@@ -57,6 +79,7 @@ const blogIdValidate = () => [
 ];
 
 const blogValidatePost = () => [
+    body().custom((value, { req }) => Object.keys(req.body).length !== 0).withMessage("Data Not found"),
     body("title").notEmpty().trim().withMessage("title can't be empty"),
     body("content").notEmpty().trim().withMessage("content can't be empty"),
     body("userId").notEmpty().trim().isLength(24)
@@ -68,10 +91,11 @@ const validate = (req, res, next) => {
     if (errors.isEmpty()) {
         return next();
     }
-    const extractedErrors = [];
-    errors.array().map((err) => extractedErrors.push({ [err.path]: err.msg }));
+    // const extractedErrors = [];
+    // errors.array().map((err) => extractedErrors.push({ [err.path]: err.msg }));
     return res.status(401).json({
-        errors:extractedErrors
+        status: "failed",
+        error: errors.errors[0].msg,
     });
 };
 

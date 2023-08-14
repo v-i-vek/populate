@@ -11,12 +11,12 @@ questionRouter.get("/question", questionController.readQuestions);
 
 questionRouter.get("/quepagination", questionController.questionPagination);
 
-questionRouter.get("/question/:id", validate.answerValidateGetById(),validate.validate, questionController.readByIdQuestion);
+questionRouter.get("/question/:id", validate.answerValidateGetById(), validate.validate, questionController.readByIdQuestion);
 
-questionRouter.get("/questionbyuser/:userId", validate.blogIdValidate,validate.validate, auth.auth, questionController.readByIdUser);
+questionRouter.get("/questionbyuser/:userId", validate.blogIdValidate(), validate.validate, auth.auth, questionController.readByIdUser);
 
-questionRouter.patch("/question/:id", validate.answerValidateGetById(),validate.validate, auth.auth, questionController.updateQuestion);
+questionRouter.patch("/question/:id", validate.answerValidateGetById(), validate.validate, auth.auth, questionController.updateQuestion);
 
-questionRouter.delete("/question/:id", validate.answerValidateGetById, validate.validate, auth.auth, questionController.deleteQuestion);
+questionRouter.delete("/question/:id", validate.answerValidateGetById(), validate.validate, auth.auth, questionController.deleteQuestion);
 
 module.exports = questionRouter;

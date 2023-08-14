@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
-const logger = require('../logger/logs')
+const logger = require("../logger/logs");
 /**
  *
  * @param {object} req - provided by the client side
@@ -11,16 +11,15 @@ const logger = require('../logger/logs')
 
 exports.auth = async (req, res, next) => {
     let check = req.headers.cookie;
-    console.log(req)
-    console.log(check,"==============")
+    console.log(req);
+    console.log(check, "==============");
     if (check === undefined) {
-       
         const response = res.status(401).json({
             status: 401,
             message: "Need to Sign In",
         });
 
-        return response
+        return response;
     }
     // console.log(typeof check);
     console.log(check, "this is check");
@@ -29,20 +28,20 @@ exports.auth = async (req, res, next) => {
     const token = check;
     console.log(token, "this is the token");
     if (!token) {
-        const response= res.status(401).json({
+        const response = res.status(401).json({
             status: 401,
             message: "Need to Sign In",
         });
-        console.log(response)
-        logger.information(response)
+        console.log(response);
+        logger.information(response);
 
-        return response
+        return response;
     }
     try {
         const decode = jwt.verify(token, process.env.JWT_SECRET_KEY);
         req.userId = decode.userId;
     } catch (err) {
-        logger.errors(err)
+        logger.errors(err);
         return res.status(401).json({
             status: 401,
             message: "You are not authorized",

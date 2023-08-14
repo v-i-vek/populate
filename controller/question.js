@@ -314,7 +314,13 @@ exports.deleteQuestion = async (req, res) => {
                 message: "invalid user Id",
             });
         }
-        await Question.findByIdAndDelete(id);
+        const question = await Question.findByIdAndDelete(id);
+        if (!question) {
+            return res.status(401).json({
+                status: "fail",
+                message: "question not exist",
+            });
+        }
         await Bookmark.deleteMany({ questionId: id });
         await Answer.deleteMany({ questionId: id });
         return res.status(200).json({
