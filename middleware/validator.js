@@ -9,10 +9,11 @@ const userValidationRules = () => [
     check("emailId").exists().withMessage("emailId is required"),
     check("password").exists().withMessage("password is required"),
     check("confirmPassword").exists().withMessage("confirmPassword is required"),
-
+    
+    
     body("firstName").notEmpty().trim().withMessage("firstname can't be empty"),
     body("lastName").notEmpty().trim().withMessage("lastName can't be empty"),
-    body("emailId").notEmpty().trim().isEmail()
+    body("emailId").notEmpty().trim().withMessage("email can't be empty").isEmail()
         .withMessage("enter your valid email")
         .custom((value) => {
             if (!value.endsWith("@gmail.com")) {
@@ -20,9 +21,10 @@ const userValidationRules = () => [
             }
             return true;
         }),
-    body("password").notEmpty().isLength({ min: 6 }).withMessage("min length of password with 6 character")
+    body("password").notEmpty().withMessage("password can't be empty").isLength({ min: 6 }).withMessage("min length of password with 6 character")
         .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/)
         .withMessage("password must have one Uppercase One loweCase One number One special charater"),
+        body("confirmPassword").notEmpty().withMessage("confirm password can't be empty"),
     check("confirmPassword").custom((value, { req }) => value === req.body.password).withMessage("password and confirm password are not matching"),
 ];
 
@@ -53,17 +55,24 @@ const questionValidate = () => [
 const anwerValidatePost = () => [
     body().custom((value, { req }) => Object.keys(req.body).length !== 0).withMessage("Data Not found"),
     check("userId").exists().withMessage("userId is required"),
-    body("userId").notEmpty().trim().isLength(24)
+    body("userId").notEmpty().trim().withMessage("userID can't be empty").isLength(24)
         .withMessage("userId must have 24 character"),
     check("questionId").exists().withMessage("questionId is required"),
-    body("questionId").notEmpty().trim().isLength(24)
-        .withMessage("questionId must have 24 character"),
-    check("answer").exists().withMessage(" answer is required"),
-    body("answer").notEmpty().trim().withMessage("enter answer of the question"),
+    body("questionId").notEmpty().trim().withMessage("questionId must have 24 character").isLength(24)
+        .withMessage("questionId must have lenght of 24"),
+    check("answer").exists().withMessage("answer is required"),
+    body("answer").notEmpty().trim().withMessage("enter the answer"),
 ];
 
 const answerValidateGetById = () => [
     param("id").notEmpty().withMessage("enter answerId in params").trim()
+        .isLength({ min: 24 })
+        .withMessage("Id must have length 24")
+        .isLength({ max: 24 })
+        .withMessage("Id must have length 24"),
+];
+const answerValidateGetQuestionById = () => [
+    param("questionId").notEmpty().withMessage("enter answerId in params").trim()
         .isLength({ min: 24 })
         .withMessage("Id must have length 24")
         .isLength({ max: 24 })
@@ -110,4 +119,5 @@ module.exports = {
     answerValidatePatch,
     blogValidatePost,
     blogIdValidate,
+    answerValidateGetQuestionById,
 };
