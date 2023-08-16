@@ -18,19 +18,19 @@ exports.searchQuestion = async (req, res) => {
 
         if (!searchedData) {
             return res.status(404).json({
-                status: 404,
+                status: "failed",
                 message: "Data Not Found",
             });
         }
         return res.status(200).json({
-            status: 200,
+            status: "success",
             message: "Qustion searched Successfully",
             data: searchedData,
         });
     } catch (e) {
         console.log(e);
         return res.status(500).json({
-            status: 500,
+            status: "failed",
             message: "Server Error",
         });
     }

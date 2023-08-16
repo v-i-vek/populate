@@ -11,10 +11,9 @@ const logger = require("../logger/logs");
 
 exports.auth = async (req, res, next) => {
     let check = req.headers.cookie;
-    console.log("=========", check);
     if (check === undefined) {
         const response = res.status(401).json({
-            status: 401,
+            status: "failed",
             message: "Need to Sign In",
         });
 
@@ -23,10 +22,9 @@ exports.auth = async (req, res, next) => {
     check = check.slice(4, check.length);
 
     const token = check;
-    console.log("================", token);
     if (!token) {
         const response = res.status(401).json({
-            status: 401,
+            status: "failed",
             message: "Need to Sign In",
         });
 
@@ -37,7 +35,7 @@ exports.auth = async (req, res, next) => {
         req.userId = decode.userId;
     } catch (err) {
         return res.status(401).json({
-            status: 401,
+            status: "failed",
             message: "You are not authorized",
         });
     }

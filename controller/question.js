@@ -136,8 +136,9 @@ exports.questionPagination = async (req, res) => {
         const check = page * limit;
         if (check > count) {
             return res.status(404).json({
-                status: 404,
+                status: "failed",
                 message: "please decrease the limit or page",
+
             });
         }
         const totalPages = Math.ceil(count / limit);
@@ -145,12 +146,12 @@ exports.questionPagination = async (req, res) => {
 
         if (!questionsData) {
             return res.status(404).json({
-                status: 404,
+                status: "failed",
                 message: "Data Not Found",
             });
         }
         return res.status(200).json({
-            status: 200,
+            status: "success",
             message: "Questions Readed successfully",
             data: questionsData,
             nbHits: questionsData.length,
@@ -159,7 +160,7 @@ exports.questionPagination = async (req, res) => {
         });
     } catch (err) {
         return res.status(500).json({
-            status: 500,
+            status: "failed",
             message: "Server Error",
         });
     }
@@ -175,18 +176,18 @@ exports.readQuestions = async (req, res) => {
         ]);
         if (!questionsData) {
             return res.status(404).json({
-                status: 404,
+                status: "failed",
                 message: "Data Not Found",
             });
         }
         return res.status(200).json({
-            status: 200,
+            status: "success",
             message: "Questions Readed successfully",
             data: questionsData,
         });
     } catch (err) {
         return res.status(500).json({
-            status: 500,
+            status: "failed",
             message: "Server Error",
         });
     }
@@ -198,7 +199,7 @@ exports.readByIdQuestion = async (req, res) => {
         id = id.trim();
         if (id.length !== 24) {
             return res.status(400).json({
-                status: 400,
+                status: "failed",
                 message: "Invalid id from params",
             });
         }
@@ -209,19 +210,19 @@ exports.readByIdQuestion = async (req, res) => {
         ]);
         if (!questionData) {
             return res.status(404).json({
-                status: 404,
+                status: "failed",
                 message: "Data Not Found",
             });
         }
         return res.status(200).json({
-            status: 200,
+            status: "success",
             message: "Question Readed successfully",
             data: questionData,
         });
     } catch (err) {
         console.log(err);
         return res.status(500).json({
-            status: 500,
+            status: "failed",
             message: "Server Error",
         });
     }
@@ -239,7 +240,7 @@ exports.readByIdUser = async (req, res) => {
         ]);
         if (!questionData) {
             return res.status(404).json({
-                status: 404,
+                status: "failed",
                 message: "Data Not Found",
             });
         }
@@ -250,7 +251,7 @@ exports.readByIdUser = async (req, res) => {
         });
     } catch (err) {
         return res.status(500).json({
-            status: 500,
+            status: "failed",
             message: "Server Error",
         });
     }
@@ -263,7 +264,7 @@ exports.updateQuestion = async (req, res) => {
             return res
                 .status(406)
                 .json({
-                    status: 406,
+                    status: "failed",
                     message: "Data not Found, Payload Not Acceptable",
                 });
         }
@@ -275,7 +276,7 @@ exports.updateQuestion = async (req, res) => {
         id = id.trim();
         if (id.length !== 24) {
             return res.status(402).json({
-                status: 402,
+                status: "failed",
                 message: "please enter a valid id",
             });
         }
@@ -285,19 +286,19 @@ exports.updateQuestion = async (req, res) => {
 
         if (!updateQuestion) {
             return res.status(404).json({
-                status: 404,
+                status: "failed",
                 message: "Data Not Found",
             });
         }
 
         return res.status(200).json({
-            status: 200,
+            status: "success",
             message: "Question Updated Successfully",
             data: updateQuestion,
         });
     } catch (err) {
         return res.status(500).json({
-            status: 500,
+            status: "failed",
             message: "Server Error",
         });
     }
@@ -310,7 +311,7 @@ exports.deleteQuestion = async (req, res) => {
         id = id.trim();
         if (id.length !== 24) {
             return res.status(401).json({
-                status: 401,
+                status: "failed",
                 message: "invalid user Id",
             });
         }
@@ -324,12 +325,12 @@ exports.deleteQuestion = async (req, res) => {
         await Bookmark.deleteMany({ questionId: id });
         await Answer.deleteMany({ questionId: id });
         return res.status(200).json({
-            status: 200,
+            status: "success",
             message: "Question Deleted Successfully",
         });
     } catch (err) {
         return res.status(500).json({
-            status: 500,
+            status: "failed",
             message: "Server Error",
         });
     }

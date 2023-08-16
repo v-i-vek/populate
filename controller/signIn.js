@@ -8,9 +8,10 @@ const User = require("../model/user");
 const UserRole = require("../model/userRole");
 require("dotenv").config();
 const validator = require("email-validator");
-const logger = require("../logger/productionLogger");
+const logger = require("../logger/logger");
 
 /**
+ * This function is for signing user into application
  * @param {object} req - provided by the client side
  * @param {object} res - provided by the erver side
  * @returns {json}  - return by the server side
@@ -52,7 +53,7 @@ module.exports = {
                 const cookieString = `jwt=${token}; HttpOnly; Expires=${expirationTime.toUTCString()}; Path=/users`;
                 res.setHeader("Set-Cookie", cookieString);
                 return res.status(200).json({
-                    statusCode: 200,
+                    statusCode: "success",
                     headers: {
                         "Set-Cookie": cookieString,
                         "Content-Type": "application/json",
@@ -91,20 +92,20 @@ module.exports = {
             const userRole = await UserRole.findOne({ _id: role });
 
             return res.status(200).json({
-                status: 200,
+                status: "success",
                 userRole: userRole.roleName,
             });
         } catch (err) {
             logger.log("error", err);
             if (err.name === "CastError" && err.kind === "ObjectId") {
                 return res.status(400).json({
-                    status: 400,
+                    status: "failed",
                     message: "Invalid Id ",
                 });
             }
 
             return res.status(500).json({
-                status: 500,
+                status: "failed",
                 message: `Internal Server Error: ${err.message}`,
             });
         }

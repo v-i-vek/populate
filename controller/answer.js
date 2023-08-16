@@ -1,11 +1,15 @@
 /* eslint-disable consistent-return */
-const logger = require("../logger/productionLogger");
+const logger = require("../logger/logger");
 const Answer = require("../model/answer");
+const {logFun} = require("../logger/logger");
 
 // creates an answer to that question
-
+const info = "info";
+const error = "error";
+const ans = {};
+ans.message = "answer get successfully";
 /**
- *
+ *This function is to add  add the answer of the respected questinId
  * @param {object} req - provided by the client side
  * @param {object} res - provided by the erver side
  * @returns {json}  - return by the server side
@@ -20,16 +24,17 @@ exports.addAnswer = async (req, res) => {
             answer,
 
         });
-        await addanswer.save();
+        const result = await addanswer.save();
+        logFun(info, result);
         return res.status(201).json({
-            status: 201,
+            status: "success",
             message: "Answer Posted successfully",
             data: addanswer,
         });
     } catch (err) {
-        logger.log("error", err);
+        logFun(error, err);
         return res.status(500).json({
-            satus: 500,
+            satus: "failed",
             error: "Server Error",
         });
     }
@@ -37,25 +42,27 @@ exports.addAnswer = async (req, res) => {
 
 // get answer to that question
 exports.getAnswerByquestionId = async (req, res) => {
+    
     try {
-        const getanswer = await Answer.find({
-            questionId: req.params.questionId,
-        }).populate([
+        const getanswer = await Answer.find({questionId: req.params.questionId,}).populate([
             {
                 path: "userId",
             }, {
                 path: "questionId",
             },
         ]);
+       
+
+        logFun(info, ans.message); 
         return res.status(201).json({
-            status: 201,
-            message: "Answer get successfully",
+            status: "success",
+            message: ans.message,
             data: getanswer,
         });
     } catch (err) {
-        logger.log("error", err);
+        logFun("error", err);
         return res.status(500).json({
-            status: 500,
+            status: "failed",
             message: "Server Error",
         });
     }
@@ -70,19 +77,23 @@ exports.editAnswer = async (req, res) => {
             new: true,
         });
         if (!editanswer) {
+            ans.message = "Answer not Found";
+            logFun(info, ans.message);
             return res.status(404).json({
                 status: 404,
                 message: "Answer not found",
             });
         }
+        ans.message = "Answer Updated successfully"
+        logFun(info, ans.message)
         return res.status(201).json({
-            status: 201,
+            status: "success",
             message: "Answer Updated successfully",
         });
     } catch (err) {
-        logger.log("error", err);
+        logFun("error", err);
         return res.status(500).json({
-            status: 500,
+            status: "failed",
             message: "Server Error",
         });
     }
@@ -97,19 +108,23 @@ exports.deleteAnswer = async (req, res) => {
 
         const deleteanswer = await Answer.findByIdAndDelete(_id);
         if (!deleteanswer) {
+            ans.message = "Answer already deleted!"
+            logFun(info, ans.message)
             return res.status(404).json({
                 status: 404,
                 message: "Answer already deleted!",
             });
         }
+        ans.message = "Answer deleted successfully";
+        logFun(info, ans.message);
         return res.status(201).send({
-            status: 201,
+            status: "success",
             message: "Answer deleted successfully",
         });
     } catch (err) {
-        logger.log("error", err);
+        logFun("error", err);
         return res.status(500).json({
-            satus: 500,
+            satus: "failed",
             message: "Server Error",
         });
     }
@@ -120,14 +135,6 @@ exports.deleteAnswer = async (req, res) => {
 exports.Upvote = async (req, res) => {
     let answerId = req.params.id;
 
-    answerId = answerId.trim();
-    if (answerId.length !== 24) {
-        return res.status(400).json({
-            status: 400,
-            message: "Invalid answer id",
-        });
-    }
-
     const userId = req.body.upvotes;
 
     const vote = await Answer.findOne({ _id: answerId });
@@ -136,6 +143,7 @@ exports.Upvote = async (req, res) => {
             { _id: answerId },
             { $pull: { upvotes: userId } },
         );
+        logFun(info, ans.message = "Upvote removed")
         res.status(201).json({
             message: "Upvote removed",
         });
@@ -144,6 +152,7 @@ exports.Upvote = async (req, res) => {
             { _id: answerId },
             { $addToSet: { upvotes: userId }, $pull: { downvotes: userId } },
         );
+        logFun(info, ans.message = "Upvoted Successfully")
         res.status(201).json({
             message: "Upvoted Successfully",
         });
@@ -166,6 +175,7 @@ exports.Downvote = async (req, res) => {
             { _id: answerId },
             { $pull: { downvotes: userId } },
         );
+        logFun(info, ans.message = "Downvote removed")
         res.status(201).json({
             message: "Downvote removed",
         });
@@ -174,6 +184,7 @@ exports.Downvote = async (req, res) => {
             { _id: answerId },
             { $addToSet: { downvotes: userId }, $pull: { upvotes: userId } },
         );
+        logFun(info, ans.message = "Downvoted Successfully")
         res.status(201).json({
             message: "Downvoted Successfully",
         });
@@ -183,14 +194,7 @@ exports.Downvote = async (req, res) => {
 // total upvotes
 exports.checkup = async (req, res) => {
     try {
-        let { id } = req.params;
-        id = id.trim();
-        if (id.length !== 24) {
-            return res.status(400).json({
-                status: 400,
-                message: "Invalid id",
-            });
-        }
+        const { id } = req.params;
         const vote = await Answer.find({ _id: id });
         const totalupvote = vote.upvotesLength;
         if (!vote) {
@@ -201,9 +205,9 @@ exports.checkup = async (req, res) => {
             data: totalupvote,
         });
     } catch (err) {
-        logger.log("error", err);
+        logFun("error", err);
         return res.status(500).json({
-            satus: 500,
+            satus: "failed",
             message: "Server Error",
         });
     }
@@ -212,19 +216,13 @@ exports.checkup = async (req, res) => {
 // total downvotes
 exports.checkdown = async (req, res) => {
     try {
-        let { id } = req.params;
-        id = id.trim();
-        if (id.length !== 24) {
-            return res.status(400).json({
-                status: 400,
-                message: "Invalid id",
-            });
-        }
+        const { id } = req.params;
         const vote = await Answer.findById(id);
         const totaldownvote = vote.downvotesLength;
         if (!vote) {
             return res.status(404).send();
         }
+        logFun(info, ans.message = "Success")
         return res.status(201).json({
             message: "Success",
             data: totaldownvote,
@@ -232,7 +230,7 @@ exports.checkdown = async (req, res) => {
     } catch (err) {
         logger.log("error", err);
         return res.status(500).json({
-            satus: 500,
+            satus: "failed",
             message: "Server Error",
         });
     }

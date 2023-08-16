@@ -9,7 +9,7 @@ module.exports = {
                 return res
                     .status(406)
                     .json({
-                        status: 406,
+                        status: "failed",
                         message: "Tag is undefined",
                     });
             }
@@ -18,7 +18,7 @@ module.exports = {
                 return res
                     .status(406)
                     .json({
-                        status: 406,
+                        status: "failed",
                         message: "tag Can't be empty",
                     });
             }
@@ -26,19 +26,19 @@ module.exports = {
             const newTag = new Tag({ name: tag });
             await newTag.save();
             return res.status(201).json({
-                status: 201,
+                status: "success",
                 message: "Added Tag",
                 data: newTag,
             });
         } catch (err) {
             if (err instanceof mongoose.Error.ValidationError) {
                 return res.status(400).json({
-                    status: 400,
+                    status: "failed",
                     message: "Invalid Tag",
                 });
             }
             return res.status(500).json({
-                status: 500,
+                status: "failed",
                 message: `Internal Server Error: ${err.message}`,
             });
         }
@@ -52,10 +52,10 @@ module.exports = {
                 // eslint-disable-next-line no-underscore-dangle
                 id: tag._id,
             }));
-            return res.status(201).json({ tags: allTags });
+            return res.status(201).json({ status: "success", tags: allTags });
         } catch (err) {
             return res.status(500).json({
-                status: 500,
+                status: "failed",
                 message: "Server Error",
             });
         }
@@ -66,24 +66,24 @@ module.exports = {
             const { id } = req.params;
             if (!id) {
                 return res.status(404).json({
-                    status: 404,
+                    status: "failed",
                     message: "Tag Id not found",
                 });
             }
             const tag = await Tag.findByIdAndDelete({ _id: id });
             if (!tag) {
                 return res.status(404).json({
-                    status: 404,
+                    status: "failed",
                     message: "Tag not found",
                 });
             }
             return res.status(201).json({
-                status: 201,
+                status: "success",
                 message: "Tag deleted",
             });
         } catch (err) {
             return res.status(500).json({
-                status: 500,
+                status: "failed",
                 message: "Server Error",
             });
         }

@@ -3,7 +3,7 @@ const crypto = require("crypto");
 const nodemailer = require("nodemailer");
 const User = require("../model/user");
 require("dotenv").config();
-const logger = require("../logger/productionLogger");
+const logger = require("../logger/logger");
 
 module.exports = {
     // eslint-disable-next-line consistent-return
@@ -14,7 +14,7 @@ module.exports = {
                 return res
                     .status(406)
                     .json({
-                        status: 406,
+                        status: "failed",
                         message: "emailId is undefined",
                     });
             }
@@ -23,7 +23,7 @@ module.exports = {
                 return res
                     .status(406)
                     .json({
-                        status: 406,
+                        status: "failed",
                         message: "EmailId can't be empty",
                     });
             }
@@ -34,7 +34,7 @@ module.exports = {
             const user = await User.findOne({ emailId });
             if (!user) {
                 return res.status(404).json({
-                    status: 404,
+                    status: "failed",
                     message: "User not found",
                 });
             }
@@ -95,7 +95,7 @@ module.exports = {
             transporter.sendMail(mailOptions, (error) => {
                 if (error) {
                     return res.status(500).json({
-                        status: 500,
+                        status: "failed",
                         message: "Server Error",
                     });
                 }
@@ -108,14 +108,14 @@ module.exports = {
                 })
                     .status(201)
                     .json({
-                        status: 201,
+                        status: "success",
                         message: "Reset password email sent",
                     });
             });
         } catch (err) {
             logger.log("error", err);
             return res.status(500).json({
-                status: 500,
+                status: "failed",
                 message: "Server Error",
             });
         }
@@ -128,7 +128,7 @@ module.exports = {
             const { email } = req.cookies;
             if (!email || !password) {
                 return res.status(404).json({
-                    status: 404,
+                    status: "failed",
                     message: "Missing email or password",
                 });
             }
@@ -136,20 +136,20 @@ module.exports = {
 
             if (!user) {
                 return res.status(400).json({
-                    status: 400,
+                    status: "failed",
                     message: "Invalid Email or user",
                 });
             }
 
             if (password.length < 6) {
                 return res.status(400).json({
-                    status: 400,
+                    status: "failed",
                     message: "Password must be at least 6 characters long",
                 });
             }
             if (password !== confirmpassword) {
                 return res.status(401).json({
-                    status: 401,
+                    status: "failed",
                     message: "Password not matched",
                 });
             }
@@ -159,13 +159,13 @@ module.exports = {
             user.password = hashedPassword;
             await user.save();
             return res.clearCookie("email", { path: "/forgotpassword" }).status(201).json({
-                status: 201,
+                status: "success",
                 message: "Password updated successfully",
             });
         } catch (err) {
             logger.log("error", err);
             return res.status(500).json({
-                status: 500,
+                status: "failed",
                 message: "Server Error",
             });
         }

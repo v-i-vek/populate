@@ -1,5 +1,5 @@
 const Document = require("../model/doc");
-const logger = require("../logger/productionLogger");
+const logger = require("../logger/logger");
 /**
  *
  *@param {object} req - provided by the client side
@@ -17,14 +17,14 @@ exports.getDocument = async (req, res) => {
         ]);
         console.log(docsdata);
         return res.status(201).json({
-            status: 201,
+            status: "success",
             message: "Succesfully got all Documents",
             data: docsdata,
         });
     } catch (error) {
         logger.log("error", error);
         return res.status(500).json({
-            status: 500,
+            status: "failed",
             message: "Server Error",
         });
     }
@@ -36,7 +36,7 @@ exports.getDocuments = async (req, res) => {
         const { id } = req.params;
         if (id.length !== 24) {
             return res.status(400).json({
-                status: 400,
+                status: "failed",
                 message: "Invalid id in Params",
 
             });
@@ -50,20 +50,20 @@ exports.getDocuments = async (req, res) => {
         console.log(doc);
         if (!doc) {
             return res.status(404).json({
-                status: 404,
+                status: "failed",
                 message: "Document not found!",
                 detail: "We cannot find the page you are looking for.",
             });
         }
         return res.status(201).json({
-            status: 201,
+            status: "success",
             message: "Succesfully got the Document",
             data: doc,
         });
     } catch (err) {
         logger.log("error", err);
         return res.status(500).json({
-            status: 500,
+            status: "failed",
             message: "Server Error",
         });
     }
@@ -74,7 +74,7 @@ exports.getDocuments = async (req, res) => {
 exports.postDocument = async (req, res) => {
     if (!req.file) {
         return res.status(400).json({
-            status: 400,
+            status: "failed",
             error: "No file uploaded",
         });
     }
@@ -90,7 +90,7 @@ exports.postDocument = async (req, res) => {
             userId,
         });
         return res.status(201).json({
-            status: 201,
+            status: "success",
             message: "Succesfully posted a Document",
             data: document,
         });
@@ -98,7 +98,7 @@ exports.postDocument = async (req, res) => {
         logger.log("error", error);
         console.error(error);
         return res.status(500).json({
-            status: 500,
+            status: "failed",
             message: "Server Error",
         });
     }
@@ -111,19 +111,19 @@ exports.deleteDocument = async (req, res) => {
         const deleteD = await Document.findByIdAndDelete(id);
         if (!deleteD) {
             return res.status(404).json({
-                status: 404,
+                status: "failed",
                 message: "Already deleted!",
                 detail: "Document has already been deleted.",
             });
         }
         return res.status(201).json({
-            status: 201,
+            status: "success",
             message: "Succesfully deleted Document",
         });
     } catch (err) {
         logger.log("error", err);
         return res.status(500).json({
-            status: 500,
+            status: "failed",
             message: "Server Error",
         });
     }

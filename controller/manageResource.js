@@ -13,18 +13,18 @@ module.exports = {
 
             if (!updateblog) {
                 return res.status(404).json({
-                    status: 404,
+                    status: "failed",
                     message: "Blog not found!",
                 });
             }
             return res.status(201).json({
-                status: 201,
+                status: "success",
                 message: "Succesfully approved a blog",
                 data: updateblog,
             });
         } catch (err) {
             return res.status(500).json({
-                status: 500,
+                status: "failed",
                 message: "Server Error",
             });
         }
@@ -39,18 +39,18 @@ module.exports = {
 
             if (!approvedoc) {
                 return res.status(404).json({
-                    status: 404,
+                    status: "failed",
                     message: "Document not found!",
                 });
             }
             return res.status(201).send({
-                status: 201,
+                status: "success",
                 message: "Succesfully approved document",
                 data: approvedoc,
             });
         } catch (err) {
             return res.status(500).json({
-                status: 500,
+                status: "failed",
                 message: "Server Error",
             });
         }
@@ -99,7 +99,7 @@ module.exports = {
             return res.json(blogs);
         } catch (err) {
             return res.status(500).json({
-                status: 500,
+                status: "failed",
                 message: "Server Error",
             });
         }
@@ -148,7 +148,7 @@ module.exports = {
             return res.json(docs);
         } catch (error) {
             return res.status(500).json({
-                status: 500,
+                status: "failed",
                 message: "Server Error",
             });
         }

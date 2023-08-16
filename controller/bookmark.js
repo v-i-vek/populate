@@ -1,5 +1,5 @@
 const Bookmark = require("../model/bookmark");
-const logger = require("../logger/productionLogger");
+const logger = require("../logger/logger");
 
 /**
  *
@@ -12,7 +12,7 @@ module.exports = {
                 return res
                     .status(406)
                     .json({
-                        status: 406,
+                        status: "failed",
                         message: "Data not Found, Payload Not Acceptable",
                     });
             }
@@ -22,7 +22,7 @@ module.exports = {
                 return res
                     .status(406)
                     .json({
-                        status: 406,
+                        status: "failed",
                         message: "userId is not defined",
                     });
             }
@@ -31,7 +31,7 @@ module.exports = {
                 return res
                     .status(406)
                     .json({
-                        status: 406,
+                        status: "failed",
                         message: "please enter valid user Id",
                     });
             }
@@ -39,7 +39,7 @@ module.exports = {
                 return res
                     .status(406)
                     .json({
-                        status: 406,
+                        status: "failed",
                         message: "please enter the Quesiton Id",
                     });
             }
@@ -48,7 +48,7 @@ module.exports = {
                 return res
                     .status(406)
                     .json({
-                        status: 406,
+                        status: "failed",
                         message: "QuestionId can't be empty",
                     });
             }
@@ -58,21 +58,21 @@ module.exports = {
                 // eslint-disable-next-line no-underscore-dangle
                 await Bookmark.findByIdAndDelete(addedBookmark._id);
                 return res.status(200).json({
-                    status: 200,
+                    status: "success",
                     message: "Bookmark removed",
                 });
             }
             const bookmark = new Bookmark({ userId, questionId });
             await bookmark.save();
             return res.status(201).json({
-                status: 201,
+                status: "success",
                 message: "Added bookmark",
                 data: bookmark,
             });
         } catch (err) {
             logger.log("error", err);
             return res.status(500).json({
-                status: 500,
+                status: "failed",
                 message: "Server Error",
             });
         }
@@ -91,14 +91,14 @@ module.exports = {
                 },
             ]);
             return res.status(200).json({
-                status: 200,
+                status: "success",
                 message: "Bookmarks",
                 data: bookmarks,
             });
         } catch (err) {
             logger.log("error", err);
             return res.status(500).json({
-                status: 500,
+                status: "failed",
                 message: "Server Error",
             });
         }
@@ -109,14 +109,14 @@ module.exports = {
             const { userId } = req.params;
             const bookmarks = await Bookmark.find({ userId });
             return res.status(200).json({
-                status: 200,
+                status: "success",
                 message: "Bookmarks",
                 data: bookmarks,
             });
         } catch (err) {
-            logger.log("error", err);
+            logger.log("error", "failed");
             return res.status(500).json({
-                status: 500,
+                status: "failed",
                 message: "Server Error",
             });
         }

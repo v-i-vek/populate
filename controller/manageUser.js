@@ -14,7 +14,7 @@ module.exports = {
             const users = await User.find({}, projection).exec();
             if (!users) {
                 return res.status(404).json({
-                    status: 404,
+                    status: "failed",
                     message: "Users not found",
                 });
             }
@@ -25,10 +25,10 @@ module.exports = {
                 firstName: user.firstName,
                 lastName: user.lastName,
             }));
-            return res.status(201).json({ users: usersData });
+            return res.status(201).json({ status: "success", users: usersData });
         } catch (err) {
             return res.status(500).json({
-                status: 500,
+                status: "failed",
                 message: "Server Error",
             });
         }
@@ -39,7 +39,7 @@ module.exports = {
             const userId = req.params.id;
             if (!userId) {
                 return res.status(404).json({
-                    status: 404,
+                    status: "failed",
                     message: "UserId not found",
                 });
             }
@@ -51,12 +51,12 @@ module.exports = {
             await Doc.deleteMany({ userId });
 
             return res.status(201).json({
-                status: 201,
+                status: "success",
                 message: "User deleted successfully!",
             });
         } catch (err) {
             return res.status(500).json({
-                status: 500,
+                status: "failed",
                 message: "Server Error",
             });
         }

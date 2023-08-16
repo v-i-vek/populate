@@ -1,6 +1,10 @@
 const Blog = require("../model/blog");
-const logger = require("../logger/productionLogger");
+const {logFun} = require("../logger/logger");
 
+const info = "info";
+const error = "error";
+const blogMessage = {};
+blogMessage.message = "blog not found"
 /**
  *
  * @param {object} req -from the client side
@@ -56,8 +60,8 @@ exports.blogs = async (req, res) => {
 
         const blogs = await Blog.aggregate(pipeline);
         res.json(blogs);
-    } catch (error) {
-        logger.log("error", error);
+    } catch (err) {
+        logFun(error, err)
         res.status(500).json({ error: "Server error" });
     }
 };
@@ -66,30 +70,27 @@ exports.blogs = async (req, res) => {
 exports.blog = async (req, res) => {
     try {
         const { id } = req.params;
-        if (id.length !== 24) {
-            return res.status(401).json({
-                status: 401,
-                message: "Invalid Id in Params",
-            });
-        }
         const blog = await Blog.findById(id).populate([
             {
                 path: "userId",
             },
         ]);
         if (!blog) {
+            logFun(error, blogMessage.message="Blog not found!")
             return res.status(404).json({
-                status: 404,
+                status: "failed",
                 message: "Blog not found!",
             });
         }
+        logFun(info, blogMessage.message="Succesfully got the Blog")
         return res.status(201).send({
-            status: 201,
+
+            status: "success",
             message: "Succesfully got the Blog",
             data: blog,
         });
     } catch (err) {
-        logger.log("error", err);
+        logFun(error, err)
         return res.status(500).json({
             status: 500,
             message: "Server Error",
@@ -99,7 +100,7 @@ exports.blog = async (req, res) => {
 
 // post a new blog
 exports.createBlog = async (req, res) => {
-    console.log("this is callled");
+   
 
     const { title, content } = req.body;
     const createdDate = Date.now();
@@ -113,15 +114,16 @@ exports.createBlog = async (req, res) => {
     });
     try {
         await blog.save();
+        logFun(info, blogMessage.message="Blog posted successfully")
         return res.status(201).json({
-            status: 201,
+            status: "success",
             message: "Blog posted successfully",
             data: blog,
         });
     } catch (err) {
-        logger.log("error", err);
+        logFun(error, error);
         return res.status(500).json({
-            status: 500,
+            status: "failed",
             message: "Server Error",
         });
     }
@@ -138,20 +140,22 @@ exports.getBlog = async (req, res) => {
             },
         ]);
         if (!blog) {
+            logFun(error, blogMessage.message="Data not Found")
             return res.status(404).json({
-                status: 404,
+                status: "failed",
                 message: "Data not Found",
             });
         }
+        logFun(info, blogMessage.message="Blog get successfully")
         return res.status(200).json({
-            status: 200,
+            status: "failed",
             message: " Blog get successfully",
             data: blog,
         });
     } catch (err) {
-        logger.log("error", err);
+        logFun(error, err);
         return res.status(500).json({
-            status: 500,
+            status: "failed",
             message: "Server Error",
         });
     }
@@ -164,11 +168,12 @@ exports.getBlogTitle = async (req, res) => {
         const blogsData = blogsd.map((btitle) => ({
             title: btitle.title,
         }));
+        logFun(info, blogMessage.message = blogsData)
         return res.status(201).json({ blogs: blogsData });
     } catch (err) {
-        logger.log("error", err);
+        logFun(error, err);
         return res.status(500).json({
-            status: 500,
+            status: "failed",
             message: "Server Error",
         });
     }
@@ -181,25 +186,27 @@ exports.deleteBlog = async (req, res) => {
         id = id.trim();
         if (id.length !== 24) {
             return res.status(400).json({
-                status: 400,
+                status: "failed",
                 message: "Invalid id",
             });
         }
         const deleteblog = await Blog.findByIdAndDelete(id);
         if (!deleteblog) {
+            logFun(error, blogMessage.message="Already deleted")
             return res.status(404).json({
-                status: 404,
+                status: "failed",
                 message: "Already deleted!",
             });
         }
+        logFun(info, blogMessage.message="Succesfully deleted a blog")
         return res.status(201).send({
-            status: 201,
+            status: "success",
             message: "Succesfully deleted a blog",
         });
     } catch (err) {
-        logger.log("error", err);
+        logFun(error, err);
         return res.status(500).json({
-            status: 500,
+            status: "failed",
             message: "Server Error",
         });
     }
@@ -222,20 +229,22 @@ exports.updateBlog = async (req, res) => {
         );
 
         if (!updateblog) {
+            logFun(error, blogMessage.message="Blog not found!")
             return res.status(404).json({
-                status: 404,
+                status: "failed",
                 message: "Blog not found!",
             });
         }
+        logFun(info, blogMessage.message="Succesfully updated a blog")
         return res.status(201).send({
-            status: 201,
+            status: "success",
             message: "Succesfully updated a blog",
             data: updateblog,
         });
     } catch (err) {
-        logger.log("error", err);
+        logFun(error, err);
         return res.status(500).json({
-            status: 500,
+            status: "failed",
             message: "Server Error",
         });
     }

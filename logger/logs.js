@@ -1,4 +1,4 @@
-const logger = require("./productionLogger");
+const logger = require("./logger");
 
 /**
  *

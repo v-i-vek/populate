@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 require("dotenv").config();
 const cors = require("cors");
 
-const logger = require("./logger/productionLogger");
+const { logFun } = require("./logger/logger");
 
 const app = express();
 const signinRoutes = require("./route/signIn");
@@ -20,6 +20,9 @@ const manageUsersRoutes = require("./route/manageuser");
 const tagsRoutes = require("./route/Managetag");
 const manageResourcesRoutes = require("./route/manageResource");
 
+const info = "info";
+const error = "error";
+let status = "connected to ";
 const corsOptions = {
     origin: "http://localhost:4200",
     methods: ["GET", "PATCH", "POST", "DELETE"],
@@ -50,9 +53,13 @@ const connectToDatabase = async () => {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         });
-        logger.log("info", "Connected to database");
+        // logger.log("info", "Connected to database");
+        status += "database";
+        logFun(info, status);
+        
     } catch (err) {
-        logger.log("error", err);
+        // logger.log("error", err);
+        logFun(error, err);
     }
 };
 connectToDatabase();
@@ -82,7 +89,11 @@ app.use(
 );
 
 app.use("/admin", manageUsersRoutes, tagsRoutes, manageResourcesRoutes);
-app.listen(8080, () => { logger.log("info", "connected to port"); });
+app.listen(8080, () => {
+    status += "port";
+    logFun(info, status);
+    status = "connected to ";
+});
 
 // exports.techForumAPIs = app;
 module.exports = app;
