@@ -34,47 +34,10 @@ module.exports = {
                 });
             }
 
-            // const emailPattern = /^[a-zA-Z0-9._-]+@gmail\.com$/;
-            // if (!emailPattern.test(emailId)) {
-            //     return res.status(401).json({
-            //         status: 401,
-            //         errors: [{
-            //             value: `${emailId}`,
-            //             msg: `${emailId} not a valid emailID`,
-            //             params: "emailId",
-            //             location: "body",
-            //         }],
-            //     });
-            // }
-
-            // if (password === undefined) {
-            //     return res.status(401).json({
-            //         status: 401,
-            //         errors: [{
-            //             value: `${password}`,
-            //             msg: `${password} , password not defined`,
-            //             params: "password",
-
-            //         }],
-            //     });
-            // }
-
-            // if (password.length === 0) {
-            //     return res.status(401).json({
-            //         status: 401,
-            //         errors: [{
-            //             value: `${password}`,
-            //             msg: `${password} can't be empty`,
-            //             params: "password",
-
-            //         }],
-            //     });
-            // }
-
             const user = await User.findOne({ emailId });
             if (!user) {
                 return res.status(401).json({
-                    status: 401,
+                    status: "failed",
                     message: "Incorrect Email or password",
                 });
             }
@@ -96,7 +59,7 @@ module.exports = {
                         path: "/users",
                     },
                     body: {
-                        status: 200,
+                        status: "success",
                         message: "Signed in successfully",
                         data: {
                             _id: user._id,
@@ -108,13 +71,13 @@ module.exports = {
             }
 
             return res.status(401).json({
-                status: 401,
+                status: "failed",
                 message: "Incorrect Email or password",
             });
         } catch (err) {
             logger.log("error", err);
             return res.status(500).json({
-                status: 500,
+                status: "failed",
                 message: "Server Error",
             });
         }

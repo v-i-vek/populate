@@ -11,28 +11,27 @@ const Answer = require("../model/answer");
  * @returns {json}  - return by the server side
  */
 exports.addAnswer = async (req, res) => {
-    if (Object.keys(req.body).length === 0) {
-        const { answer, userId, questionId } = req.body;
+    const { answer, userId, questionId } = req.body;
 
+    try {
         const addanswer = new Answer({
             userId,
             questionId,
             answer,
+
         });
-        try {
-            await addanswer.save();
-            return res.status(201).json({
-                status: 201,
-                message: "Answer Posted successfully",
-                data: addanswer,
-            });
-        } catch (err) {
-            logger.log("error", err);
-            return res.status(500).json({
-                satus: 500,
-                error: "Server Error",
-            });
-        }
+        await addanswer.save();
+        return res.status(201).json({
+            status: 201,
+            message: "Answer Posted successfully",
+            data: addanswer,
+        });
+    } catch (err) {
+        logger.log("error", err);
+        return res.status(500).json({
+            satus: 500,
+            error: "Server Error",
+        });
     }
 };
 

@@ -11,8 +11,7 @@ const logger = require("../logger/logs");
 
 exports.auth = async (req, res, next) => {
     let check = req.headers.cookie;
-    console.log(req);
-    console.log(check, "==============");
+    console.log("=========", check);
     if (check === undefined) {
         const response = res.status(401).json({
             status: 401,
@@ -21,19 +20,15 @@ exports.auth = async (req, res, next) => {
 
         return response;
     }
-    // console.log(typeof check);
-    console.log(check, "this is check");
     check = check.slice(4, check.length);
 
     const token = check;
-    console.log(token, "this is the token");
+    console.log("================", token);
     if (!token) {
         const response = res.status(401).json({
             status: 401,
             message: "Need to Sign In",
         });
-        console.log(response);
-        logger.information(response);
 
         return response;
     }
@@ -41,7 +36,6 @@ exports.auth = async (req, res, next) => {
         const decode = jwt.verify(token, process.env.JWT_SECRET_KEY);
         req.userId = decode.userId;
     } catch (err) {
-        logger.errors(err);
         return res.status(401).json({
             status: 401,
             message: "You are not authorized",

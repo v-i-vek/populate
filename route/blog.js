@@ -5,7 +5,7 @@ const auth = require("../middleware/auth");
 const blogController = require("../controller/blog");
 const validate = require("../middleware/validator");
 
-blogRoutes.get("/blog", validate.blogValidatePost(), validate.validate, auth.auth, blogController.blogs);
+blogRoutes.get("/blog", validate.validate, auth.auth, blogController.blogs);
 
 blogRoutes.get("/blog/:id", validate.answerValidateGetById(), validate.validate, auth.auth, blogController.blog);
 
