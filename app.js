@@ -1,9 +1,10 @@
 const express = require("express");
-const mongoose = require("mongoose");
+
 require("dotenv").config();
 const cors = require("cors");
 
-const { logFun } = require("./logger/logger");
+const { logFun, info, error } = require("./logger/logger");
+const { connectToDatabase } = require("./config");
 
 const app = express();
 const signinRoutes = require("./route/signIn");
@@ -20,9 +21,6 @@ const manageUsersRoutes = require("./route/manageuser");
 const tagsRoutes = require("./route/Managetag");
 const manageResourcesRoutes = require("./route/manageResource");
 
-const info = "info";
-const error = "error";
-let status = "connected to ";
 const corsOptions = {
     origin: "http://localhost:4200",
     methods: ["GET", "PATCH", "POST", "DELETE"],
@@ -47,21 +45,6 @@ app.use(cors({ origin: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const connectToDatabase = async () => {
-    try {
-        await mongoose.connect(process.env.MONGODB_URI, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        });
-        // logger.log("info", "Connected to database");
-        status += "database";
-        logFun(info, status);
-        
-    } catch (err) {
-        // logger.log("error", err);
-        logFun(error, err);
-    }
-};
 connectToDatabase();
 app.use(cors(corsOptions));
 app.options(
@@ -90,9 +73,8 @@ app.use(
 
 app.use("/admin", manageUsersRoutes, tagsRoutes, manageResourcesRoutes);
 app.listen(8080, () => {
-    status += "port";
-    logFun(info, status);
-    status = "connected to ";
+    const str = "connected to port";
+    logFun(info, str);
 });
 
 // exports.techForumAPIs = app;

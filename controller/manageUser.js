@@ -5,10 +5,19 @@ const Question = require("../model/question");
 const Blog = require("../model/blog");
 const Doc = require("../model/doc");
 const { logFun, error, info } = require("../logger/logger");
-
+/**
+ *@type {object}  The below object is created to add the custom message for the log file
+*@const
+ */
 const manageUser = {};
 manageUser.msg = "value for the value";
 module.exports = {
+    /**
+     * This funciton is used to get all the user at a time
+     * @param {object} req  client will provide the request
+     * @param {object} res  server will response according to the request
+     * @returns {json}      server will return the json object as response
+     */
     getAllUsers: async (req, res) => {
         try {
             const projection = {
@@ -39,7 +48,12 @@ module.exports = {
             });
         }
     },
-
+    /**
+     * This funciton is used to delete the user by there id
+     * @param {object} req  client will provide the request
+     * @param {object} res  server will response according to the request
+     * @returns {json}      server will return the json object as response
+     */
     deleteUser: async (req, res) => {
         try {
             const userId = req.params.id;

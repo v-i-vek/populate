@@ -4,7 +4,7 @@ const multerStorage = multer.memoryStorage();
 
 // Multer Filter
 /**
- *
+ *This function will use to add pdf through body in database
  * @param {object} req - from client side
  * @param {BinaryData} file -from client side
  * @param {Function} cb -it is callback function

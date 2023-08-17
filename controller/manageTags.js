@@ -1,10 +1,19 @@
 const { default: mongoose } = require("mongoose");
 const Tag = require("../model/tag");
 const { logFun, error, info } = require("../logger/logger");
-
+/**
+ *@type {object}  The below object is created to add the custom message for the log file
+*@const
+ */
 const manageTagMessage = {};
 manageTagMessage.msg = "value for the value";
 module.exports = {
+    /**
+     * This funciton is used to add TAGs
+     * @param {object} req  client will provide the request
+     * @param {object} res  server will response according to the request
+     * @returns {json}      server will return the json object as response
+     */
     addTag: async (req, res) => {
         try {
             const tag = req.body.name;
@@ -32,6 +41,13 @@ module.exports = {
             });
         }
     },
+    /**
+     * This funciton is used to get all TAGs
+     * @param {object} req  client will provide the request
+     * @param {object} res  server will response according to the request
+     * @returns {json}      server will return the json object as response
+     */
+
     getAllTags: async (req, res) => {
         try {
             const projection = { name: 1 };
@@ -51,7 +67,12 @@ module.exports = {
             });
         }
     },
-
+    /**
+     * This funciton is used to delete TAGs by its id
+     * @param {object} req  client will provide the request
+     * @param {object} res  server will response according to the request
+     * @returns {json}      server will return the json object as response
+     */
     deleteTag: async (req, res) => {
         try {
             const { id } = req.params;

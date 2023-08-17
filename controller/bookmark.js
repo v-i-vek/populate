@@ -1,6 +1,9 @@
 const Bookmark = require("../model/bookmark");
 const { logFun, info, error } = require("../logger/logger");
-
+/**
+ *@type {object}  The below object is created to add the custom message for the log file
+*@const
+ */
 const bookmarkMessage = {};
 bookmarkMessage.msg = "value of the value";
 
@@ -9,6 +12,12 @@ bookmarkMessage.msg = "value of the value";
  */
 
 module.exports = {
+    /**
+     * This function get data from req body to add or remove bookmark to a question
+     * @param {Object} req req contain data that comes from client
+     * @param {Object} res res send response to client
+     * @returns {Object} server will return response in json object
+     */
     addBookmark: async (req, res) => {
         try {
             const userId = await req.body.userId;
@@ -38,6 +47,12 @@ module.exports = {
             });
         }
     },
+    /**
+     * This function get data from req param to fetch manage bookmark by user
+     * @param {Object} req req contain data that comes from client
+     * @param {Object} res res send response to client
+     * @returns {Object} server will return response in json object
+     */
 
     getmanageBookmarkById: async (req, res) => {
         try {
@@ -65,6 +80,12 @@ module.exports = {
             });
         }
     },
+    /**
+     * This function get data from req param to fetch bookmark for a user
+     * @param {Object} req req contain data that comes from client
+     * @param {Object} res res send response to client
+     * @returns {Object} server will return response in json object
+     */
 
     getBookmarkByUserId: async (req, res) => {
         try {

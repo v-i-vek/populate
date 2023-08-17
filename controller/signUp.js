@@ -4,11 +4,20 @@ const crypto = require("crypto");
 const User = require("../model/user");
 require("dotenv").config();
 const { logFun, error, info } = require("../logger/logger");
-
+/**
+ *@type {object}  The below object is created to add the custom message for the log file
+*@const
+ */
 const signUpMessage = {};
 signUpMessage.msg = "value for the logger for error and info";
 
 module.exports = {
+    /**
+ *This function will signUp the user , means it will be used to add new user
+ * @param {object} req  client will request
+ * @param {object} res  server will response
+ *  @returns {json}  - return by the server side
+ */
     signUp: async (req, res) => {
         let {
             firstName,

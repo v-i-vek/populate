@@ -1,10 +1,19 @@
 const Question = require("../model/question");
 
 const { logFun, error, info } = require("../logger/logger");
-
+/**
+ *@type {object}  The below object is created to add the custom message for the log file
+*@const
+ */
 const searchMessage = {};
 searchMessage.msg = "value for the logger for error and info";
 // search question
+/**
+ *This function is will search the question
+ * @param {object} req  client will request
+ * @param {object} res  server will response
+ *  @returns {json}  - return by the server side
+ */
 exports.searchQuestion = async (req, res) => {
     try {
         const question = req.query.tags;
