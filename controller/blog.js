@@ -1,10 +1,10 @@
 const Blog = require("../model/blog");
-const {logFun} = require("../logger/logger");
+const { logFun } = require("../logger/logger");
 
 const info = "info";
 const error = "error";
 const blogMessage = {};
-blogMessage.message = "blog not found"
+blogMessage.message = "blog not found";
 /**
  *
  * @param {object} req -from the client side
@@ -61,7 +61,7 @@ exports.blogs = async (req, res) => {
         const blogs = await Blog.aggregate(pipeline);
         res.json(blogs);
     } catch (err) {
-        logFun(error, err)
+        logFun(error, err);
         res.status(500).json({ error: "Server error" });
     }
 };
@@ -76,13 +76,13 @@ exports.blog = async (req, res) => {
             },
         ]);
         if (!blog) {
-            logFun(error, blogMessage.message="Blog not found!")
+            logFun(error, blogMessage.message = "Blog not found!");
             return res.status(404).json({
                 status: "failed",
                 message: "Blog not found!",
             });
         }
-        logFun(info, blogMessage.message="Succesfully got the Blog")
+        logFun(info, blogMessage.message = "Succesfully got the Blog");
         return res.status(201).send({
 
             status: "success",
@@ -90,7 +90,7 @@ exports.blog = async (req, res) => {
             data: blog,
         });
     } catch (err) {
-        logFun(error, err)
+        logFun(error, err);
         return res.status(500).json({
             status: 500,
             message: "Server Error",
@@ -100,8 +100,6 @@ exports.blog = async (req, res) => {
 
 // post a new blog
 exports.createBlog = async (req, res) => {
-   
-
     const { title, content } = req.body;
     const createdDate = Date.now();
     const { userId } = req.body;
@@ -114,7 +112,7 @@ exports.createBlog = async (req, res) => {
     });
     try {
         await blog.save();
-        logFun(info, blogMessage.message="Blog posted successfully")
+        logFun(info, blogMessage.message = "Blog posted successfully");
         return res.status(201).json({
             status: "success",
             message: "Blog posted successfully",
@@ -140,13 +138,13 @@ exports.getBlog = async (req, res) => {
             },
         ]);
         if (!blog) {
-            logFun(error, blogMessage.message="Data not Found")
+            logFun(error, blogMessage.message = "Data not Found");
             return res.status(404).json({
                 status: "failed",
                 message: "Data not Found",
             });
         }
-        logFun(info, blogMessage.message="Blog get successfully")
+        logFun(info, blogMessage.message = "Blog get successfully");
         return res.status(200).json({
             status: "failed",
             message: " Blog get successfully",
@@ -168,7 +166,7 @@ exports.getBlogTitle = async (req, res) => {
         const blogsData = blogsd.map((btitle) => ({
             title: btitle.title,
         }));
-        logFun(info, blogMessage.message = blogsData)
+        logFun(info, blogMessage.message = blogsData);
         return res.status(201).json({ blogs: blogsData });
     } catch (err) {
         logFun(error, err);
@@ -192,13 +190,13 @@ exports.deleteBlog = async (req, res) => {
         }
         const deleteblog = await Blog.findByIdAndDelete(id);
         if (!deleteblog) {
-            logFun(error, blogMessage.message="Already deleted")
+            logFun(error, blogMessage.message = "Already deleted");
             return res.status(404).json({
                 status: "failed",
                 message: "Already deleted!",
             });
         }
-        logFun(info, blogMessage.message="Succesfully deleted a blog")
+        logFun(info, blogMessage.message = "Succesfully deleted a blog");
         return res.status(201).send({
             status: "success",
             message: "Succesfully deleted a blog",
@@ -229,13 +227,13 @@ exports.updateBlog = async (req, res) => {
         );
 
         if (!updateblog) {
-            logFun(error, blogMessage.message="Blog not found!")
+            logFun(error, blogMessage.message = "Blog not found!");
             return res.status(404).json({
                 status: "failed",
                 message: "Blog not found!",
             });
         }
-        logFun(info, blogMessage.message="Succesfully updated a blog")
+        logFun(info, blogMessage.message = "Succesfully updated a blog");
         return res.status(201).send({
             status: "success",
             message: "Succesfully updated a blog",

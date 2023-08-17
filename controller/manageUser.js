@@ -4,7 +4,10 @@ const Answer = require("../model/answer");
 const Question = require("../model/question");
 const Blog = require("../model/blog");
 const Doc = require("../model/doc");
+const { logFun, error, info } = require("../logger/logger");
 
+const manageUser = {};
+manageUser.msg = "value for the value";
 module.exports = {
     getAllUsers: async (req, res) => {
         try {
@@ -13,6 +16,7 @@ module.exports = {
             };
             const users = await User.find({}, projection).exec();
             if (!users) {
+                logFun(error, manageUser.msg = "Users not found");
                 return res.status(404).json({
                     status: "failed",
                     message: "Users not found",
@@ -25,8 +29,10 @@ module.exports = {
                 firstName: user.firstName,
                 lastName: user.lastName,
             }));
+            logFun(info, usersData);
             return res.status(201).json({ status: "success", users: usersData });
         } catch (err) {
+            logFun(error, err);
             return res.status(500).json({
                 status: "failed",
                 message: "Server Error",
@@ -38,6 +44,7 @@ module.exports = {
         try {
             const userId = req.params.id;
             if (!userId) {
+                logFun(error, manageUser.msg = "Users not found");
                 return res.status(404).json({
                     status: "failed",
                     message: "UserId not found",
@@ -49,12 +56,13 @@ module.exports = {
             await Question.deleteMany({ userId });
             await Blog.deleteMany({ userId });
             await Doc.deleteMany({ userId });
-
+            logFun(info, manageUser.msg = "User deleted successfully!");
             return res.status(201).json({
                 status: "success",
                 message: "User deleted successfully!",
             });
         } catch (err) {
+            logFun(error, err);
             return res.status(500).json({
                 status: "failed",
                 message: "Server Error",

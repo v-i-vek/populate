@@ -1,6 +1,10 @@
 const Question = require("../model/question");
 const Bookmark = require("../model/bookmark");
 const Answer = require("../model/answer");
+const { logFun, error, info } = require("../logger/logger");
+
+const questionMessage = {};
+questionMessage.msg = "value for the logger for error and info";
 
 /**
  *
@@ -12,79 +16,16 @@ const Answer = require("../model/answer");
 // post a question
 exports.createQuestion = async (req, res) => {
     try {
-        let { userId } = req.body;
-        let { question } = req.body;
-        let { questionDescribe } = req.body;
+        const { userId } = req.body;
+        const { question } = req.body;
+        const { questionDescribe } = req.body;
         const { tags } = req.body;
         const createdAt = Date.now();
 
-        userId = userId.trim();
-        if (userId.length === 0 || userId.length !== 24) {
-            return res
-                .status(406)
-                .json({
-                    status: 406,
-                    message: "Invalid user Id",
-                });
-        }
-
-        if (question === undefined) {
-            return res
-                .status(406)
-                .json({
-                    status: 406,
-                    message: "please enter the question ",
-                });
-        }
-        question = question.trim();
-        if (question.length === 0) {
-            return res
-                .status(406)
-                .json({
-                    status: 406,
-                    message: "question can't be empty",
-                });
-        }
-        if (questionDescribe !== undefined) {
-            questionDescribe = questionDescribe.trim();
-            if (questionDescribe.length === 0) {
-                return res
-                    .status(406)
-                    .json({
-                        status: 406,
-                        message: "please describe the question",
-                    });
-            }
-        }
-        if (tags !== undefined) {
-            if (tags.length === 0) {
-                return res
-                    .status(406)
-                    .json({
-                        status: 406,
-                        message: "tags can't be empty",
-                    });
-            }
-            if (!Array.isArray(tags)) {
-                return res
-                    .status(406)
-                    .json({
-                        status: 406,
-                        message: "tags must be in Array with element in string",
-                    });
-            }
-            if (tags.reduce((acc, val) => acc || val.trim() === "", false)) {
-                return res
-                    .status(406)
-                    .json({
-                        status: 406,
-                        message: "there should not be empty string in array",
-                    });
-            }
-        }
         const questionData = await Question.findOne({ question });
 
-        if (questionData.question === question) {
+        if (questionData === question) {
+            logFun(error, questionMessage.msg = "Question already exist");
             return res.status(400).json({
                 status: 400,
                 message: "Question already exist",
@@ -98,13 +39,14 @@ exports.createQuestion = async (req, res) => {
             createdAt,
         });
         await questionCreated.save();
+        logFun(info, questionMessage.msg = "Question created successfully");
         return res.status(201).json({
             status: 201,
             message: "Question created successfully",
             data: questionCreated,
         });
     } catch (err) {
-        console.log(err);
+        logFun(error, err);
         return res.status(500).json({
             status: 500,
             message: "Server Error",
@@ -135,6 +77,7 @@ exports.questionPagination = async (req, res) => {
         const count = await Question.countDocuments();
         const check = page * limit;
         if (check > count) {
+            logFun(error, questionMessage.msg = "please decrease the limit or page");
             return res.status(404).json({
                 status: "failed",
                 message: "please decrease the limit or page",
@@ -145,11 +88,15 @@ exports.questionPagination = async (req, res) => {
         const hasMore = page < totalPages;
 
         if (!questionsData) {
+            logFun(error, questionMessage.msg = "Data Not Found");
+
             return res.status(404).json({
                 status: "failed",
                 message: "Data Not Found",
             });
         }
+        logFun(info, questionMessage.msg = "Questions Readed successfully");
+
         return res.status(200).json({
             status: "success",
             message: "Questions Readed successfully",
@@ -159,6 +106,8 @@ exports.questionPagination = async (req, res) => {
             hasMore,
         });
     } catch (err) {
+        logFun(error, err);
+
         return res.status(500).json({
             status: "failed",
             message: "Server Error",
@@ -175,17 +124,23 @@ exports.readQuestions = async (req, res) => {
             },
         ]);
         if (!questionsData) {
+            logFun(error, questionMessage.msg = "Data Not Found");
+
             return res.status(404).json({
                 status: "failed",
                 message: "Data Not Found",
             });
         }
+        logFun(info, questionMessage.msg = "Questions Readed successfully");
+
         return res.status(200).json({
             status: "success",
             message: "Questions Readed successfully",
             data: questionsData,
         });
     } catch (err) {
+        logFun(error, err);
+
         return res.status(500).json({
             status: "failed",
             message: "Server Error",
@@ -195,31 +150,30 @@ exports.readQuestions = async (req, res) => {
 // get a speific question by question id
 exports.readByIdQuestion = async (req, res) => {
     try {
-        let { id } = req.params;
-        id = id.trim();
-        if (id.length !== 24) {
-            return res.status(400).json({
-                status: "failed",
-                message: "Invalid id from params",
-            });
-        }
+        const { id } = req.params;
         const questionData = await Question.findById({ _id: id }).populate([
             {
                 path: "userId",
             },
         ]);
         if (!questionData) {
+            logFun(error, questionMessage.msg = "Data Not Found");
+
             return res.status(404).json({
                 status: "failed",
                 message: "Data Not Found",
             });
         }
+        logFun(info, questionMessage.msg = "Question Readed successfully");
+
         return res.status(200).json({
             status: "success",
             message: "Question Readed successfully",
             data: questionData,
         });
     } catch (err) {
+        logFun(error, err);
+
         console.log(err);
         return res.status(500).json({
             status: "failed",
@@ -239,17 +193,23 @@ exports.readByIdUser = async (req, res) => {
             },
         ]);
         if (!questionData) {
+            logFun(error, questionMessage.msg = "Data Not Found");
+
             return res.status(404).json({
                 status: "failed",
                 message: "Data Not Found",
             });
         }
+        logFun(info, questionMessage.msg = "Question Read successfully");
+
         return res.status(200).json({
             status: 200,
-            message: "Question Readed successfully",
+            message: "Question Read successfully",
             data: questionData,
         });
     } catch (err) {
+        logFun(error, err);
+
         return res.status(500).json({
             status: "failed",
             message: "Server Error",
@@ -260,43 +220,31 @@ exports.readByIdUser = async (req, res) => {
 // update perticular question
 exports.updateQuestion = async (req, res) => {
     try {
-        if (Object.keys(req.body).length === 0) {
-            return res
-                .status(406)
-                .json({
-                    status: "failed",
-                    message: "Data not Found, Payload Not Acceptable",
-                });
-        }
-
-        let { id } = req.params;
+        const { id } = req.params;
         const update = req.body;
         const updatedAt = Date.now();
 
-        id = id.trim();
-        if (id.length !== 24) {
-            return res.status(402).json({
-                status: "failed",
-                message: "please enter a valid id",
-            });
-        }
         const updateQuestion = await Question.findByIdAndUpdate(id, { ...update, updatedAt }, {
             new: true,
         });
 
         if (!updateQuestion) {
+            logFun(error, questionMessage.msg = "Data Not Found");
+
             return res.status(404).json({
                 status: "failed",
                 message: "Data Not Found",
             });
         }
-
+        logFun(info, questionMessage.msg = "Question Updated Successfully");
         return res.status(200).json({
             status: "success",
             message: "Question Updated Successfully",
             data: updateQuestion,
         });
     } catch (err) {
+        logFun(error, err);
+
         return res.status(500).json({
             status: "failed",
             message: "Server Error",
@@ -307,16 +255,11 @@ exports.updateQuestion = async (req, res) => {
 // delete perticular question
 exports.deleteQuestion = async (req, res) => {
     try {
-        let { id } = req.params;
-        id = id.trim();
-        if (id.length !== 24) {
-            return res.status(401).json({
-                status: "failed",
-                message: "invalid user Id",
-            });
-        }
+        const { id } = req.params;
         const question = await Question.findByIdAndDelete(id);
         if (!question) {
+            logFun(error, questionMessage.msg = "question not exist");
+
             return res.status(401).json({
                 status: "fail",
                 message: "question not exist",
@@ -324,11 +267,15 @@ exports.deleteQuestion = async (req, res) => {
         }
         await Bookmark.deleteMany({ questionId: id });
         await Answer.deleteMany({ questionId: id });
+        logFun(info, questionMessage.msg = "Question Deleted Successfully");
+
         return res.status(200).json({
             status: "success",
             message: "Question Deleted Successfully",
         });
     } catch (err) {
+        logFun(error, err);
+
         return res.status(500).json({
             status: "failed",
             message: "Server Error",

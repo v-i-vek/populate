@@ -1,5 +1,8 @@
 const Document = require("../model/doc");
-const logger = require("../logger/logger");
+const { logFun, error, info } = require("../logger/logger");
+
+const documentMessage = {};
+documentMessage.msg = "value for the value";
 /**
  *
  *@param {object} req - provided by the client side
@@ -15,14 +18,14 @@ exports.getDocument = async (req, res) => {
                 path: "userId",
             },
         ]);
-        console.log(docsdata);
+        logFun(info, documentMessage.msg = "Succesfully got all Documents");
         return res.status(201).json({
             status: "success",
             message: "Succesfully got all Documents",
             data: docsdata,
         });
-    } catch (error) {
-        logger.log("error", error);
+    } catch (err) {
+        logFun(error, err);
         return res.status(500).json({
             status: "failed",
             message: "Server Error",
@@ -34,34 +37,29 @@ exports.getDocument = async (req, res) => {
 exports.getDocuments = async (req, res) => {
     try {
         const { id } = req.params;
-        if (id.length !== 24) {
-            return res.status(400).json({
-                status: "failed",
-                message: "Invalid id in Params",
 
-            });
-        }
-        console.log(id, "this is the document id");
         const doc = await Document.findById(id).populate([
             {
                 path: "userId",
             },
         ]);
-        console.log(doc);
+
         if (!doc) {
+            logFun(info, documentMessage.msg = "Document not found!");
             return res.status(404).json({
                 status: "failed",
                 message: "Document not found!",
                 detail: "We cannot find the page you are looking for.",
             });
         }
+        logFun(info, documentMessage.msg = "Succesfully got the Document");
         return res.status(201).json({
             status: "success",
             message: "Succesfully got the Document",
             data: doc,
         });
     } catch (err) {
-        logger.log("error", err);
+        logFun(error, err);
         return res.status(500).json({
             status: "failed",
             message: "Server Error",
@@ -73,6 +71,7 @@ exports.getDocuments = async (req, res) => {
 
 exports.postDocument = async (req, res) => {
     if (!req.file) {
+        logFun(error, documentMessage.msg = "No file uploaded");
         return res.status(400).json({
             status: "failed",
             error: "No file uploaded",
@@ -89,14 +88,14 @@ exports.postDocument = async (req, res) => {
             docData,
             userId,
         });
+        logFun(info, documentMessage.msg = "Succesfully posted a Document");
         return res.status(201).json({
             status: "success",
             message: "Succesfully posted a Document",
             data: document,
         });
-    } catch (error) {
-        logger.log("error", error);
-        console.error(error);
+    } catch (err) {
+        logFun(error, err);
         return res.status(500).json({
             status: "failed",
             message: "Server Error",
@@ -110,18 +109,20 @@ exports.deleteDocument = async (req, res) => {
         const { id } = req.params;
         const deleteD = await Document.findByIdAndDelete(id);
         if (!deleteD) {
+            logFun(error, documentMessage.msg = "Already deleted!");
             return res.status(404).json({
                 status: "failed",
                 message: "Already deleted!",
                 detail: "Document has already been deleted.",
             });
         }
+        logFun(error, documentMessage.msg = "Succesfully deleted Document");
         return res.status(201).json({
             status: "success",
             message: "Succesfully deleted Document",
         });
     } catch (err) {
-        logger.log("error", err);
+        logFun(error, err);
         return res.status(500).json({
             status: "failed",
             message: "Server Error",

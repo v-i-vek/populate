@@ -1,6 +1,9 @@
 const Blog = require("../model/blog");
 const Document = require("../model/doc");
+const { logFun, error, info } = require("../logger/logger");
 
+const manageMessage = {};
+manageMessage.msg = "value for the value";
 // update an existing blog
 module.exports = {
     approveBlog: async (req, res) => {
@@ -12,17 +15,20 @@ module.exports = {
             });
 
             if (!updateblog) {
+                logFun(error, manageMessage.msg = "Blog not found!");
                 return res.status(404).json({
                     status: "failed",
                     message: "Blog not found!",
                 });
             }
+            logFun(info, manageMessage.msg = "Succesfully approved a blog");
             return res.status(201).json({
                 status: "success",
                 message: "Succesfully approved a blog",
                 data: updateblog,
             });
         } catch (err) {
+            logFun(error, err);
             return res.status(500).json({
                 status: "failed",
                 message: "Server Error",
@@ -38,17 +44,20 @@ module.exports = {
             });
 
             if (!approvedoc) {
+                logFun(error, manageMessage.msg = "Document not found!");
                 return res.status(404).json({
                     status: "failed",
                     message: "Document not found!",
                 });
             }
+            logFun(info, manageMessage.msg = "Succesfully approved document");
             return res.status(201).send({
                 status: "success",
                 message: "Succesfully approved document",
                 data: approvedoc,
             });
         } catch (err) {
+            logFun(error, err);
             return res.status(500).json({
                 status: "failed",
                 message: "Server Error",
@@ -98,6 +107,7 @@ module.exports = {
             const blogs = await Blog.aggregate(pipeline);
             return res.json(blogs);
         } catch (err) {
+            logFun(error, err);
             return res.status(500).json({
                 status: "failed",
                 message: "Server Error",
@@ -146,7 +156,8 @@ module.exports = {
 
             const docs = await Document.aggregate(pipeline);
             return res.json(docs);
-        } catch (error) {
+        } catch (err) {
+            logFun(error, err);
             return res.status(500).json({
                 status: "failed",
                 message: "Server Error",

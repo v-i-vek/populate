@@ -3,36 +3,21 @@ const crypto = require("crypto");
 const nodemailer = require("nodemailer");
 const User = require("../model/user");
 require("dotenv").config();
-const logger = require("../logger/logger");
 
+const { logFun, error, info } = require("../logger/logger");
+
+const forgetMessage = {};
+forgetMessage.msg = "success and error value for the logger";
 module.exports = {
     // eslint-disable-next-line consistent-return
     forgotPassword: async (req, res) => {
         try {
-            let { emailId } = req.body;
-            if (emailId === undefined) {
-                return res
-                    .status(406)
-                    .json({
-                        status: "failed",
-                        message: "emailId is undefined",
-                    });
-            }
-            emailId = emailId.trim();
-            if (emailId.length === 0) {
-                return res
-                    .status(406)
-                    .json({
-                        status: "failed",
-                        message: "EmailId can't be empty",
-                    });
-            }
+            const { emailId } = req.body;
 
-            console.log(typeof req.body);
-            console.log(typeof emailId);
             const { url } = process.env;
             const user = await User.findOne({ emailId });
             if (!user) {
+                logFun(error, forgetMessage.msg = "User not found");
                 return res.status(404).json({
                     status: "failed",
                     message: "User not found",
@@ -92,13 +77,15 @@ module.exports = {
                 </html>
   `,
             };
-            transporter.sendMail(mailOptions, (error) => {
-                if (error) {
+            transporter.sendMail(mailOptions, (err) => {
+                if (err) {
+                    logFun(error, err);
                     return res.status(500).json({
                         status: "failed",
                         message: "Server Error",
                     });
                 }
+                logFun(info, forgetMessage.msg = "Reset password email sent");
                 return res.cookie("email", emailId, {
                     maxAge: 900000,
                     httpOnly: true,
@@ -113,7 +100,7 @@ module.exports = {
                     });
             });
         } catch (err) {
-            logger.log("error", err);
+            logFun(error, err);
             return res.status(500).json({
                 status: "failed",
                 message: "Server Error",
@@ -123,10 +110,10 @@ module.exports = {
     resetPassword: async (req, res) => {
         try {
             const password = req.body.newPassword;
-            const confirmpassword = req.body.confirmPassword;
             const { salt } = process.env;
             const { email } = req.cookies;
             if (!email || !password) {
+                logFun(error, forgetMessage.msg = "Missing email or password");
                 return res.status(404).json({
                     status: "failed",
                     message: "Missing email or password",
@@ -135,24 +122,13 @@ module.exports = {
             const user = await User.findOne({ emailId: email });
 
             if (!user) {
+                logFun(error, forgetMessage.msg = "Invalid Email or user");
                 return res.status(400).json({
                     status: "failed",
                     message: "Invalid Email or user",
                 });
             }
 
-            if (password.length < 6) {
-                return res.status(400).json({
-                    status: "failed",
-                    message: "Password must be at least 6 characters long",
-                });
-            }
-            if (password !== confirmpassword) {
-                return res.status(401).json({
-                    status: "failed",
-                    message: "Password not matched",
-                });
-            }
             const hashedPassword = crypto
                 .pbkdf2Sync(password, salt, 1000, 64, "sha512")
                 .toString("hex");
@@ -163,7 +139,7 @@ module.exports = {
                 message: "Password updated successfully",
             });
         } catch (err) {
-            logger.log("error", err);
+            logFun(error, err);
             return res.status(500).json({
                 status: "failed",
                 message: "Server Error",

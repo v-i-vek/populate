@@ -1,9 +1,12 @@
 /* eslint-disable consistent-return */
 const logger = require("../logger/logger");
 const Answer = require("../model/answer");
-const {logFun} = require("../logger/logger");
+const { logFun } = require("../logger/logger");
 
 // creates an answer to that question
+/**
+ * 
+ */
 const info = "info";
 const error = "error";
 const ans = {};
@@ -40,20 +43,24 @@ exports.addAnswer = async (req, res) => {
     }
 };
 
+/**
+ *This function is to get the answer by id
+ * @param {object} req - provided by the client side
+ * @param {object} res - provided by the server side
+ * @returns {json}  - return by the server side
+ */
 // get answer to that question
 exports.getAnswerByquestionId = async (req, res) => {
-    
     try {
-        const getanswer = await Answer.find({questionId: req.params.questionId,}).populate([
+        const getanswer = await Answer.find({ questionId: req.params.questionId }).populate([
             {
                 path: "userId",
             }, {
                 path: "questionId",
             },
         ]);
-       
 
-        logFun(info, ans.message); 
+        logFun(info, ans.message);
         return res.status(201).json({
             status: "success",
             message: ans.message,
@@ -67,6 +74,13 @@ exports.getAnswerByquestionId = async (req, res) => {
         });
     }
 };
+
+/**
+ *This function is to edit the answer by id
+ * @param {object} req - provided by the client side
+ * @param {object} res - provided by the server side
+ * @returns {json}  - return by the server side
+ */
 
 // edits the given specific answer
 exports.editAnswer = async (req, res) => {
@@ -84,8 +98,8 @@ exports.editAnswer = async (req, res) => {
                 message: "Answer not found",
             });
         }
-        ans.message = "Answer Updated successfully"
-        logFun(info, ans.message)
+        ans.message = "Answer Updated successfully";
+        logFun(info, ans.message);
         return res.status(201).json({
             status: "success",
             message: "Answer Updated successfully",
@@ -98,7 +112,12 @@ exports.editAnswer = async (req, res) => {
         });
     }
 };
-
+/**
+ *This function is to delete the answer by id
+ * @param {object} req - provided by the client side
+ * @param {object} res - provided by the server side
+ * @returns {json}  - return by the server side
+ */
 // deletes the given specific answer
 exports.deleteAnswer = async (req, res) => {
     try {
@@ -108,8 +127,8 @@ exports.deleteAnswer = async (req, res) => {
 
         const deleteanswer = await Answer.findByIdAndDelete(_id);
         if (!deleteanswer) {
-            ans.message = "Answer already deleted!"
-            logFun(info, ans.message)
+            ans.message = "Answer already deleted!";
+            logFun(info, ans.message);
             return res.status(404).json({
                 status: 404,
                 message: "Answer already deleted!",
@@ -130,10 +149,17 @@ exports.deleteAnswer = async (req, res) => {
     }
 };
 
+
+/**
+ *This function is to upvote the answer by id
+ * @param {object} req - provided by the client side
+ * @param {object} res - provided by the server side
+ * @returns {json}  - return by the server side
+ */
 // post upvotes
 
 exports.Upvote = async (req, res) => {
-    let answerId = req.params.id;
+    const answerId = req.params.id;
 
     const userId = req.body.upvotes;
 
@@ -143,7 +169,7 @@ exports.Upvote = async (req, res) => {
             { _id: answerId },
             { $pull: { upvotes: userId } },
         );
-        logFun(info, ans.message = "Upvote removed")
+        logFun(info, ans.message = "Upvote removed");
         res.status(201).json({
             message: "Upvote removed",
         });
@@ -152,13 +178,18 @@ exports.Upvote = async (req, res) => {
             { _id: answerId },
             { $addToSet: { upvotes: userId }, $pull: { downvotes: userId } },
         );
-        logFun(info, ans.message = "Upvoted Successfully")
+        logFun(info, ans.message = "Upvoted Successfully");
         res.status(201).json({
             message: "Upvoted Successfully",
         });
     }
 };
-
+/**
+ *This function is to downvote the answer by id
+ * @param {object} req - provided by the client side
+ * @param {object} res - provided by the server side
+ * @returns {json}  - return by the server side
+ */
 // post downvotes
 
 exports.Downvote = async (req, res) => {
@@ -175,7 +206,7 @@ exports.Downvote = async (req, res) => {
             { _id: answerId },
             { $pull: { downvotes: userId } },
         );
-        logFun(info, ans.message = "Downvote removed")
+        logFun(info, ans.message = "Downvote removed");
         res.status(201).json({
             message: "Downvote removed",
         });
@@ -184,13 +215,19 @@ exports.Downvote = async (req, res) => {
             { _id: answerId },
             { $addToSet: { downvotes: userId }, $pull: { upvotes: userId } },
         );
-        logFun(info, ans.message = "Downvoted Successfully")
+        logFun(info, ans.message = "Downvoted Successfully");
         res.status(201).json({
             message: "Downvoted Successfully",
         });
     }
 };
 
+/**
+ *This function is to get total votes the answer by id
+ * @param {object} req - provided by the client side
+ * @param {object} res - provided by the server side
+ * @returns {json}  - return by the server side
+ */
 // total upvotes
 exports.checkup = async (req, res) => {
     try {
@@ -212,7 +249,12 @@ exports.checkup = async (req, res) => {
         });
     }
 };
-
+/**
+ *This function is to get total downvotes the answer by id
+ * @param {object} req - provided by the client side
+ * @param {object} res - provided by the server side
+ * @returns {json}  - return by the server side
+ */
 // total downvotes
 exports.checkdown = async (req, res) => {
     try {
@@ -222,7 +264,7 @@ exports.checkdown = async (req, res) => {
         if (!vote) {
             return res.status(404).send();
         }
-        logFun(info, ans.message = "Success")
+        logFun(info, ans.message = "Success");
         return res.status(201).json({
             message: "Success",
             data: totaldownvote,

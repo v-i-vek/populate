@@ -32,11 +32,14 @@ const userValidationRules = () => [
 const signInValidation = () => [
     body().custom((value, { req }) => Object.keys(req.body).length !== 0).withMessage("Data Not found"),
     check("emailId").exists().withMessage("emailId is required"),
-    body("emailId").notEmpty().trim().withMessage("email id can't be empty").isEmail()
+    body("emailId").notEmpty().trim().withMessage("email id can't be empty")
+        .isEmail()
         .withMessage("enter valid email address"),
     check("password").exists().withMessage("password is required"),
 
-    body("password").notEmpty().trim().withMessage("password can't be empty").isLength({ min: 6 }).withMessage("password must be atleast 6 character long"),
+    body("password").notEmpty().trim().withMessage("password can't be empty")
+        .isLength({ min: 6 })
+        .withMessage("password must be atleast 6 character long"),
 ];
 
 const searchValidation = () => [
@@ -99,7 +102,9 @@ const updateAnswerValidation = () => [
     body("answer").notEmpty().withMessage("answer can't be empty").trim(),
 ];
 const blogIdValidate = () => [
-    query("userId").notEmpty().trim().isLength(24)
+    param("id").notEmpty().trim().isLength({ min: 24 })
+        .withMessage("question id can't be empyt and must have 24 character")
+        .isLength({ max: 24 })
         .withMessage("question id can't be empyt and must have 24 character"),
 ];
 
@@ -114,6 +119,18 @@ const blogValidatePost = () => [
     check("content").exists().withMessage("content is required field"),
     body("content").notEmpty().trim().withMessage("content can't be empty"),
 
+];
+const forgotPasswordValidation = () => [
+    body().custom((value, { req }) => Object.keys(req.body).length !== 0).withMessage("Data Not found"),
+    check("emailId").exists().withMessage("emailId can't be null"),
+    body("emailId").notEmpty().withMessage("emailid can't be empty").trim()
+        .isEmail()
+        .withMessage("enter valid emailid"),
+];
+const addTagValidation = () => [
+    body().custom((value, { req }) => Object.keys(req.body).length !== 0).withMessage("Data Not found"),
+    check("name").exists().withMessage("name can't be null"),
+    body("name").trim().notEmpty().withMessage("name can't be empty"),
 ];
 
 const validate = (req, res, next) => {
@@ -142,4 +159,6 @@ module.exports = {
     blogIdValidate,
     answerValidateGetQuestionById,
     updateAnswerValidation,
+    forgotPasswordValidation,
+    addTagValidation,
 };

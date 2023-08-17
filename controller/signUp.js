@@ -3,36 +3,23 @@
 const crypto = require("crypto");
 const User = require("../model/user");
 require("dotenv").config();
+const { logFun, error, info } = require("../logger/logger");
+
+const signUpMessage = {};
+signUpMessage.msg = "value for the logger for error and info";
 
 module.exports = {
     signUp: async (req, res) => {
         let {
-            // eslint-disable-next-line prefer-const
             firstName,
             lastName,
             emailId,
             password,
-            confirmPassword,
         } = req.body;
-
-        if (Object.keys(req.body).length === 0) {
-            return res
-                .status(406)
-                .json({
-                    status: "failed",
-                    message: "Data not Found, Payload Not Acceptable",
-                });
-        }
-
-        if (password !== confirmPassword) {
-            return res.status(401).json({
-                status: "failed",
-                message: "Password is differ from confirm password",
-            });
-        }
 
         const existingUser = await User.findOne({ emailId });
         if (existingUser) {
+            logFun(error, signUpMessage.msg = "Email address already in use");
             return res.status(401).json({
                 status: "failed",
                 message: "Email address already in use",
@@ -52,13 +39,14 @@ module.exports = {
                 userRole: process.env.USER_ROLE,
             });
             await user.save();
+            logFun(info, signUpMessage.msg = "User created successfully");
             return res.status(201).json({
                 status: "success",
                 message: "User created successfully",
                 data: emailId,
             });
         } catch (err) {
-            console.log("error :", err);
+            logFun(error, err);
             return res.status(500).json({
                 status: "failed",
                 message: " sorry Server Error",

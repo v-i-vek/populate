@@ -8,7 +8,10 @@ const User = require("../model/user");
 const UserRole = require("../model/userRole");
 require("dotenv").config();
 const validator = require("email-validator");
-const logger = require("../logger/logger");
+const { logFun, error, info } = require("../logger/logger");
+
+const signInMessage = {};
+signInMessage.msg = "value for the logger for error and info";
 
 /**
  * This function is for signing user into application
@@ -24,6 +27,7 @@ module.exports = {
             const salt = process.env.SALT;
             const validate = validator.validate(emailId);
             if (!validate) {
+                logFun(error, signInMessage.msg = `${emailId}, not a valid emailID`);
                 return res.status(401).json({
                     status: 401,
                     errors: [{
@@ -37,6 +41,7 @@ module.exports = {
 
             const user = await User.findOne({ emailId });
             if (!user) {
+                logFun(error, signInMessage.msg = "Incorrect Email or password");
                 return res.status(401).json({
                     status: "failed",
                     message: "Incorrect Email or password",
@@ -52,6 +57,7 @@ module.exports = {
 
                 const cookieString = `jwt=${token}; HttpOnly; Expires=${expirationTime.toUTCString()}; Path=/users`;
                 res.setHeader("Set-Cookie", cookieString);
+                logFun(info, signInMessage.msg = "Signed in successfully");
                 return res.status(200).json({
                     statusCode: "success",
                     headers: {
@@ -70,13 +76,13 @@ module.exports = {
                     },
                 });
             }
-
+            logFun(error, signInMessage.msg = "Incorrect Email or password");
             return res.status(401).json({
                 status: "failed",
                 message: "Incorrect Email or password",
             });
         } catch (err) {
-            logger.log("error", err);
+            logFun(error, err);
             return res.status(500).json({
                 status: "failed",
                 message: "Server Error",
@@ -90,20 +96,20 @@ module.exports = {
             const user = await User.findOne({ _id: id });
             const role = user.userRole;
             const userRole = await UserRole.findOne({ _id: role });
-
+            logFun(error, signInMessage.msg = "success");
             return res.status(200).json({
                 status: "success",
                 userRole: userRole.roleName,
             });
         } catch (err) {
-            logger.log("error", err);
             if (err.name === "CastError" && err.kind === "ObjectId") {
+                logFun(error, signInMessage.msg = "Invalid Id ");
                 return res.status(400).json({
                     status: "failed",
                     message: "Invalid Id ",
                 });
             }
-
+            logFun(error, err);
             return res.status(500).json({
                 status: "failed",
                 message: `Internal Server Error: ${err.message}`,
