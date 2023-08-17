@@ -2690,3 +2690,64 @@
 {"level":"info","message":"server response : connected to database","service":"user-service","timestamp":"2023-08-17 16:26:25"}
 {"level":"info","message":"server response : connected to port","service":"user-service","timestamp":"2023-08-17 16:26:32"}
 {"level":"info","message":"server response : connected to database","service":"user-service","timestamp":"2023-08-17 16:26:35"}
+{"level":"info","message":"server response : connected to port","service":"user-service","timestamp":"2023-08-17 17:53:53"}
+{"level":"info","message":"server response : connected to database","service":"user-service","timestamp":"2023-08-17 17:53:58"}
+{"level":"error","message":"server response : Email address already in use","service":"user-service","timestamp":"2023-08-17 17:53:59"}
+{"level":"error","message":"server response : Email address already in use","service":"user-service","timestamp":"2023-08-17 17:53:59"}
+{"level":"info","message":"server response : answer get successfully","service":"user-service","timestamp":"2023-08-17 17:53:59"}
+{"level":"error","message":"server response : Need to Sign In","service":"user-service","timestamp":"2023-08-17 17:53:59"}
+{"level":"error","message":"server response : Need to Sign In","service":"user-service","timestamp":"2023-08-17 17:53:59"}
+{"level":"info","message":"server response : Signed in successfully","service":"user-service","timestamp":"2023-08-17 17:54:00"}
+{"level":"info","message":"server response : connected to port","service":"user-service","timestamp":"2023-08-17 17:56:03"}
+{"level":"info","message":"server response : connected to database","service":"user-service","timestamp":"2023-08-17 17:56:06"}
+{"level":"error","message":"server response : Email address already in use","service":"user-service","timestamp":"2023-08-17 17:56:08"}
+{"level":"error","message":"server response : Email address already in use","service":"user-service","timestamp":"2023-08-17 17:56:08"}
+{"level":"info","message":"server response : answer get successfully","service":"user-service","timestamp":"2023-08-17 17:56:08"}
+{"level":"info","message":"server response : Signed in successfully","service":"user-service","timestamp":"2023-08-17 17:56:09"}
+{"level":"info","message":"server response : {\n  userId: new ObjectId(\"643944cec1814cdca4c13856\"),\n  questionId: new ObjectId(\"6425262105b43aabf701d3dc\"),\n  answer: 'The back end refers',\n  upvotes: [],\n  downvotes: [],\n  _id: new ObjectId(\"64de11e164f413f8ad3ab5da\"),\n  createdAt: 2023-08-17T12:26:09.078Z,\n  __v: 0\n}","service":"user-service","timestamp":"2023-08-17 17:56:09"}
+{"level":"info","message":"server response : Answer Updated successfully","service":"user-service","timestamp":"2023-08-17 17:56:09"}
+{"level":"info","message":"server response : connected to port","service":"user-service","timestamp":"2023-08-17 17:57:24"}
+{"level":"info","message":"server response : connected to database","service":"user-service","timestamp":"2023-08-17 17:57:28"}
+{"level":"error","message":"server response : Email address already in use","service":"user-service","timestamp":"2023-08-17 17:57:29"}
+{"level":"error","message":"server response : Email address already in use","service":"user-service","timestamp":"2023-08-17 17:57:29"}
+{"level":"info","message":"server response : answer get successfully","service":"user-service","timestamp":"2023-08-17 17:57:30"}
+{"level":"info","message":"server response : Signed in successfully","service":"user-service","timestamp":"2023-08-17 17:57:30"}
+{"level":"info","message":"server response : {\n  userId: new ObjectId(\"643944cec1814cdca4c13856\"),\n  questionId: new ObjectId(\"6425262105b43aabf701d3dc\"),\n  answer: 'The back end refers',\n  upvotes: [],\n  downvotes: [],\n  _id: new ObjectId(\"64de1232e188b7ac6315b4ce\"),\n  createdAt: 2023-08-17T12:27:30.275Z,\n  __v: 0\n}","service":"user-service","timestamp":"2023-08-17 17:57:30"}
+{"level":"info","message":"server response : Answer Updated successfully","service":"user-service","timestamp":"2023-08-17 17:57:30"}
+{"level":"info","message":"server response : Answer Updated successfully","service":"user-service","timestamp":"2023-08-17 17:59:17"}
+{"level":"info","message":"server response : Answer Updated successfully","service":"user-service","timestamp":"2023-08-17 17:59:59"}
+{"level":"info","message":"server response : Answer Updated successfully","service":"user-service","timestamp":"2023-08-17 18:02:00"}
+{"level":"info","message":"server response : Answer Updated successfully","service":"user-service","timestamp":"2023-08-17 18:03:09"}
+{"level":"info","message":"server response : Answer Updated successfully","service":"user-service","timestamp":"2023-08-17 18:03:14"}
+{"level":"info","message":"server response : Answer Updated successfully","service":"user-service","timestamp":"2023-08-17 18:05:25"}
+{"level":"info","message":"server response : Answer Updated successfully","service":"user-service","timestamp":"2023-08-17 18:06:55"}
+{"level":"info","message":"server response : Answer Updated successfully","service":"user-service","timestamp":"2023-08-17 18:07:20"}
+{"level":"info","message":"server response : Answer Updated successfully","service":"user-service","timestamp":"2023-08-17 18:07:52"}
+{"level":"info","message":"server response : Answer Updated successfully","service":"user-service","timestamp":"2023-08-17 18:09:48"}
+{"level":"info","message":"server response : connected to port","service":"user-service","timestamp":"2023-08-17 18:10:05"}
+{"level":"info","message":"server response : connected to database","service":"user-service","timestamp":"2023-08-17 18:10:08"}
+{"level":"error","message":"server response : Email address already in use","service":"user-service","timestamp":"2023-08-17 18:10:11"}
+{"level":"error","message":"server response : Email address already in use","service":"user-service","timestamp":"2023-08-17 18:10:11"}
+{"level":"info","message":"server response : Answer get successfully","service":"user-service","timestamp":"2023-08-17 18:10:11"}
+{"level":"info","message":"server response : Signed in successfully","service":"user-service","timestamp":"2023-08-17 18:10:11"}
+{"level":"info","message":"server response : {\n  userId: new ObjectId(\"643944cec1814cdca4c13856\"),\n  questionId: new ObjectId(\"6425262105b43aabf701d3dc\"),\n  answer: 'The back end refers',\n  upvotes: [],\n  downvotes: [],\n  _id: new ObjectId(\"64de152b8375fe32bc672ab6\"),\n  createdAt: 2023-08-17T12:40:11.906Z,\n  __v: 0\n}","service":"user-service","timestamp":"2023-08-17 18:10:12"}
+{"level":"info","message":"server response : Answer Updated successfully","service":"user-service","timestamp":"2023-08-17 18:10:12"}
+{"level":"info","message":"server response : Answer get successfully","service":"user-service","timestamp":"2023-08-17 18:10:24"}
+{"level":"info","message":"server response : connected to port","service":"user-service","timestamp":"2023-08-17 18:11:45"}
+{"level":"info","message":"server response : connected to database","service":"user-service","timestamp":"2023-08-17 18:11:48"}
+{"level":"error","message":"server response : Email address already in use","service":"user-service","timestamp":"2023-08-17 18:11:50"}
+{"level":"error","message":"server response : Email address already in use","service":"user-service","timestamp":"2023-08-17 18:11:50"}
+{"level":"info","message":"server response : Answer get successfully","service":"user-service","timestamp":"2023-08-17 18:11:50"}
+{"level":"info","message":"server response : Signed in successfully","service":"user-service","timestamp":"2023-08-17 18:11:50"}
+{"level":"info","message":"server response : {\n  userId: new ObjectId(\"643944cec1814cdca4c13856\"),\n  questionId: new ObjectId(\"6425262105b43aabf701d3dc\"),\n  answer: 'The back end refers',\n  upvotes: [],\n  downvotes: [],\n  _id: new ObjectId(\"64de158e4240ba9de3322026\"),\n  createdAt: 2023-08-17T12:41:50.948Z,\n  __v: 0\n}","service":"user-service","timestamp":"2023-08-17 18:11:51"}
+{"level":"info","message":"server response : Answer Updated successfully","service":"user-service","timestamp":"2023-08-17 18:11:51"}
+{"level":"info","message":"server response : connected to port","service":"user-service","timestamp":"2023-08-17 18:14:00"}
+{"level":"info","message":"server response : connected to database","service":"user-service","timestamp":"2023-08-17 18:14:04"}
+{"level":"error","message":"server response : Email address already in use","service":"user-service","timestamp":"2023-08-17 18:14:05"}
+{"level":"error","message":"server response : Email address already in use","service":"user-service","timestamp":"2023-08-17 18:14:05"}
+{"level":"info","message":"server response : Answer get successfully","service":"user-service","timestamp":"2023-08-17 18:14:06"}
+{"level":"info","message":"server response : Signed in successfully","service":"user-service","timestamp":"2023-08-17 18:14:06"}
+{"level":"info","message":"server response : {\n  userId: new ObjectId(\"643944cec1814cdca4c13856\"),\n  questionId: new ObjectId(\"6425262105b43aabf701d3dc\"),\n  answer: 'The back end refers',\n  upvotes: [],\n  downvotes: [],\n  _id: new ObjectId(\"64de1616c3db81b0d8d5fccc\"),\n  createdAt: 2023-08-17T12:44:06.877Z,\n  __v: 0\n}","service":"user-service","timestamp":"2023-08-17 18:14:07"}
+{"level":"info","message":"server response : Answer Updated successfully","service":"user-service","timestamp":"2023-08-17 18:14:07"}
+{"level":"info","message":"server response : Answer get successfully","service":"user-service","timestamp":"2023-08-17 18:21:04"}
+{"level":"info","message":"server response : Answer get successfully","service":"user-service","timestamp":"2023-08-17 18:26:59"}

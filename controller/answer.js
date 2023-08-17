@@ -59,10 +59,10 @@ exports.getAnswerByquestionId = async (req, res) => {
             },
         ]);
 
-        logFun(info, ans.message);
+        logFun(info, ans.message = "Answer get successfully");
         return res.status(201).json({
             status: "success",
-            message: ans.message,
+            message: "Answer get successfully",
             data: getanswer,
         });
     } catch (err) {
@@ -84,6 +84,7 @@ exports.getAnswerByquestionId = async (req, res) => {
 // edits the given specific answer
 exports.editAnswer = async (req, res) => {
     try {
+        console.log("=======================")
         const { id } = req.params;
 
         const editanswer = await Answer.findByIdAndUpdate(id, req.body, {

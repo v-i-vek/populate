@@ -296,7 +296,7 @@ describe("api testing for signUp", () => {
             const id = "64ce3a0762b7cd7be76a2f84";
             chai.request(app).get(`/users/answer/${id}`).end((err, response) => {
                 response.should.have.status(201);
-                response.body.should.have.property("status").eq(201);
+                response.body.should.have.property("status").eq("success");
                 response.body.should.have.property("message").eq("Answer get successfully");
                 done();
             });
@@ -312,10 +312,6 @@ describe("api testing for signUp", () => {
             });
         });
     });
-    describe("post /users/signin", () => {
-
-    });
-
     describe("POST /users/answer", () => {
         it("it should not post without the answer Field", (done) => {
             const answerValue = {
@@ -430,7 +426,7 @@ describe("api testing for signUp", () => {
             authenticatedUser.post("/users/answer").send(answerValue)
                 .end((err, response) => {
                     response.should.have.status(201);
-                    response.body.should.have.property("status").eq(201);
+                    response.body.should.have.property("status").eq("success");
                     response.body.should.have.property("message").eq("Answer Posted successfully");
                     response.body.should.have.property("data").to.be.a("object");
                     done();
@@ -465,7 +461,7 @@ describe("api testing for signUp", () => {
             authenticatedUser.patch(`/users/answer/${answerId}`).send(answerValue)
                 .end((err, response) => {
                     response.should.have.status(201);
-                    response.body.should.have.property("status").eq(201);
+                    response.body.should.have.property("status").eq("success");
                     response.body.should.have.property("message").eq("Answer Updated successfully");
                     // response.body.should.have.property("data").to.be.a("object");
                     done();
@@ -479,7 +475,7 @@ describe("api testing for signUp", () => {
             authenticatedUser.delete(`/users/answer/${answerId}`).end((err, response) => {
                 response.should.have.status(401);
                 response.body.should.have.property("status").eq("failed");
-                response.body.should.have.property("error").eq("Id must have length 24");
+                response.body.should.have.property("error").eq("question id can't be empyt and must have 24 character");
                 // response.body.should.have.property("data").to.be.a("object");
                 done();
             });
