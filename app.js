@@ -1,4 +1,5 @@
 const express = require("express");
+const serverless = require("serverless-http");
 require("dotenv").config();
 const cors = require("cors");
 const { logFun, info } = require("./logger/logger");
@@ -47,4 +48,4 @@ app.listen(8080, () => {
 });
 
 // exports.techForumAPIs = app;
-module.exports = app;
+module.exports.handler = serverless(app);
