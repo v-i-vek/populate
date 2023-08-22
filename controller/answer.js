@@ -84,7 +84,7 @@ exports.getAnswerByquestionId = async (req, res) => {
 // edits the given specific answer
 exports.editAnswer = async (req, res) => {
     try {
-        console.log("=======================")
+        console.log("=======================");
         const { id } = req.params;
 
         const editanswer = await Answer.findByIdAndUpdate(id, req.body, {

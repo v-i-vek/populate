@@ -1,25 +1,11 @@
 const express = require("express");
-
 require("dotenv").config();
 const cors = require("cors");
-
-const { logFun, info, error } = require("./logger/logger");
+const { logFun, info } = require("./logger/logger");
 const { connectToDatabase } = require("./config");
+const { routers } = require("./routers");
 
 const app = express();
-const signinRoutes = require("./route/signIn");
-const bookmarkRoutes = require("./route/bookmark");
-const signupRoutes = require("./route/signUp");
-const signoutRoutes = require("./route/signOut");
-const forgotpasswordRoutes = require("./route/forgetPassword");
-const serchRoutes = require("./route/search");
-const questionRoutes = require("./route/question");
-const blogRoutes = require("./route/blog");
-const documentRoutes = require("./route/doc");
-const answerRoutes = require("./route/answer");
-const manageUsersRoutes = require("./route/manageuser");
-const tagsRoutes = require("./route/Managetag");
-const manageResourcesRoutes = require("./route/manageResource");
 
 const corsOptions = {
     origin: "http://localhost:4200",
@@ -54,24 +40,7 @@ app.options(
         credentials: true,
     }),
 );
-app.use("/", signupRoutes);
-
-app.use("/forgotpassword", forgotpasswordRoutes);
-
-app.use(
-    "/users",
-    signoutRoutes,
-    signinRoutes,
-    bookmarkRoutes,
-    questionRoutes,
-    serchRoutes,
-    blogRoutes,
-    documentRoutes,
-    answerRoutes,
-    tagsRoutes,
-);
-
-app.use("/admin", manageUsersRoutes, tagsRoutes, manageResourcesRoutes);
+app.use(routers);
 app.listen(8080, () => {
     const str = "connected to port";
     logFun(info, str);
