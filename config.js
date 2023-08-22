@@ -8,7 +8,7 @@ const mongoSuccess = "connected to database";
  */
 const connectToDatabase = async () => {
     try {
-        await mongoose.connect(process.env.MONGODB_URI, {
+        await mongoose.connect("mongodb+srv://techforum:techforum@techforum.bguthxq.mongodb.net/techforum?retryWrites=true&w=majority", {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         });
