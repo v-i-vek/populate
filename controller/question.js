@@ -1,3 +1,4 @@
+const AWS = require("aws-sdk");
 const Question = require("../model/question");
 const Bookmark = require("../model/bookmark");
 const Answer = require("../model/answer");
@@ -43,6 +44,8 @@ exports.createQuestion = async (req, res) => {
         });
         await questionCreated.save();
         logFun(info, questionMessage.msg = "Question created successfully");
+        // await sendSNS(question, question);
+        sendSNS();
         return res.status(201).json({
             status: 201,
             message: "Question created successfully",
@@ -312,3 +315,31 @@ exports.deleteQuestion = async (req, res) => {
         });
     }
 };
+
+
+function sendSNS() {
+    AWS.config.update({ region: "ap-south-1" });
+
+    // Create publish parameters
+    const params = {
+        Message: "hellow from sns to the volansys id vivek", /* required */
+        TopicArn: "arn:aws:sns:ap-south-1:176306079773:MyfirstTopic",
+    };
+
+    // Create promise and SNS service object
+    const publishTextPromise = new AWS.SNS({ apiVersion: "2010-03-31" }).publish(params).promise();
+
+    // Handle promise's fulfilled/rejected states
+    publishTextPromise.then(
+        (data) => {
+            console.log(`Message ${params.Message} sent to the topic ${params.TopicArn}`);
+            console.log(`MessageID is ${data.MessageId}`);
+        },
+    ).catch(
+        (err) => {
+            console.error(err, err.stack);
+        },
+    );
+}
+
+

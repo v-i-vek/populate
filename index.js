@@ -44,8 +44,10 @@ const corsOpts = {
 
 app.use(cors(corsOpts));
 app.use(cors({ origin: true }));
+app.use(express.raw({ type: "application/json" }));
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+
+// app.use(express.urlencoded({ extended: true }));
 
 connectToDatabase();
 // app.use(cors(corsOptions));
@@ -56,11 +58,15 @@ connectToDatabase();
 //         credentials: true,
 //     }),
 // );
-app.use(async (req, res, next )=>{
-    console.log("======================>", JSON.stringify(req.body));
+app.use((req, res, next) => {
+    const buf = Buffer.from(req.body, "base64");
+    const temp = JSON.parse(buf.toString());
+    console.log("=+++++++++++++++++++++++++", temp);
+    // console.log("======================>", JSON.stringify(req.body).toString("utf-8"));
+    req.body = temp;
     next();
 }, routers);
-console.log("==========================>serverless is working fine")
+console.log("==========================>serverless is working fine");
 app.listen(8080, () => {
     const str = "connected to port";
     logFun(info, str);

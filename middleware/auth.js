@@ -17,7 +17,9 @@ authMessage.msg = "This is for the value of the function logFun to get error or 
  */
 
 exports.auth = async (req, res, next) => {
+    console.log("____________________-+=====================",req.headers)
     let check = req.headers.cookie;
+
     if (check === undefined) {
         logFun(error, authMessage.msg = "Need to Sign In");
         return res.status(401).json({

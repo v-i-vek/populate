@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "@google-cloud/functions-framework": "^3.3.0",
+    "aws-sdk": "^2.1442.0",
     "body-parser": "^1.20.2",
     "chai-http": "^4.4.0",
     "cookie-parser": "^1.4.6",

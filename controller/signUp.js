@@ -55,6 +55,7 @@ module.exports = {
                 data: emailId,
             });
         } catch (err) {
+            console.log("================================", err);
             logFun(error, err);
             return res.status(500).json({
                 status: "failed",
