@@ -2,9 +2,9 @@ const AWS = require("aws-sdk");
 
 // Configure AWS SDK with your credentials and region
 AWS.config.update({
-    accessKeyId: "your-access-key",
-    secretAccessKey: "your-secret-access-key",
-    region: "your-aws-region",
+    // accessKeyId: "ap-south-1",
+    // secretAccessKey: "your-secret-access-key",
+    region: "ap-south-1",
 });
 
 // Create a DynamoDB service object
@@ -21,10 +21,10 @@ dynamodb.listTables({}, (err, data) => {
 
 // Example: Put an item into a DynamoDB table
 const params = {
-    TableName: "YourTableName",
+    TableName: "IotCoreDevices",
     Item: {
-        Id: { N: "1" }, // Numeric attribute
-        Name: { S: "John Doe" }, // String attribute
+        'unique': { S: '4' }, // Replace with your unique key value
+    'primary': { S: '4' }, // Replace with your sort key value
     },
 };
 
