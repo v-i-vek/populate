@@ -1,14 +1,8 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 const AWS = require("aws-sdk");
 // const officeAcModel = require("../model/office.Ac.Model");
+const { v4: uuidv4 } = require("uuid");
 const { db, Table } = require("../db.config");
-
-AWS.config.update({
-    region: "ap-south-1",
-    // accessKeyId: "your-access-key-id",
-    // secretAccessKey: "your-secret-access-key",
-});
-
 // const acControleValue = async (req, res) => {
 //     try {
 //         let {
@@ -59,17 +53,11 @@ const registerDevice = async (req, res) => {
     const date = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
     const time = `${today.getHours()}:${today.getMinutes()}:${today.getSeconds()}`;
     const dateTime = `${date} ${time}`;
-    // const dbThingDetail = {
-    //     thingName,
-    //     attributes: [{ location }],
-    //     Time: dateTime,
-    // };
     const dbParams = {
         TableName: Table,
         Item: {
 
-            unique: { S: "unique-key-value" }, // Replace with your unique key value
-            primary: { S: "sort-key-value" },
+            primaryKey: { S: uuidv4() }, // Replace with your unique key value
             thingName: { S: thingName },
             location: { S: location },
             time: { S: dateTime },
@@ -82,10 +70,10 @@ const registerDevice = async (req, res) => {
         }
         try {
             db.putItem(dbParams, (error, dataValue) => {
-                if (err) {
+                if (error) {
                     return res.status(502).json({ status: "failed", message: error });
                 }
-                console.log("======>",dataValue)
+                console.log("======>", dataValue);
                 return res.status(201).json({ status: "success", message: dataValue });
             });
         } catch (error) {
