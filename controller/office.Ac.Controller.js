@@ -1,22 +1,15 @@
-const officeAcModel = require("../model/office.Ac.Model");
-
+// eslint-disable-next-line import/no-extraneous-dependencies
 const AWS = require("aws-sdk");
+// const officeAcModel = require("../model/office.Ac.Model");
+const { db, Table } = require("../db.config");
+
 AWS.config.update({
     region: "ap-south-1",
     // accessKeyId: "your-access-key-id",
     // secretAccessKey: "your-secret-access-key",
 });
 
-
-
-
-
-
-
-
-
-
-// const officeAcController = async (req, res) => {
+// const acControleValue = async (req, res) => {
 //     try {
 //         let {
 //             // eslint-disable-next-line prefer-const
@@ -28,15 +21,9 @@ AWS.config.update({
 //         if (temperature >= 30) {
 //             temperature = 30;
 //         }
-//         const valueOfAc = new officeAcModel({
-//             status, temperature, unit, mode, sleepTimer, Time,
-//         });
-
-//         await valueOfAc.save();
-//         return res.status(200).json({
-//             satus: 200,
-//             message: valueOfAc,
-//         });
+//         const params ={
+//             TableName:Table
+//         }
 //     } catch (error) {
 //         console.log("error", error);
 //         return res.status(500).json({
@@ -46,69 +33,84 @@ AWS.config.update({
 //     }
 // };
 
+const registerDevice = async (req, res) => {
+    console.log("======", req.body);
+    const { thingName, location } = req.body;
+    console.log("+++", thingName);
 
+    AWS.config.update({
+        region: "ap-south-1",
+    });
 
+    const iot = new AWS.Iot();
 
+    const attributes = {
+        location,
+    };
 
-const registerDevice = async(req,res)=>{
-const thingName = req.body.thingName;
+    const params = {
+        thingName,
+        attributePayload: {
+            attributes,
+            merge: true, // Set to true to merge with existing attributes or false to overwrite
+        },
+    };
+    const today = new Date();
+    const date = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+    const time = `${today.getHours()}:${today.getMinutes()}:${today.getSeconds()}`;
+    const dateTime = `${date} ${time}`;
+    // const dbThingDetail = {
+    //     thingName,
+    //     attributes: [{ location }],
+    //     Time: dateTime,
+    // };
+    const dbParams = {
+        TableName: Table,
+        Item: {
 
-AWS.config.update({
-    region: "ap-south-1",
-});
-
-const iot = new AWS.Iot();
-
-// const thingName = "MyAutomaticThing"; // Replace with your desired thing name
-
-// this will add the attribute in the thing
-const attributes = {
-    color: 'blue',
-    location: 'office'
-  };
-
-const params = {
-    thingName,
-    attributePayload: {
-        attributes: attributes,
-        merge: true // Set to true to merge with existing attributes or false to overwrite
-      }
+            unique: { S: "unique-key-value" }, // Replace with your unique key value
+            primary: { S: "sort-key-value" },
+            thingName: { S: thingName },
+            location: { S: location },
+            time: { S: dateTime },
+        },
+    };
+    iot.createThing(params, async (err, data) => {
+        if (err) {
+            console.error("Error creating thing:", err);
+            return res.status(500).json({ status: "failed", message: err });
+        }
+        try {
+            db.putItem(dbParams, (error, dataValue) => {
+                if (err) {
+                    return res.status(502).json({ status: "failed", message: error });
+                }
+                console.log("======>",dataValue)
+                return res.status(201).json({ status: "success", message: dataValue });
+            });
+        } catch (error) {
+            console.log("Error from the catch blog of the database", error);
+            return res.status(500).json({ status: "failed", message: error });
+        }
+    });
 };
-
-iot.createThing(params, (err, data) => {
-    if (err) {
-        console.error("Error creating thing:", err);
-        return res.status(500).json({status:"failed",message:err})
-    } else {
-      return res.status(201).json({status:"success",message:data.thingName})
-        console.log("Thing created successfully:", data.thingName);
-    }
-});
-
-}
-
-
 
 // this function is to add the thing into the group name
 function addThingToThingGroup(thingName, thingGroupName) {
     const iot = new AWS.Iot();
-  
+
     const params = {
-      thingGroupName: thingGroupName,
-      thingName: thingName
+        thingGroupName,
+        thingName,
     };
-  
+
     iot.addThingToThingGroup(params, (err, data) => {
-      if (err) {
-        console.error('Error adding thing to thing group:', err);
-      } else {
-        console.log(`Thing '${thingName}' added to thing group '${thingGroupName}'`);
-      }
+        if (err) {
+            console.error("Error adding thing to thing group:", err);
+        } else {
+            console.log(`Thing '${thingName}' added to thing group '${thingGroupName}'`);
+        }
     });
-  }
-  
+}
 
-
-
-
-module.exports = {registerDevice};
+module.exports = { registerDevice };

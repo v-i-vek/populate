@@ -1,8 +1,8 @@
-const express = require('express')
+const express = require("express");
+
 const officeAcRouter = express.Router();
-const {registerDevice} = require('../controller/office.Ac.Controller')
+const { registerDevice } = require("../controller/office.Ac.Controller");
 
-officeAcRouter.post('/addthing',registerDevice)
+officeAcRouter.post("/addthing", registerDevice);
 
-
-module.exports = {officeAcRouter}
+module.exports = { officeAcRouter };
