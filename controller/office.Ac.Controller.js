@@ -1,63 +1,65 @@
 const officeAcModel = require("../model/office.Ac.Model");
 
-
-
-
-
-
-
-
-
-
-
-const officeAcController = async (req, res) => {
-    try {
-        let {
-            // eslint-disable-next-line prefer-const
-            status, temperature, unit, mode, sleepTimer, Time,
-        } = req.body;
-        if (temperature < 16) {
-            temperature = 16;
-        }
-        if (temperature >= 30) {
-            temperature = 30;
-        }
-        const valueOfAc = new officeAcModel({
-            status, temperature, unit, mode, sleepTimer, Time,
-        });
-
-        await valueOfAc.save();
-        return res.status(200).json({
-            satus: 200,
-            message: valueOfAc,
-        });
-    } catch (error) {
-        console.log("error", error);
-        return res.status(500).json({
-            satus: 500,
-            error: "Server Error",
-        });
-    }
-};
-
-
-
-
-
-const registerDevice = async(req,res)=>{
-
 const AWS = require("aws-sdk");
-
-// Set up AWS credentials (make sure you configure AWS CLI or use environment variables)
 AWS.config.update({
     region: "ap-south-1",
     // accessKeyId: "your-access-key-id",
     // secretAccessKey: "your-secret-access-key",
 });
 
+
+
+
+
+
+
+
+
+
+// const officeAcController = async (req, res) => {
+//     try {
+//         let {
+//             // eslint-disable-next-line prefer-const
+//             status, temperature, unit, mode, sleepTimer, Time,
+//         } = req.body;
+//         if (temperature < 16) {
+//             temperature = 16;
+//         }
+//         if (temperature >= 30) {
+//             temperature = 30;
+//         }
+//         const valueOfAc = new officeAcModel({
+//             status, temperature, unit, mode, sleepTimer, Time,
+//         });
+
+//         await valueOfAc.save();
+//         return res.status(200).json({
+//             satus: 200,
+//             message: valueOfAc,
+//         });
+//     } catch (error) {
+//         console.log("error", error);
+//         return res.status(500).json({
+//             satus: 500,
+//             error: "Server Error",
+//         });
+//     }
+// };
+
+
+
+
+
+const registerDevice = async(req,res)=>{
+const thingName = req.body.thingName;
+
+AWS.config.update({
+    region: "ap-south-1",
+});
+
 const iot = new AWS.Iot();
 
-const thingName = "MyAutomaticThing"; // Replace with your desired thing name
+// const thingName = "MyAutomaticThing"; // Replace with your desired thing name
 
 // this will add the attribute in the thing
 const attributes = {
@@ -76,12 +78,16 @@ const params = {
 iot.createThing(params, (err, data) => {
     if (err) {
         console.error("Error creating thing:", err);
+        return res.status(500).json({status:"failed",message:err})
     } else {
+      return res.status(201).json({status:"success",message:data.thingName})
         console.log("Thing created successfully:", data.thingName);
     }
 });
 
 }
+
+
 
 // this function is to add the thing into the group name
 function addThingToThingGroup(thingName, thingGroupName) {
@@ -105,4 +111,4 @@ function addThingToThingGroup(thingName, thingGroupName) {
 
 
 
-module.exports {officeAcController}
+module.exports = {registerDevice};
