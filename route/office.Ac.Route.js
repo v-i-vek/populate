@@ -9,7 +9,7 @@ officeAcRouter.get("/getdevice/:id", getDeviceById);
 
 officeAcRouter.get("/getdevice/", getAllDevices);
 
-officeAcRouter.post("/publishthing/:Id", devicePulish);
+officeAcRouter.post("/publishthing/:deviceId", devicePulish);
 
 
 

@@ -1,6 +1,12 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 const { CostExplorer } = require("aws-sdk");
 const AWS = require("aws-sdk");
+AWS.config.update({
+    region: "ap-south-1",
+});
+
+
+const docClient = new AWS.DynamoDB.DocumentClient()
 // const officeAcModel = require("../model/office.Ac.Model");
 const { v4: uuidv4 } = require("uuid");
 const { db, Table } = require("../db.config");
@@ -52,7 +58,7 @@ const registerDevice = async (req, res) => {
     const {
         thingName, location, topicPublish, topicSubscribe, status, temperature, mode, sleepTimer,
     } = req.body;
-    const primaryKey = new Date().getTime().toString();
+    const deviceId = new Date().getTime().toString();
     const iot = new AWS.Iot();
 
     const attributes = {
@@ -74,7 +80,7 @@ const registerDevice = async (req, res) => {
         TableName: Table,
         Item: {
 
-            primaryKey: { S: primaryKey }, // Replace with your unique key value
+            primaryKey: { S: uuidv4() }, // Replace with your unique key value
             thingName: { S: thingName },
             location: { S: location },
             topicPublish: { S: topicPublish },
@@ -82,7 +88,7 @@ const registerDevice = async (req, res) => {
             status: { S: status },
             temperature: { S: temperature },
             mode: { S: mode },
-            deviceId: { S: uuidv4() },
+            deviceId: { S: deviceId },
             sleepTimer: { S: sleepTimer },
             time: { S: dateTime },
         },
@@ -107,24 +113,20 @@ const registerDevice = async (req, res) => {
 // this will publish the data and will create new data in the dynamodb
 const devicePulish = async (req, res) => {
     try {
-        const { Id } = req.params;
-        console.log("==========", Id);
+        const { deviceId } = req.params;
+        console.log("==========", deviceId);
         const {
             status, temperature, mode,
         } = req.body;
-        const params = {
-            TableName: Table,
-            Key: {
-                primaryKey: { S: Id },
-            },
-        };
         console.log("comming");
-        const deviceValue = await db.getItem(params).promise();
+        const deviceValue = await docClient.scan({
+            TableName: Table, FilterExpression: "#deviceId = :deviceId", ExpressionAttributeNames: { "#deviceId": "deviceId" }, ExpressionAttributeValues: { ":deviceId": deviceId },
+        }).promise();
         console.log("==========================", deviceValue);
         if (Object.keys(deviceValue).length === 0) {
             return res.status(400).json({ status: "failed", message: "sorry Device is not registered" });
         }
-        if (Id !== deviceValue.Item.primaryKey.S) {
+        if (deviceId !== deviceValue.Items[0].deviceId) {
             return res.status(400).json({ status: "failed", message: "sorry Device is not registered" });
         }
         console.log("====>", deviceValue);
@@ -133,24 +135,24 @@ const devicePulish = async (req, res) => {
             TableName: Table,
             Item: {
 
-                primaryKey: { S: deviceValue.Item.primaryKey.S },
-                thingName: { S: deviceValue.Item.thingName.S },
-                location: { S: deviceValue.Item.location.S },
-                topicPublish: { S: deviceValue.Item.topicPublish.S },
-                topicSubscribe: { S: deviceValue.Item.topicSubscribe.S },
+                primaryKey: { S: uuidv4() },
+                thingName: { S: deviceValue.Items[0].thingName },
+                location: { S: deviceValue.Items[0].location },
+                topicPublish: { S: deviceValue.Items[0].topicPublish },
+                topicSubscribe: { S: deviceValue.Items[0].topicSubscribe },
                 status: { S: status },
                 temperature: { S: temperature },
                 mode: { S: mode },
                 endpoint: { S: process.env.ENDPOINT },
                 qos: { S: process.env.QOS },
-                deviceId: { S: uuidv4() },
+                deviceId: { S: deviceValue.Items[0].deviceId },
                 // sleepTimer: { S: sleepTimer },
                 time: { S: dateTime },
             },
         };
         await db.putItem(dbParams).promise();
         console.log("finished +++++++++++++++++++++++");
-        await publishDeviceData(deviceValue.Item.topicPublish.S, process.env.ENDPOINT, process.env.QOS, status, temperature, mode, dateTime);
+        await publishDeviceData(deviceValue.Items[0].topicPublish, process.env.ENDPOINT, process.env.QOS, status, temperature, mode, dateTime);
 
         return res.status(200).json({ status: "success", message: deviceValue });
     } catch (error) {
