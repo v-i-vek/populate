@@ -1,16 +1,15 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-const { CostExplorer } = require("aws-sdk");
 const AWS = require("aws-sdk");
+
 AWS.config.update({
     region: "ap-south-1",
 });
 
-
-const docClient = new AWS.DynamoDB.DocumentClient()
+const docClient = new AWS.DynamoDB.DocumentClient();
 // const officeAcModel = require("../model/office.Ac.Model");
 const { v4: uuidv4 } = require("uuid");
 const { db, Table } = require("../db.config");
-const { publishDeviceData } = require("../utilites/functions");
+const { publishDeviceData, createRuleInIotCore } = require("../utilites/functions");
 const { dateTime } = require("../utilites/variables");
 
 // getting all the device from the dynamo db
@@ -30,25 +29,24 @@ const getAllDevices = async (req, res) => {
 // Getting all the devices from the dynamodb
 const getDeviceById = async (req, res) => {
     try {
-        const { id } = req.params;
-        const params = {
-            TableName: Table,
-            Key: {
-                primaryKey: { S: id },
-            },
-        };
+        const { deviceId } = req.params;
 
-        const deviceValue = await db.getItem(params).promise();
-        console.log(" ======> ", deviceValue.Item.primaryKey.S);
+        const deviceValue = await docClient.scan({
+
+            TableName: Table, FilterExpression: "#deviceId = :deviceId", ExpressionAttributeNames: { "#deviceId": "deviceId" }, ExpressionAttributeValues: { ":deviceId": deviceId },
+
+        }).promise();
+
+        console.log(" ======> ", deviceValue);
+
         if (Object.keys(deviceValue).length === 0) {
             return res.status(400).json({ status: "failed", message: "sorry Device is not registered" });
         }
-        if (id !== deviceValue.Item.primaryKey.S) {
-            return res.status(400).json({ status: "failed", message: "sorry Device is not registered" });
-        }
+
         return res.status(200).json({ status: "success", message: deviceValue });
     } catch (error) {
         console.log(Error, error);
+
         return res.status(503).json({ status: "failed", message: error });
     }
 };
@@ -58,8 +56,20 @@ const registerDevice = async (req, res) => {
     const {
         thingName, location, topicPublish, topicSubscribe, status, temperature, mode, sleepTimer,
     } = req.body;
+
     const deviceId = new Date().getTime().toString();
+
     const iot = new AWS.Iot();
+
+    const deviceValue = await docClient.scan({
+
+        TableName: Table, FilterExpression: "#thingName = :thingName", ExpressionAttributeNames: { "#thingName": "thingName" }, ExpressionAttributeValues: { ":thingName": thingName },
+
+    }).promise();
+
+    if (deviceValue.Items.length !== 0) {
+        return res.status(400).json({ status: "failed", message: "sorry Device is already registered" });
+    }
 
     const attributes = {
         location,
@@ -96,6 +106,7 @@ const registerDevice = async (req, res) => {
 
     // this will create Thing into iot core and add the respected data to the dynamoDB
     iot.createThing(params, async (err, data) => {
+        await createRuleInIotCore(topicPublish, thingName);
         if (err) {
             console.error("Error creating thing:", err);
             return res.status(500).json({ status: "failed", message: err });
@@ -114,25 +125,25 @@ const registerDevice = async (req, res) => {
 const devicePulish = async (req, res) => {
     try {
         const { deviceId } = req.params;
-        console.log("==========", deviceId);
+
         const {
             status, temperature, mode,
         } = req.body;
-        console.log("comming");
+
         const deviceValue = await docClient.scan({
             TableName: Table, FilterExpression: "#deviceId = :deviceId", ExpressionAttributeNames: { "#deviceId": "deviceId" }, ExpressionAttributeValues: { ":deviceId": deviceId },
         }).promise();
-        console.log("==========================", deviceValue);
+
         if (Object.keys(deviceValue).length === 0) {
             return res.status(400).json({ status: "failed", message: "sorry Device is not registered" });
         }
         if (deviceId !== deviceValue.Items[0].deviceId) {
             return res.status(400).json({ status: "failed", message: "sorry Device is not registered" });
         }
-        console.log("====>", deviceValue);
         // topicPub, endpoint, qos, status, temperature, mode, sleepTimer,dateTime
         const dbParams = {
             TableName: Table,
+
             Item: {
 
                 primaryKey: { S: uuidv4() },
@@ -151,16 +162,19 @@ const devicePulish = async (req, res) => {
             },
         };
         await db.putItem(dbParams).promise();
-        console.log("finished +++++++++++++++++++++++");
+
         await publishDeviceData(deviceValue.Items[0].topicPublish, process.env.ENDPOINT, process.env.QOS, status, temperature, mode, dateTime);
 
         return res.status(200).json({ status: "success", message: deviceValue });
     } catch (error) {
         console.log(Error, error);
+
         return res.status(500).json({ status: "failed", message: error });
     }
 };
 
 module.exports = {
+
     registerDevice, getDeviceById, getAllDevices, devicePulish,
+
 };
