@@ -103,6 +103,24 @@ const registerDevice = async (req, res) => {
             time: { S: dateTime },
         },
     };
+    const unit = 0;
+    const realTimeDB = {
+        TableName: "ReatTimeIotCoreDeviceData",
+        Item: {
+
+            deviceId: { S: deviceId }, // Replace with your unique key value
+            thingName: { S: thingName },
+            location: { S: location },
+            topicPublish: { S: topicPublish },
+            topicSubscribe: { S: topicSubscribe },
+            status: { S: status },
+            temperature: { S: temperature },
+            mode: { S: mode },
+            sleepTimer: { S: sleepTimer },
+            time: { S: dateTime },
+            unit: { N: unit.toString() },
+        },
+    };
 
     // this will create Thing into iot core and add the respected data to the dynamoDB
     iot.createThing(params, async (err, data) => {
@@ -112,6 +130,8 @@ const registerDevice = async (req, res) => {
             return res.status(500).json({ status: "failed", message: err });
         }
         try {
+            const realTimeDb = await db.putItem(realTimeDB).promise()
+
             const result = await db.putItem(dbParams).promise()
                 .then(() => res.status(201).json({ status: "success", message: "Data added successfully" }));
         } catch (error) {
@@ -127,7 +147,7 @@ const devicePulish = async (req, res) => {
         const { deviceId } = req.params;
 
         const {
-            status, temperature, mode,
+            status, temperature, mode, origin,
         } = req.body;
 
         const deviceValue = await docClient.scan({
@@ -148,6 +168,7 @@ const devicePulish = async (req, res) => {
 
                 primaryKey: { S: uuidv4() },
                 thingName: { S: deviceValue.Items[0].thingName },
+                origin: { S: origin },
                 location: { S: deviceValue.Items[0].location },
                 topicPublish: { S: deviceValue.Items[0].topicPublish },
                 topicSubscribe: { S: deviceValue.Items[0].topicSubscribe },
@@ -163,7 +184,7 @@ const devicePulish = async (req, res) => {
         };
         await db.putItem(dbParams).promise();
 
-        await publishDeviceData(deviceValue.Items[0].topicPublish, process.env.ENDPOINT, process.env.QOS, status, temperature, mode, dateTime);
+        await publishDeviceData(deviceValue.Items[0].topicPublish, process.env.ENDPOINT, process.env.QOS, status, temperature, mode, dateTime, origin);
 
         return res.status(200).json({ status: "success", message: deviceValue });
     } catch (error) {

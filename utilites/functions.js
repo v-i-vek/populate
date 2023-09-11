@@ -1,14 +1,14 @@
 const AWS = require("aws-sdk");
 
 const iot = new AWS.Iot();
-const publishDeviceData = async (topicPub, endpoint, qos, status, temperature, mode, dateTime) => {
+const publishDeviceData = async (topicPub, endpoint, qos, status, temperature, mode, dateTime,origin) => {
     const iot = new AWS.IotData({ endpoint });
 
     // Publish a message
     const publishParams = {
         topic: topicPub,
         payload: JSON.stringify({
-            status, temperature, mode, dateTime,
+            status, temperature, mode, dateTime,origin
         }),
         qos,
     };
