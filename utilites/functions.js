@@ -1,14 +1,23 @@
 const AWS = require("aws-sdk");
 
 const iot = new AWS.Iot();
-const publishDeviceData = async (topicPub, endpoint, qos, status, temperature, mode, dateTime,origin) => {
+const publishDeviceData = async (
+    topicPub,
+    endpoint,
+    qos,
+    status,
+    temperature,
+    mode,
+    dateTime,
+    origin,
+) => {
     const iot = new AWS.IotData({ endpoint });
 
     // Publish a message
     const publishParams = {
         topic: topicPub,
         payload: JSON.stringify({
-            status, temperature, mode, dateTime,origin
+            status, temperature, mode, dateTime, origin,
         }),
         qos,
     };
@@ -21,26 +30,24 @@ const publishDeviceData = async (topicPub, endpoint, qos, status, temperature, m
 };
 
 // this function is for register the iot device in the group
-function addThingToThingGroup(thingName, thingGroupName) {
-    const iot = new AWS.Iot();
+function addThingToThingGroup(thingName, location) {
+    const thingGroupValue = (location === "home") ? "home_ac_group" : "office_ac_group";
 
     const params = {
-        thingGroupName,
+        thingArn: `arn:aws:iot:ap-south-1:176306079773:thing/${thingName}`,
+        thingGroupArn: `arn:aws:iot:ap-south-1:176306079773:thinggroup/${thingGroupValue}`,
+        thingGroupName: thingGroupValue,
         thingName,
     };
-
     iot.addThingToThingGroup(params, (err, data) => {
-        if (err) {
-            console.error("Error adding thing to thing group:", err);
-        } else {
-            console.log(`Thing '${thingName}' added to thing group '${thingGroupName}'`);
-        }
+        if (err) console.log(err, err.stack); // an error occurred
+        else console.log(data); // successful response
     });
 }
 
 const createRuleInIotCore = async (topic, thingName) => {
-    const ruleName = `${thingName}_device_rule`; // Replace with your desired rule name
-    const ruleSql = `SELECT * FROM "${topic}"`; // Replace with your desired SQL query
+    const ruleName = `${thingName}_device_rule`; // creating rulle name
+    const ruleSql = `SELECT * FROM "${topic}"`; // creating the sql quesry
     const topicRulePayload = {
         sql: ruleSql,
         actions: [
@@ -60,5 +67,17 @@ const createRuleInIotCore = async (topic, thingName) => {
         console.error(`Error creating IoT Core rule: ${err}`);
     }
 };
+const deleteThing = (thingName) => {
+    const params = {
+        thingName, // write the name of thing which should be deleted
 
-module.exports = { publishDeviceData, addThingToThingGroup, createRuleInIotCore };
+    };
+    iot.deleteThing(params, (err, data) => {
+        if (err) console.log(err, err.stack); // an error occurred
+        else console.log(data); // successful response
+    });
+};
+
+module.exports = {
+    publishDeviceData, addThingToThingGroup, createRuleInIotCore, deleteThing,
+};
