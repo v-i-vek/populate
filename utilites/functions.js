@@ -53,7 +53,7 @@ const createRuleInIotCore = async (topic, thingName) => {
         actions: [
             {
                 lambda: {
-                    functionArn: "arn:aws:lambda:ap-south-1:176306079773:function:iot_core_data_pub_sub_device", // Replace with your Lambda function's ARN
+                    functionArn: "arn:aws:lambda:ap-south-1:176306079773:function:pub_sub_version_3", // Replace with your Lambda function's ARN
                 },
             },
         ],

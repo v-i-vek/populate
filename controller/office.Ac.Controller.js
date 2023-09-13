@@ -227,8 +227,6 @@ const devicePulish = async (req, res) => {
                 time: { S: dateTime },
             },
         };
-        await db.putItem(dbParams).promise();
-
         await publishDeviceData(
             deviceValue.Item.topicPublish,
             process.env.ENDPOINT,
@@ -239,6 +237,11 @@ const devicePulish = async (req, res) => {
             dateTime,
             origin,
         );
+        await db.putItem(dbParams).promise();
+        dbParams.TableName = RealTimeTable;
+        await db.putItem(dbParams).promise()
+
+       
 
         return res.status(200).json({ status: "success", message: deviceValue });
     } catch (error) {
