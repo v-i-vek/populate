@@ -10,6 +10,7 @@ const publishDeviceData = async (
     mode,
     dateTime,
     origin,
+    unit
 ) => {
     const iot = new AWS.IotData({ endpoint });
 
@@ -17,15 +18,17 @@ const publishDeviceData = async (
     const publishParams = {
         topic: topicPub,
         payload: JSON.stringify({
-            status, temperature, mode, dateTime, origin,
+            status, temperature, mode, dateTime, origin,unit
         }),
         qos,
     };
     try {
         await iot.publish(publishParams).promise();
         console.log("Message published successfully");
+        return 0;
     } catch (error) {
         console.error("Error publishing message:", error);
+        return 1;
     }
 };
 
@@ -40,8 +43,14 @@ function addThingToThingGroup(thingName, location) {
         thingName,
     };
     iot.addThingToThingGroup(params, (err, data) => {
-        if (err) console.log(err, err.stack); // an error occurred
-        else console.log(data); // successful response
+        if (err) { console.log("this is the error ++++>",err)
+             return 1;
+             } // an error occurred
+        else{
+
+            console.log("this is the data ==========>",data);
+            return 0; // successful response
+        }
     });
 }
 
@@ -61,10 +70,12 @@ const createRuleInIotCore = async (topic, thingName) => {
 
     try {
         await iot.createTopicRule({ ruleName, topicRulePayload }).promise();
-
         console.log(`Created IoT Core rule: ${ruleName}`);
+        return 0;
     } catch (err) {
         console.error(`Error creating IoT Core rule: ${err}`);
+        return 1;
+      
     }
 };
 const deleteThing = (thingName) => {
@@ -73,8 +84,11 @@ const deleteThing = (thingName) => {
 
     };
     iot.deleteThing(params, (err, data) => {
-        if (err) console.log(err, err.stack); // an error occurred
-        else console.log(data); // successful response
+        if (err) {
+            console.log(err)
+            return 1;
+        }; // an error occurred
+        return 0; // successful response
     });
 };
 
