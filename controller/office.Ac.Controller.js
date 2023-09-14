@@ -77,7 +77,7 @@ const registerDevice = async (req, res) => {
         mode,
         sleepTimer,
     } = req.body;
-    const topicPublish = topicSubscribe = `${location}/${thingName}`;
+    const topicPublish = topicSubscribe = `device/${location}/${thingName}`;
     const deviceId = new Date().getTime().toString();
 
     const iot = new AWS.Iot();
@@ -144,9 +144,9 @@ const registerDevice = async (req, res) => {
             sleepTimer: { S: sleepTimer },
             time: { S: dateTime },
             unit: { N: unit.toString() },
-            endpoint:{S:process.env.ENDPOINT},
-            qos:{S:process.env.QOS},
-            origin:{S:"origin"}
+            endpoint: { S: process.env.ENDPOINT },
+            qos: { S: process.env.QOS },
+            origin: { S: "origin" },
         },
     };
 
@@ -159,9 +159,9 @@ const registerDevice = async (req, res) => {
         try {
             const addThingAck = await addThingToThingGroup(thingName, location);
 
-            const createRuleAck = await createRuleInIotCore(topicPublish, thingName);
-            console.log(`${addThingAck}=========${createRuleAck}`);
-            if (addThingAck !== 1 && createRuleAck !== 1) {
+            // const createRuleAck = await createRuleInIotCore(topicPublish, thingName);
+            // console.log(`${addThingAck}=========${createRuleAck}`);
+            if (addThingAck !== 1) {
                 try {
                     const realTimeDb = await db.putItem(realTimeDB).promise();
 
@@ -216,7 +216,7 @@ const devicePulish = async (req, res) => {
                 .json({ status: "failed", message: "sorry Device is not registered" });
         }
         // topicPub, endpoint, qos, status, temperature, mode, sleepTimer,dateTime
-    
+
         const dbParams = {
             TableName: Table,
 
@@ -235,7 +235,7 @@ const devicePulish = async (req, res) => {
                 deviceId: { S: deviceValue.Item.deviceId },
                 // sleepTimer: { S: sleepTimer },
                 time: { S: dateTime },
-                unit:{N: deviceValue.Item.unit.toString()}
+                unit: { N: deviceValue.Item.unit.toString() },
             },
         };
         const publishDataAck = await publishDeviceData(
@@ -247,9 +247,12 @@ const devicePulish = async (req, res) => {
             mode,
             dateTime,
             origin,
-            deviceValue.Item.unit
+            deviceValue.Item.unit,
         );
-        console.log(publishDataAck,"<<<<<<<<<+++++++++++++");
+        console.log(publishDataAck, "<<<<<<<<<+++++++++++++");
+        if (publishDataAck === 0) {
+            return res.status(200).json({ status: "success", message: "successfully published" });
+        }
         // if (publishDataAck !== 1) {
         //     await db.putItem(dbParams).promise();
         //     dbParams.TableName = RealTimeTable;
@@ -257,7 +260,7 @@ const devicePulish = async (req, res) => {
 
         //     return res.status(200).json({ status: "success", message: deviceValue });
         // }
-        return res.status(200).json({ status: "success", message: "successfully published" });
+        // return res.status(200).json({ status: "success", message: "successfully published" });
     } catch (error) {
         console.log(Error, error);
         return res.status(500).json({ status: "failed", message: error });
@@ -276,8 +279,8 @@ const deleteRegisterThing = async (req, res) => {
             })
             .promise();
         console.log(deviceValue);
-       const value = deleteThing(deviceValue.Item.thingName);
-       console.log("=================>", value);
+        const value = deleteThing(deviceValue.Item.thingName);
+        console.log("=================>", value);
         docClient.delete({
             TableName: RealTimeTable,
             Key: {

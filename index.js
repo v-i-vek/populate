@@ -8,18 +8,18 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 // app.use(bodyParser.urlencoded({ extended: true }))
 
-app.use(express.json());
-// app.use(express.raw({ type: "application/json" }));
+// app.use(express.json());
+app.use(express.raw({ type: "application/json" }));
 
-// // app.get("/", (req, res) => { res.send("hello world"); });
+app.get("/", (req, res) => { res.send("hello world"); });
 
-// app.use((req, res, next) => {
-//     const buf = Buffer.from(req.body, "base64");
-//     const temp = JSON.parse(buf.toString());
-//     req.body = temp;
-//     next();
-// }, routers);
-app.use(routers)
+app.use((req, res, next) => {
+    const buf = Buffer.from(req.body, "base64");
+    const temp = JSON.parse(buf.toString());
+    req.body = temp;
+    next();
+}, routers);
+// app.use(routers)
 
 app.listen(8080, () => {
     console.log("server is running at port");
