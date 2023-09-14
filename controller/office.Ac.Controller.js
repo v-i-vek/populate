@@ -250,13 +250,14 @@ const devicePulish = async (req, res) => {
             deviceValue.Item.unit
         );
         console.log(publishDataAck,"<<<<<<<<<+++++++++++++");
-        if (publishDataAck !== 1) {
-            await db.putItem(dbParams).promise();
-            dbParams.TableName = RealTimeTable;
-            await db.putItem(dbParams).promise();
+        // if (publishDataAck !== 1) {
+        //     await db.putItem(dbParams).promise();
+        //     dbParams.TableName = RealTimeTable;
+        //     await db.putItem(dbParams).promise();
 
-            return res.status(200).json({ status: "success", message: deviceValue });
-        }
+        //     return res.status(200).json({ status: "success", message: deviceValue });
+        // }
+        return res.status(200).json({ status: "success", message: "successfully published" });
     } catch (error) {
         console.log(Error, error);
         return res.status(500).json({ status: "failed", message: error });
@@ -276,7 +277,7 @@ const deleteRegisterThing = async (req, res) => {
             .promise();
         console.log(deviceValue);
        const value = deleteThing(deviceValue.Item.thingName);
-       console.log("=================>", value)
+       console.log("=================>", value);
         docClient.delete({
             TableName: RealTimeTable,
             Key: {
