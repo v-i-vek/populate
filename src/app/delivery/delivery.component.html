@@ -2,8 +2,8 @@
 
 <div class="main">
     <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
-        <mat-tab label="Delivery">
-            <div class="chips">
+        <mat-tab label="Office">
+            <!-- <div class="chips">
                 <mat-chip-listbox aria-label="Dog selection">
                     <mat-chip> Filter </mat-chip>
                     <mat-chip color="primary"> Rating </mat-chip>
@@ -11,65 +11,65 @@
                     <mat-chip color="accent"> Cuisines </mat-chip>
                     <mat-chip color="accent"> More Filter </mat-chip>
                 </mat-chip-listbox>
-            </div>
+            </div> -->
             <div class="inspiration">
-                <h2>Inspiration for your first order</h2>
-                <div class="inspirationImg">
-                    <img src="../../assets/images/pizza.avif" alt />
-                    <p>Pizza</p>
+                <h2>Register your Device</h2>
+                <div class="inspirationImg" (click)="addDevice()">
+                    <img src="../../assets/images/airconditioningv1.webp" alt />
+                    <p>AC</p>
                 </div>
-                <div class="inspirationImg">
-                    <img src="../../assets/images/burger.avif" alt />
-                    <p>Burger</p>
+                <div class="inspirationImg" (click)="addDevice()">
+                    <img src="../../assets/images/samsungTvV1.webp" alt />
+                    <p>TV</p>
                 </div>
-                <div class="inspirationImg">
-                    <img src="../../assets/images/gujaratithali.avif" alt />
-                    <p>Gujarati thali</p>
+                <div class="inspirationImg" (click)="addDevice()">
+                    <img src="../../assets/images/cromtonFan.jpg" alt />
+                    <p>Fan</p>
                 </div>
-                <div class="inspirationImg">
-                    <img src="../../assets/images/biryani.avif" alt />
-                    <p>Biryani</p>
+                <div class="inspirationImg" (click)="addDevice()">
+                    <img src="../../assets/images/bulb.png" alt />
+                    <p>LED-Bulb</p>
                 </div>
             </div>
             <div class="inspiration">
 
-                <h2>Top Brands For You</h2>
-                <div class="inspirationImg">
-                    <img src="../../assets/images/gwalior.avif" height="118"
+                <h2>Active Devices</h2>
+                <div class="inspirationImg" *ngFor="let device of deviceValue">
+                    <img src="../../assets/images/airconditioningv1.webp" height="118"
                         width="116" style="object-fit: cover;"
                         alt />
-                    <p>Gwaliya</p>
+                    <p>AC_4th_12</p>
+                </div>
+                <!-- <div class="inspirationImg">
+                    <img src="../../assets/images/bulb.png" alt />
+                    <p>BULB_4th_canteen</p>
                 </div>
                 <div class="inspirationImg">
-                    <img src="../../assets/images/jayBhavaniVadapav.avif" alt />
-                    <p>Jay Bhanvani vadapav</p>
+                    <img src="../../assets/images/cromtonFan.jpg" alt />
+                    <p>Fan_4th_15</p>
                 </div>
                 <div class="inspirationImg">
-                    <img src="../../assets/images/LaMilanoPizzaria.avif" alt />
-                    <p>La milano</p>
-                </div>
-                <div class="inspirationImg">
-                    <img src="../../assets/images/LaPinoz.avif" alt />
-                    <p>La Pinoz</p>
-                </div>
+                    <img src="../../assets/images/airconditioningv1.webp" alt />
+                    <p>AC_4th_13</p>
+                </div> -->
 
                 <div class="bestFood">
-                    <h2>Best Food in Ahmedabad</h2>
+                    <h2>All Devices</h2>
                     <div class="foodcard">
-                        <img src="../../assets/images/cardBurgerking.avif" alt>
-                        <p>Burger King</p>
+                        <img src="../../assets/images/airconditioningv1.webp" alt>
+                        <p>AC_4th_13</p>
                     </div>
                     <div class="foodcard">
-                        <img src="../../assets/images/cardBurger.avif" alt>
-                        <p>Mc Donald Burger</p>
+                        <img src="../../assets/images/cromtonFan.jpg" alt>
+                        <p>Fan_4th_15</p>
                     </div>
                     <div class="foodcard">
-                        <img src="../../assets/images/cardPizza.avif" alt>
-                        <p>La pinoz Pizza</p>
+                        <img src="../../assets/images/bulb.png" alt>
+                        <p>BULB_4th_canteen</p>
                     </div>
                     <div class="foodcard">
-                        <img src="../../assets/images/cardpizza2.avif" alt>
-                        <p>La Milano Pizza</p>
+                        <img src="../../assets/images/airconditioningv1.webp" alt>
+                        <p>AC_4th_12</p>
                     </div>
 
                 </div>
@@ -77,6 +77,6 @@
             </div>
         </mat-tab>
 
-        <mat-tab label="Dining out">Dinning out</mat-tab>
+        <mat-tab label="Home">home</mat-tab>
     </mat-tab-group>
 </div>

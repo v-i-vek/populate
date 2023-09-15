@@ -27,15 +27,15 @@ export class VerificationComponent implements OnInit {
 
 otpVerify(value:any){
   this.otpAuth.value.email = this.email
-this.http.otpAuth(value).subscribe({
-  next:(res)=>{
-    alert("your email is verifed")
+// this.http.otpAuth(value).subscribe({
+//   next:(res)=>{
+//     alert("your email is verifed")
 
-  },
-  error:(err)=>{
-    alert("wrong otp")
-  }
-})
+//   },
+//   error:(err)=>{
+//     alert("wrong otp")
+//   }
+// })
 }
  
 }

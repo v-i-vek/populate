@@ -19,6 +19,7 @@ import { DeliveryComponent } from './delivery/delivery.component';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatChipsModule} from '@angular/material/chips';
 import { VerificationComponent } from './verification/verification.component';
+import { AddDeviceComponent } from './add-device/add-device.component';
 
 
 
@@ -35,7 +36,8 @@ import { VerificationComponent } from './verification/verification.component';
     LoginComponent,
     HomePageComponent,
     DeliveryComponent,
-    VerificationComponent
+    VerificationComponent,
+    AddDeviceComponent,
   
    
   ],

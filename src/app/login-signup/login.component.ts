@@ -67,17 +67,17 @@ export class LoginComponent implements OnInit {
     if(!this.editData){
     console.log(value);
 
-    this.http.createUser(value).subscribe({
-      next: (res) => {
-        alert('Your Registration was successful');
-        this.dialog.close()
-        this.router.navigate(['/verify'],{queryParams:{id:value.email}})
-        //this.router.navigate(['/dashboard']);
-      },
-      error: (e) => {
-        alert('something went wrong');
-      },
-    });
+    // this.http.createUser(value).subscribe({
+    //   next: (res) => {
+    //     alert('Your Registration was successful');
+    //     this.dialog.close()
+    //     this.router.navigate(['/verify'],{queryParams:{id:value.email}})
+    //     //this.router.navigate(['/dashboard']);
+    //   },
+    //   error: (e) => {
+    //     alert('something went wrong');
+    //   },
+    // });
   }
   else{
     console.log(value,"the value of the login form")
@@ -85,13 +85,13 @@ export class LoginComponent implements OnInit {
   }
   }
   LoginForm(value:any){
-    this.http.loginUser(value).subscribe({
-      next:(res)=>{
-        alert("user login successfully")
-      },
-      error:(e)=>{
-        alert("something went wrong login failed")
-      }
-    })
+    // this.http.loginUser(value).subscribe({
+    //   next:(res)=>{
+    //     alert("user login successfully")
+    //   },
+    //   error:(e)=>{
+    //     alert("something went wrong login failed")
+    //   }
+    // })
   }
 }

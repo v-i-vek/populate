@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { DevicesService } from '../Services/devices.service';
 
 @Component({
   selector: 'app-home-page',
