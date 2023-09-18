@@ -20,6 +20,14 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {MatChipsModule} from '@angular/material/chips';
 import { VerificationComponent } from './verification/verification.component';
 import { AddDeviceComponent } from './add-device/add-device.component';
+import { DeviceDetailsComponent } from './device-details/device-details.component';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { FormGroup,FormsModule , FormBuilder} from '@angular/forms';
+import {MatListModule} from '@angular/material/list';
+import {MatDividerModule} from '@angular/material/divider';
+
+
+
 
 
 
@@ -38,6 +46,8 @@ import { AddDeviceComponent } from './add-device/add-device.component';
     DeliveryComponent,
     VerificationComponent,
     AddDeviceComponent,
+    DeviceDetailsComponent,
+    
   
    
   ],
@@ -55,7 +65,12 @@ import { AddDeviceComponent } from './add-device/add-device.component';
     ReactiveFormsModule,
     HttpClientModule,
     MatTabsModule,
-    MatChipsModule
+    MatChipsModule,
+    MatCardModule,
+    MatSlideToggleModule,
+    FormsModule,
+    MatListModule,
+    MatDividerModule
     
 
   ],

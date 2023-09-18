@@ -34,7 +34,7 @@
             <div class="inspiration">
 
                 <h2>Active Devices</h2>
-                <div class="inspirationImg" *ngFor="let device of deviceValue">
+                <div class="inspirationImg" >
                     <img src="../../assets/images/airconditioningv1.webp" height="118"
                         width="116" style="object-fit: cover;"
                         alt />
@@ -53,13 +53,15 @@
                     <p>AC_4th_13</p>
                 </div> -->
 
-                <div class="bestFood">
-                    <h2>All Devices</h2>
-                    <div class="foodcard">
+                <div class="bestFood" *ngIf="loaded">
+                    <h2 >All Devices</h2>
+                    <div  class="foodcard" *ngFor="let val of deviceValue.data.Items" (click)=" checkDeviceDetailsOfDevices(val)" >
+                       
                         <img src="../../assets/images/airconditioningv1.webp" alt>
-                        <p>AC_4th_13</p>
+                        <p>{{val.thingName}}</p>
+                        <!-- <p hidden> <app-device-details [item]="deviceValue"></app-device-details></p> -->
                     </div>
-                    <div class="foodcard">
+                    <!-- <div class="foodcard">
                         <img src="../../assets/images/cromtonFan.jpg" alt>
                         <p>Fan_4th_15</p>
                     </div>
@@ -70,7 +72,7 @@
                     <div class="foodcard">
                         <img src="../../assets/images/airconditioningv1.webp" alt>
                         <p>AC_4th_12</p>
-                    </div>
+                    </div> -->
 
                 </div>
 
