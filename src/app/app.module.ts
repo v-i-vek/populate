@@ -74,7 +74,7 @@ import {MatDividerModule} from '@angular/material/divider';
     
 
   ],
-  providers: [NavBarComponent],
+  providers: [NavBarComponent,DeviceDetailsComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

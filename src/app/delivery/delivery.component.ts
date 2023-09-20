@@ -2,7 +2,7 @@ import { Component, Inject, Injectable, OnInit } from '@angular/core';
 import { MatDialog,MatDialogRef } from '@angular/material/dialog';
 
 import { ActivatedRoute } from '@angular/router';
-import { Router } from 'express';
+import { response, Router } from 'express';
 
 import { LoginComponent } from '../login-signup/login.component';
 import { NavBarComponent } from '../nav-bar/nav-bar.component';
@@ -20,9 +20,14 @@ import { DeviceDetailsComponent } from '../device-details/device-details.compone
 export class DeliveryComponent implements OnInit {
   
   loaded:boolean = false
+  tempData:Object ={}
   
   constructor(public http : DevicesService ,private dialog:MatDialog,){
+    // setInterval(this.getAllDevices,30000)
     this.getAllDevices()
+    this.http.RefreshRequired.subscribe(response=>{
+      this.getAllDevices()
+    })
     
     
    }
@@ -43,7 +48,10 @@ export class DeliveryComponent implements OnInit {
   
    getAllDevices(){
     this.http.getDevices().subscribe({
-      next:(res)=>{
+      next:(res:object)=>{
+        // if(this.dialogRef && this.dialogRef.componentInstance){
+        //   this.dialogRef.componentInstance.data = this.tempData
+        // }
         console.log(res)
         this.deviceValue = res
         this.loaded = true;
@@ -59,7 +67,7 @@ export class DeliveryComponent implements OnInit {
   
 
    checkDeviceDetailsOfDevices(data:any){
-    this.dialog.open(DeviceDetailsComponent,{width:"90%",data:data})
+    this.dialog.open(DeviceDetailsComponent,{width:"90%",height:"80%",data:data})
 
    }
 
