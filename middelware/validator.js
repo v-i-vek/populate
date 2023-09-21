@@ -14,12 +14,12 @@ const addThingValidation = () => [
     // body("topicPublish").notEmpty().withMessage("topicPublish is can't be empty"),
     // check("topicSubscribe").exists().withMessage("topicSubscribe is required"),
     // body("topicSubscribe").notEmpty().withMessage("topicSubscribe is can't be empty"),
-    check("temperature").exists().withMessage("temperature is required"),
-    body("temperature").notEmpty().withMessage("temperature is can't be empty"),
-    check("mode").exists().withMessage("mode is required"),
-    body("mode").notEmpty().withMessage("mode is can't be empty"),
-    check("sleepTimer").exists().withMessage("sleepTimer is required"),
-    body("sleepTimer").notEmpty().withMessage("sleepTimer is can't be empty"),
+    // check("temperature").exists().withMessage("temperature is required"),
+    // body("temperature").notEmpty().withMessage("temperature is can't be empty"),
+    // check("mode").exists().withMessage("mode is required"),
+    // body("mode").notEmpty().withMessage("mode is can't be empty"),
+    // check("sleepTimer").exists().withMessage("sleepTimer is required"),
+    // body("sleepTimer").notEmpty().withMessage("sleepTimer is can't be empty"),
 
 
 ];

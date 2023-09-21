@@ -1,64 +1,66 @@
-const cars = ["mercedeez", "bmw"];
 const AWS = require("aws-sdk");
+
 AWS.config.update({
     region: "ap-south-1",
 });
-const iot = new AWS.Iot();
 
+const docClient = new AWS.DynamoDB.DocumentClient();
 
-// // for (const car of cars) {
-// //     for (const carValue of car) {
-// //         console.log(carValue);
-// //     }
-// //     console.log();
-// // }
+const deviceId = "1695204098194";
+// const temperature = "28";
+//
 
-// using primitive for loop
-// for (let i = 0; i < cars.length; i++) {
-//     for (let j = 0; j < cars[i].length; j++) {
-//         console.log(cars[i][j]);
-//     }
-//     console.log("");
-// }
+const d = {
+    status: "on",
+    temperature: 2,
+    mode: "cool",
+    unit: 112,
+    time: "2023-9-21 12:44:9",
+    thingName: "Ac_31_office",
+    origin: "device",
+    location: "home",
+    deviceId: "1694771926124",
+    topicPublish: "device/home/Ac_31_home",
+    topicSubscribe: "device/home/Ac_31_home",
 
-// cars.forEach((value, index,arr)=>{
-    
-// })
+};
 
-const result  =   (thingName, location)=> {
-    const thingGroupValue = (location === "home") ? "home_ac_group" : "office_ac_group";
-
-    const params = {
-        thingArn: `ar:thing/${thingName}`,
-        thingGroupArn: `arn/${thingGroupValue}`,
-        thingGroupName: thingGroupValue,
-        thingName,
-    };
-    const value = iot.addThingToThingGroup(params, (err, data) => {
-        return new Promise((resolve, reject) => {
-            const thingGroupValue = (location === "home") ? "home_ac_group" : "office_ac_group";
-    
-            const params = {
-                thingArn: `ar:thing/${thingName}`,
-                thingGroupArn: `arn/${thingGroupValue}`,
-                thingGroupName: thingGroupValue,
-                thingName,
-            };
-    
-            iot.addThingToThingGroup(params, (err, data) => {
-                if (err) {
-                    console.error("Error:", err);
-                    reject(err);
-                } else {
-                    console.log("Data:", data);
-                    resolve(data);
-                }
-            });
-        });
-})
+const exp = {
+    UpdateExpression: "set",
+    ExpressionAttributeNames: {},
+    ExpressionAttributeValues: {},
+};
+for (const [key, value] of Object.entries(d)) {
+    if(key === "deviceId"){
+        continue;
+    }
+    exp.UpdateExpression += `#${key} = :${key},`;
+    exp.ExpressionAttributeNames[`#${key}`] = key;
+    exp.ExpressionAttributeValues[`:${key}`] = value;
 }
+exp.UpdateExpression = exp.UpdateExpression.slice(0, -1);
 
-let location ="home"
-let thingName = "ac"
-const val  = result(thingName,location)
-console.log(val);
+const dbparams = {
+    TableName: "ReatTimeIotCoreDeviceData",
+
+    Key: {
+        deviceId,
+    },
+
+};
+dbparams.UpdateExpression = exp.UpdateExpression;
+dbparams.ExpressionAttributeNames = exp.ExpressionAttributeNames;
+dbparams.ExpressionAttributeValues = exp.ExpressionAttributeValues;
+
+console.log(dbparams);
+
+const updateValue = async () => {
+    try {
+        const value = await docClient.update(dbparams).promise();
+        console.log("updated successfully", value);
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+updateValue();

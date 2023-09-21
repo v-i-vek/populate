@@ -26,7 +26,7 @@ const getAllDevices = async (req, res) => {
         const params = {
             TableName: RealTimeTable,
         };
-        const allDeviceData = await db.scan(params).promise();
+        const allDeviceData = await docClient.scan(params).promise();
         return res.status(200).json({
             status: "Success",
             message: "Thing Fetched Successfully!",
@@ -72,11 +72,12 @@ const registerDevice = async (req, res) => {
     const {
         thingName,
         location,
-        status,
-        temperature,
-        mode,
-        sleepTimer,
+
     } = req.body;
+    const mode = "mode";
+    const status = "status";
+    const temperature = "temperature";
+
     const topicPublish = topicSubscribe = `device/${location}/${thingName}`;
     const deviceId = new Date().getTime().toString();
 
@@ -113,10 +114,13 @@ const registerDevice = async (req, res) => {
     };
 
     // value to add in the database
+    const primaryKey = uuidv4();
+    const unit = 0;
+    const deviceStatus = "deviceStatus";
     const dbParams = {
         TableName: Table,
         Item: {
-            primaryKey: { S: uuidv4() }, // Replace with your unique key value
+            primaryKey: { S: primaryKey }, // Replace with your unique key value
             thingName: { S: thingName },
             location: { S: location },
             topicPublish: { S: topicPublish },
@@ -125,11 +129,15 @@ const registerDevice = async (req, res) => {
             temperature: { S: temperature },
             mode: { S: mode },
             deviceId: { S: deviceId },
-            sleepTimer: { S: sleepTimer },
             time: { S: dateTime },
+            unit: { N: unit.toString() },
+            endpoint: { S: process.env.ENDPOINT },
+            qos: { S: process.env.QOS },
+            origin: { S: "origin" },
+            deviceStatus: { S: deviceStatus },
         },
     };
-    const unit = 0;
+
     const realTimeDB = {
         TableName: "ReatTimeIotCoreDeviceData",
         Item: {
@@ -141,12 +149,13 @@ const registerDevice = async (req, res) => {
             status: { S: status },
             temperature: { S: temperature },
             mode: { S: mode },
-            sleepTimer: { S: sleepTimer },
             time: { S: dateTime },
             unit: { N: unit.toString() },
             endpoint: { S: process.env.ENDPOINT },
             qos: { S: process.env.QOS },
             origin: { S: "origin" },
+            deviceStatus: { S: deviceStatus },
+            primaryKey: { S: primaryKey },
         },
     };
 
@@ -189,9 +198,9 @@ const devicePulish = async (req, res) => {
         const { deviceId } = req.params;
 
         const {
-            status, temperature, mode, origin,
+            status, temperature, mode,
         } = req.body;
-
+        const origin = "Client";
         // const deviceValue = await docClient.scan({
         //     TableName: Table, FilterExpression: "#deviceId = :deviceId", ExpressionAttributeNames: { "#deviceId": "deviceId" },
         //  ExpressionAttributeValues: { ":deviceId": deviceId },
@@ -221,15 +230,16 @@ const devicePulish = async (req, res) => {
             TableName: Table,
 
             Item: {
+
                 primaryKey: { S: uuidv4() },
                 thingName: { S: deviceValue.Item.thingName },
                 origin: { S: origin },
                 location: { S: deviceValue.Item.location },
                 topicPublish: { S: deviceValue.Item.topicPublish },
                 topicSubscribe: { S: deviceValue.Item.topicSubscribe },
-                status: { S: status },
-                temperature: { S: temperature },
-                mode: { S: mode },
+                status: (status === undefined) ? { S: deviceValue.Item.status } : { S: status },
+                temperature: (temperature === undefined) ? { S: deviceValue.Item.temperature } : { S: temperature },
+                mode: (mode === undefined) ? { S: deviceValue.Item.mode } : { S: mode },
                 endpoint: { S: process.env.ENDPOINT },
                 qos: { S: process.env.QOS },
                 deviceId: { S: deviceValue.Item.deviceId },
@@ -249,18 +259,42 @@ const devicePulish = async (req, res) => {
             origin,
             deviceValue.Item.unit,
         );
-        console.log(publishDataAck, "<<<<<<<<<+++++++++++++");
-        if (publishDataAck === 0) {
-            return res.status(200).json({ status: "success", message: "successfully published" });
-        }
-        // if (publishDataAck !== 1) {
-        //     await db.putItem(dbParams).promise();
-        //     dbParams.TableName = RealTimeTable;
-        //     await db.putItem(dbParams).promise();
 
-        //     return res.status(200).json({ status: "success", message: deviceValue });
+        console.log(publishDataAck, "<<<<<<<<<+++++++++++++");
+        // if (publishDataAck === 0) {
+        //     return res.status(200).json({ status: "success", message: "successfully published" });
         // }
-        // return res.status(200).json({ status: "success", message: "successfully published" });
+        if (publishDataAck !== 1) {
+            await db.putItem(dbParams).promise();
+            const updateTable = {
+                TableName: "ReatTimeIotCoreDeviceData",
+
+                Key: {
+                    deviceId,
+                },
+            };
+            const exp = {
+                UpdateExpression: "set",
+                ExpressionAttributeNames: {},
+                ExpressionAttributeValues: {},
+            };
+            console.log(req.body);
+            for (const [key, value] of Object.entries(req.body)) {
+                exp.UpdateExpression += `#${key} = :${key},`;
+                exp.ExpressionAttributeNames[`#${key}`] = key;
+                exp.ExpressionAttributeValues[`:${key}`] = value;
+            }
+            exp.UpdateExpression = exp.UpdateExpression.slice(0, -1);
+
+            updateTable.UpdateExpression = exp.UpdateExpression;
+            updateTable.ExpressionAttributeNames = exp.ExpressionAttributeNames;
+            updateTable.ExpressionAttributeValues = exp.ExpressionAttributeValues;
+
+            await docClient.update(updateTable).promise();
+
+            return res.status(200).json({ status: "success", message: deviceValue });
+        }
+        return res.status(200).json({ status: "success", message: "successfully published" });
     } catch (error) {
         console.log(Error, error);
         return res.status(500).json({ status: "failed", message: error });
