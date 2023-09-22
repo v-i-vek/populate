@@ -74,9 +74,9 @@ const registerDevice = async (req, res) => {
         location,
 
     } = req.body;
-    const mode = "mode";
-    const status = "status";
-    const temperature = "temperature";
+    const mode = "auto";
+    const status = "OFF";
+    const temperature = 0;
 
     const topicPublish = topicSubscribe = `device/${location}/${thingName}`;
     const deviceId = new Date().getTime().toString();
@@ -116,7 +116,8 @@ const registerDevice = async (req, res) => {
     // value to add in the database
     const primaryKey = uuidv4();
     const unit = 0;
-    const deviceStatus = "deviceStatus";
+    const electricStatus = "online";
+    const heartBeat = Date.now().toString();
     const dbParams = {
         TableName: Table,
         Item: {
@@ -126,7 +127,7 @@ const registerDevice = async (req, res) => {
             topicPublish: { S: topicPublish },
             topicSubscribe: { S: topicPublish },
             status: { S: status },
-            temperature: { S: temperature },
+            temperature: { S: temperature.toString() },
             mode: { S: mode },
             deviceId: { S: deviceId },
             time: { S: dateTime },
@@ -134,7 +135,8 @@ const registerDevice = async (req, res) => {
             endpoint: { S: process.env.ENDPOINT },
             qos: { S: process.env.QOS },
             origin: { S: "origin" },
-            deviceStatus: { S: deviceStatus },
+            electricStatus: { S: electricStatus },
+            heartBeat: { S: heartBeat },
         },
     };
 
@@ -147,14 +149,15 @@ const registerDevice = async (req, res) => {
             topicPublish: { S: topicPublish },
             topicSubscribe: { S: topicPublish },
             status: { S: status },
-            temperature: { S: temperature },
+            temperature: { S: temperature.toString() },
             mode: { S: mode },
             time: { S: dateTime },
             unit: { N: unit.toString() },
             endpoint: { S: process.env.ENDPOINT },
             qos: { S: process.env.QOS },
             origin: { S: "origin" },
-            deviceStatus: { S: deviceStatus },
+            electricStatus: { S: electricStatus },
+            heartBeat: { S: heartBeat },
             primaryKey: { S: primaryKey },
         },
     };
@@ -225,7 +228,7 @@ const devicePulish = async (req, res) => {
                 .json({ status: "failed", message: "sorry Device is not registered" });
         }
         // topicPub, endpoint, qos, status, temperature, mode, sleepTimer,dateTime
-
+        const heartBeat = Date.now();
         const dbParams = {
             TableName: Table,
 
@@ -244,6 +247,8 @@ const devicePulish = async (req, res) => {
                 qos: { S: process.env.QOS },
                 deviceId: { S: deviceValue.Item.deviceId },
                 // sleepTimer: { S: sleepTimer },
+                heartBeat: { S: heartBeat },
+                electricStatus: { S: deviceValue.Item.electricStatus },
                 time: { S: dateTime },
                 unit: { N: deviceValue.Item.unit.toString() },
             },
@@ -258,6 +263,7 @@ const devicePulish = async (req, res) => {
             dateTime,
             origin,
             deviceValue.Item.unit,
+            heartBeat,
         );
 
         console.log(publishDataAck, "<<<<<<<<<+++++++++++++");

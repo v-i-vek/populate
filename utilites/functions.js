@@ -10,7 +10,8 @@ const publishDeviceData = async (
     mode,
     dateTime,
     origin,
-    unit
+    unit,
+    hearBeat
 ) => {
     const iot = new AWS.IotData({ endpoint });
 
@@ -18,7 +19,7 @@ const publishDeviceData = async (
     const publishParams = {
         topic: topicPub,
         payload: JSON.stringify({
-            status, temperature, mode, dateTime, origin,unit
+            status, temperature, mode, dateTime, origin,unit,hearBeat
         }),
         qos,
     };
