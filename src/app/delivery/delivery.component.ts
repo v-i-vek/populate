@@ -67,7 +67,13 @@ export class DeliveryComponent implements OnInit {
   
 
    checkDeviceDetailsOfDevices(data:any){
-    this.dialog.open(DeviceDetailsComponent,{width:"90%",height:"80%",data:data})
+    if(data.electricStatus ==="offline"){
+      alert("device is offline")
+    }
+    else{
+
+      this.dialog.open(DeviceDetailsComponent,{width:"90%",height:"80%",data:data})
+    }
 
    }
 

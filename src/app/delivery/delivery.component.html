@@ -1,9 +1,9 @@
 <app-nav-bar></app-nav-bar>
 
 <div class="main">
-    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
-        <mat-tab label="Office">
-            <!-- <div class="chips">
+  <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+    <mat-tab label="Office">
+      <!-- <div class="chips">
                 <mat-chip-listbox aria-label="Dog selection">
                     <mat-chip> Filter </mat-chip>
                     <mat-chip color="primary"> Rating </mat-chip>
@@ -12,35 +12,38 @@
                     <mat-chip color="accent"> More Filter </mat-chip>
                 </mat-chip-listbox>
             </div> -->
-            <div class="inspiration">
-                <h2>Register your Device</h2>
-                <div class="inspirationImg" (click)="addDevice()">
-                    <img src="../../assets/images/airconditioningv1.webp" alt />
-                    <p>AC</p>
-                </div>
-                <div class="inspirationImg" (click)="addDevice()">
-                    <img src="../../assets/images/samsungTvV1.webp" alt />
-                    <p>TV</p>
-                </div>
-                <div class="inspirationImg" (click)="addDevice()">
-                    <img src="../../assets/images/cromtonFan.jpg" alt />
-                    <p>Fan</p>
-                </div>
-                <div class="inspirationImg" (click)="addDevice()">
-                    <img src="../../assets/images/bulb.png" alt />
-                    <p>LED-Bulb</p>
-                </div>
-            </div>
-            <div class="inspiration">
-
-                <h2>Active Devices</h2>
-                <div class="inspirationImg" >
-                    <img src="../../assets/images/airconditioningv1.webp" height="118"
-                        width="116" style="object-fit: cover;"
-                        alt />
-                    <p>AC_4th_12</p>
-                </div>
-                <!-- <div class="inspirationImg">
+      <div class="inspiration">
+        <h2>Register your Device</h2>
+        <div class="inspirationImg" (click)="addDevice()">
+          <img src="../../assets/images/airconditioningv1.webp" alt />
+          <p>AC</p>
+        </div>
+        <div class="inspirationImg" (click)="addDevice()">
+          <img src="../../assets/images/samsungTvV1.webp" alt />
+          <p>TV</p>
+        </div>
+        <div class="inspirationImg" (click)="addDevice()">
+          <img src="../../assets/images/cromtonFan.jpg" alt />
+          <p>Fan</p>
+        </div>
+        <div class="inspirationImg" (click)="addDevice()">
+          <img src="../../assets/images/bulb.png" alt />
+          <p>LED-Bulb</p>
+        </div>
+      </div>
+      <div class="inspiration">
+        <h2>Active Devices</h2>
+        <div class="inspirationImg">
+          <img
+            src="../../assets/images/airconditioningv1.webp"
+            height="118"
+            width="116"
+            style="object-fit: cover"
+            alt
+          />
+          <p>AC_4th_12</p>
+        </div>
+        <!-- <div class="inspirationImg">
                     <img src="../../assets/images/bulb.png" alt />
                     <p>BULB_4th_canteen</p>
                 </div>
@@ -53,15 +56,26 @@
                     <p>AC_4th_13</p>
                 </div> -->
 
-                <div class="bestFood" *ngIf="loaded">
-                    <h2 >All Devices</h2>
-                    <div  class="foodcard" *ngFor="let val of deviceValue.data.Items" (click)=" checkDeviceDetailsOfDevices(val)" >
-                       
-                        <img src="../../assets/images/airconditioningv1.webp" alt>
-                        <p>{{val.thingName}}</p>
-                        <!-- <p hidden> <app-device-details [item]="deviceValue"></app-device-details></p> -->
-                    </div>
-                    <!-- <div class="foodcard">
+        <div class="bestFood" *ngIf="loaded">
+          <h2>All Devices</h2>
+          <div
+            class="foodcard"
+            *ngFor="let val of deviceValue.data.Items"
+            (click)="checkDeviceDetailsOfDevices(val)"
+          
+          >
+            <div  >
+              <div  >
+                <img src="../../assets/images/airconditioningv1.webp"  alt="image"  />
+                <p>{{ val.thingName }}</p>
+               
+              </div>
+            </div>
+            
+
+            <!-- <p hidden> <app-device-details [item]="deviceValue"></app-device-details></p> -->
+          </div>
+          <!-- <div class="foodcard">
                         <img src="../../assets/images/cromtonFan.jpg" alt>
                         <p>Fan_4th_15</p>
                     </div>
@@ -73,12 +87,10 @@
                         <img src="../../assets/images/airconditioningv1.webp" alt>
                         <p>AC_4th_12</p>
                     </div> -->
+        </div>
+      </div>
+    </mat-tab>
 
-                </div>
-
-            </div>
-        </mat-tab>
-
-        <mat-tab label="Home">home</mat-tab>
-    </mat-tab-group>
+    <mat-tab label="Home">home</mat-tab>
+  </mat-tab-group>
 </div>
