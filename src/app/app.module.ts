@@ -25,6 +25,10 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { FormGroup,FormsModule , FormBuilder} from '@angular/forms';
 import {MatListModule} from '@angular/material/list';
 import {MatDividerModule} from '@angular/material/divider';
+import { EnergyUsageComponent } from './energy-usage/energy-usage.component';
+import {MatTableModule} from '@angular/material/table';
+import {MatPaginatorModule} from '@angular/material/paginator';
+
 
 
 
@@ -47,6 +51,7 @@ import {MatDividerModule} from '@angular/material/divider';
     VerificationComponent,
     AddDeviceComponent,
     DeviceDetailsComponent,
+    EnergyUsageComponent,
     
   
    
@@ -70,7 +75,9 @@ import {MatDividerModule} from '@angular/material/divider';
     MatSlideToggleModule,
     FormsModule,
     MatListModule,
-    MatDividerModule
+    MatDividerModule,
+    MatTableModule,
+    MatPaginatorModule
     
 
   ],

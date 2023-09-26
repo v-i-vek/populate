@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { MatDialog,MatDialogRef } from '@angular/material/dialog';
 import { LoginComponent } from '../login-signup/login.component';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-nav-bar',
@@ -10,7 +12,7 @@ import { LoginComponent } from '../login-signup/login.component';
 export class NavBarComponent {
 
   data:number=1
-  constructor(private dialog:MatDialog){}
+  constructor(private dialog:MatDialog,private route : Router){}
 
 
 
@@ -31,6 +33,10 @@ onLogin(){
     width:'30%',
     data:this.data,
   })
+}
+
+openEneryUsage(){
+ this.route.navigateByUrl('/energyusage')  
 }
 
 }
