@@ -76,7 +76,7 @@ const registerDevice = async (req, res) => {
     } = req.body;
     const mode = "auto";
     const status = "OFF";
-    const temperature = 0;
+    const temperature = 20;
 
     const topicPublish = topicSubscribe = `device/${location}/${thingName}`;
     const deviceId = new Date().getTime().toString();
@@ -247,7 +247,7 @@ const devicePulish = async (req, res) => {
                 qos: { S: process.env.QOS },
                 deviceId: { S: deviceValue.Item.deviceId },
                 // sleepTimer: { S: sleepTimer },
-                heartBeat: { S: heartBeat },
+                heartBeat: { S: heartBeat.toString() },
                 electricStatus: { S: deviceValue.Item.electricStatus },
                 time: { S: dateTime },
                 unit: { N: deviceValue.Item.unit.toString() },
@@ -264,6 +264,7 @@ const devicePulish = async (req, res) => {
             origin,
             deviceValue.Item.unit,
             heartBeat,
+            deviceValue.Item.deviceId
         );
 
         console.log(publishDataAck, "<<<<<<<<<+++++++++++++");
@@ -271,32 +272,32 @@ const devicePulish = async (req, res) => {
         //     return res.status(200).json({ status: "success", message: "successfully published" });
         // }
         if (publishDataAck !== 1) {
-            await db.putItem(dbParams).promise();
-            const updateTable = {
-                TableName: "ReatTimeIotCoreDeviceData",
+            // await db.putItem(dbParams).promise();
+            // const updateTable = {
+            //     TableName: "ReatTimeIotCoreDeviceData",
 
-                Key: {
-                    deviceId,
-                },
-            };
-            const exp = {
-                UpdateExpression: "set",
-                ExpressionAttributeNames: {},
-                ExpressionAttributeValues: {},
-            };
-            console.log(req.body);
-            for (const [key, value] of Object.entries(req.body)) {
-                exp.UpdateExpression += `#${key} = :${key},`;
-                exp.ExpressionAttributeNames[`#${key}`] = key;
-                exp.ExpressionAttributeValues[`:${key}`] = value;
-            }
-            exp.UpdateExpression = exp.UpdateExpression.slice(0, -1);
+            //     Key: {
+            //         deviceId,
+            //     },
+            // };
+            // const exp = {
+            //     UpdateExpression: "set",
+            //     ExpressionAttributeNames: {},
+            //     ExpressionAttributeValues: {},
+            // };
+            // console.log(req.body);
+            // for (const [key, value] of Object.entries(req.body)) {
+            //     exp.UpdateExpression += `#${key} = :${key},`;
+            //     exp.ExpressionAttributeNames[`#${key}`] = key;
+            //     exp.ExpressionAttributeValues[`:${key}`] = value;
+            // }
+            // exp.UpdateExpression = exp.UpdateExpression.slice(0, -1);
 
-            updateTable.UpdateExpression = exp.UpdateExpression;
-            updateTable.ExpressionAttributeNames = exp.ExpressionAttributeNames;
-            updateTable.ExpressionAttributeValues = exp.ExpressionAttributeValues;
+            // updateTable.UpdateExpression = exp.UpdateExpression;
+            // updateTable.ExpressionAttributeNames = exp.ExpressionAttributeNames;
+            // updateTable.ExpressionAttributeValues = exp.ExpressionAttributeValues;
 
-            await docClient.update(updateTable).promise();
+            // await docClient.update(updateTable).promise();
 
             return res.status(200).json({ status: "success", message: deviceValue });
         }
