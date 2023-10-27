@@ -1,0 +1,16 @@
+
+<div>
+    <button (click)="onIncrement()">Increment</button><br><br>
+    <button (click)="onDecrement()" >Decrement</button><br><br>
+    <button (click)="onReset()">Reset</button><br><br>
+</div>
+
+<input type="number" [(ngModel)]="value" placeholder="enter your number"><br><br>
+<button (click)="onCustom()"> custom increment</button><br><br>
+
+
+<p> {{(changeStringValue$ | async) }}</p>
+
+
+<button (click)="changeString()"> change the string value</button>
+
