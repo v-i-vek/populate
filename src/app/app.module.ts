@@ -17,7 +17,8 @@ import { postReducer } from './post/store/post.reducer';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    StoreModule.forRoot({postState:postReducer})
+    StoreModule.forRoot({postState:postReducer}),
+    StoreModule.forFeature('posts',postReducer)
   ],
   providers: [],
   bootstrap: [AppComponent]

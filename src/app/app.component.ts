@@ -7,4 +7,8 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'ngrx_pra_2';
+  constructor(){
+    console.log("hello world");
+    
+  }
 }
