@@ -19,7 +19,8 @@ describe('PostListComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-    console.log("hello world");
     
+    console.log("hello world");
+    console.log("hello world");
   });
 });
