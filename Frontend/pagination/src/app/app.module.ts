@@ -1,5 +1,6 @@
-import { NgModule } from '@angular/core';
+import { NgModule, isDevMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -13,6 +14,7 @@ import { MatInputModule } from '@angular/material/input';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { reducer } from './store/reducer';
+import { pagination } from './store/effect';
 
 
 
@@ -32,7 +34,8 @@ import { reducer } from './store/reducer';
     FormsModule,
     MatInputModule,
     StoreModule.forRoot({pagination:reducer}, {}),
-    EffectsModule.forRoot([])
+    EffectsModule.forRoot([pagination]),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() })
   ],
   providers: [],
   bootstrap: [AppComponent]

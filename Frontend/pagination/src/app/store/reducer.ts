@@ -1,5 +1,5 @@
 import { createReducer, on } from "@ngrx/store"
-import { onSuccessCallOfPage } from "./selector"
+import { onSuccessCallOfPage } from "./action"
 import { inital_value } from "./state"
 
 

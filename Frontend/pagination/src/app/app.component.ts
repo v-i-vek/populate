@@ -2,8 +2,11 @@ import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angula
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { fromEvent, map, debounceTime } from 'rxjs';
+import { fromEvent, map, debounceTime, Observable } from 'rxjs';
 import { PaginationService } from './service/pagination.service';
+import { pagination } from './store/effect';
+import { Store, createSelector } from '@ngrx/store';
+import { onCallOfPage, onSuccessCallOfPage } from './store/action';
 
 @Component({
   selector: 'app-root',
@@ -16,20 +19,19 @@ export class AppComponent implements AfterViewInit,OnInit{
   val:any = []
   displayedColumns: string[] = ['question', 'questionDescribe', 'tags'];
   dataSource = new MatTableDataSource<any>();
-
   @ViewChild(MatPaginator) paginator !: MatPaginator;
   @ViewChild(MatSort) sort !: MatSort;
-
+  
   @ViewChild('myInput') myInput !: ElementRef;
-
+  datavalue$!:Observable<any>
+  constructor(public http:PaginationService,private store :Store<pagination>){}
+  // value:any ={page:this.paginator.pageIndex+1,pageSize:this.paginator.pageSize,search:this.search}
   ngOnInit(){
-    this.getquestionwithPagination()
+    // this.getquestionwithPagination()
   }
-  // reqData: any;  
   ngAfterViewInit() {
     this.getquestionwithPagination()
-    // this.dataSource.paginator = this.paginator;
-    // this.dataSource.sort = this.sort;
+    
 
     const searchTerm = fromEvent<any>(this.myInput.nativeElement, 'keyup').pipe(
       map((event) => event.target.value),
@@ -38,39 +40,39 @@ export class AppComponent implements AfterViewInit,OnInit{
     searchTerm.subscribe((res) => {
       this.getquestionwithPagination()
       console.log(res);
-      // this.reqData = res;
     });
   }
 
-  // applyFilter(event: Event) {
-  //   const filterValue = (event.target as HTMLInputElement).value;
-  //   this.dataSource.filter = filterValue.trim().toLowerCase();
 
-  //   if (this.dataSource.paginator) {
-  //     this.dataSource.paginator.firstPage();
-  //   }
-  // }
  
-  constructor(public http:PaginationService){}
 
 
   getquestionwithPagination(){
+    const data = {page:this.paginator.pageIndex+1,pageSize:this.paginator.pageSize,search:this.search}
+
+    this.store.dispatch(onCallOfPage({data}));
+   
+    // console.log("from store",this.datavalue$.Store);
+    
+
+
     this.http.paginatate(this.paginator.pageIndex+1,this.paginator.pageSize,this.search).subscribe((res:any)=>{
       console.log(this.search)
       this.dataSource.data  = res.data
       this.paginator.length = res.totalPages 
       this.val = res.data
-      console.log("=++++++++++++++++=",this.dataSource)
-      console.log("==========",this.dataSource.data)
+      // console.log("=++++++++++++++++=",this.dataSource)
+      // console.log("==========",this.dataSource.data)
     })
   }
   onPageChange(event:any){
+    console.log(event);
+    
     this.getquestionwithPagination()
   }
   
   searchValue(event:any){
     console.log(event)
-    // this.search  = 
     this.getquestionwithPagination();
   }
   

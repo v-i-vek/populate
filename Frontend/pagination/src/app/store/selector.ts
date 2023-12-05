@@ -1,8 +1,6 @@
-import { createAction, props } from "@ngrx/store"
+import { createFeatureSelector, createSelector } from "@ngrx/store";
+import { inital_value, page } from "./state";
 
-const Page_api_is_called = "[page api is called] this is the page api"
-const Page_api_is_called_success = "[page api is successfully called] and stored in store"
+export const getPaginateValue = createFeatureSelector<page>('pagevalue')
 
-
-export const onCallOfPage = createAction(Page_api_is_called);
-export const onSuccessCallOfPage = createAction(Page_api_is_called_success,props<{data:any}>());
+export const getPaginatedSelector = createSelector(getPaginateValue,(state)=>state)
