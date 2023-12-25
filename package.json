@@ -1,0 +1,18 @@
+{
+  "name": "pgadmiin",
+  "version": "1.0.0",
+  "description": "",
+  "main": "databasePg.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "pg": "^8.11.3",
+    "pg-promise": "^11.5.4",
+    "prisma": "^5.7.1",
+    "promise-pg": "^0.1.1"
+  }
+}
